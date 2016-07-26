@@ -34,3 +34,5 @@ API очень похож на 1С
 Кнопка1.Заголовок = "Нажми меня";
 Кнопка1.КнопкаНажатие(ЭтотОбъект,"ПриНажатииКнопка1");
 </pre>
+
+<img src="https://files.gitter.im/xDrivenDevelopment/1c-syntax/blob">
