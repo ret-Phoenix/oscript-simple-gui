@@ -11,13 +11,13 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Drawing;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     /// <summary>
-    /// Description of SFormElementGroup.
+    /// Элемент формы, предназначенный для визуальной и/или логической группировки элементов.
     /// </summary>
     [ContextClass("ГруппаФормы", "FormGroup")]
-    public class SimpleFormElementGroup : AutoContext<SimpleFormElementGroup>, IValue
+    public class FormGroup : AutoContext<FormGroup>, IValue
     {
         private Control _item;
         private int _formGroupType;
@@ -30,7 +30,11 @@ namespace oscriptcomponent
         private string _toolTip;
         private IValue _parent;
 
-        public SimpleFormElementGroup(Control parentCntrl)
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="parentCntrl"></param>
+        public FormGroup(Control parentCntrl)
         {
             this._item = new GroupBox();
             this._formGroupType = (int)EnumFormGroupType.UsualGroup;
@@ -46,6 +50,10 @@ namespace oscriptcomponent
         }
 
 
+        /// <summary>
+        /// Получение ссылки на элемент формы.
+        /// </summary>
+        /// <returns></returns>
         public Control getControl()
         {
             return this._item;
@@ -56,11 +64,11 @@ namespace oscriptcomponent
         //    return new SimpleFormElementGroup();
         //}
 
-        [ContextMethod("ПодчиненныеЭлементы", "ChildItems")]
-        public SimpleFormElements ChildItems()
-        {
-            return new SimpleFormElements(null);
-        }
+        //[ContextMethod("ПодчиненныеЭлементы", "ChildItems")]
+        //public SimpleFormElements ChildItems()
+        //{
+        //    return new SimpleFormElements(null);
+        //}
 
 
         [ContextProperty("Имя", "Name")]

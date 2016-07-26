@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
 
  
@@ -20,7 +20,7 @@ namespace oscriptcomponent
     /// Description of SFormElementFormField.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
-	public class SimpleFormElementFormField : AutoContext<SimpleFormElementFormField>, IValue
+	public class FormField : AutoContext<FormField>, IValue
     {
 
         // private IValue _frm;
@@ -50,7 +50,7 @@ namespace oscriptcomponent
         private ScriptEngine.HostedScript.Library.MapImpl _choiceList;
 
 
-        public SimpleFormElementFormField(Control parentCntrl) 
+        public FormField(Control parentCntrl) 
 		{
 
             FieldType = new FormFieldType();

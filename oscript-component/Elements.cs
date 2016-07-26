@@ -12,13 +12,13 @@ using ScriptEngine.Machine;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
 	/// <summary>
 	/// Description of SFormElements.
 	/// </summary>
 	[ContextClass("Элементы", "Elements")]
-	public class SimpleFormElements : AutoContext<SimpleFormElements>
+	public class Elements : AutoContext<Elements>
 	{
         /// <summary>
         /// Ссылка на форму, элементы которой обрабатываются текущим классом.
@@ -30,7 +30,7 @@ namespace oscriptcomponent
         //private List<FormElement> _elements;
         Dictionary<string, IValue> _elements = new Dictionary<string, IValue>();
 		
-		public SimpleFormElements(Form frm)
+		public Elements(Form frm)
 		{
             _frm = frm;
 		}
@@ -56,12 +56,23 @@ namespace oscriptcomponent
         //
         //SFormElementGroup dd = new SFormElementGroup();
 
+        /// <summary>
+        /// Получает количество элементов коллекции.
+        /// </summary>
+        /// <returns><typeparam name="Число"></typeparam></returns>
         [ContextMethod("Количество", "Count")]
         public int Count()
         {
         	return _elements.Count;
         }
-        
+
+        /// <summary>
+        /// Осуществляет поиск элемента управления с заданным именем.
+        /// </summary>
+        /// <param name="elementName"></param>
+        /// <returns><typeparam name="FormGroup">ГруппаФормы</typeparam></returns>
+        /// <returns><typeparam name="SimpleFormElementFormField">ПолеФормы</typeparam></returns>
+        /// <returns><typeparam name="SimpleFormFormButton">КнопкаФормы</typeparam></returns>
         [ContextMethod("Найти", "Find")]
         public IValue Find(string elementName)
         {
@@ -69,9 +80,17 @@ namespace oscriptcomponent
             	return _elements[elementName];	
             }
             return ValueFactory.Create();
-            //return null;
         }
-        
+
+        /// <summary>
+        /// Создает и возвращает элемент формы
+        /// </summary>
+        /// <param name="ElementName">Строка - Уникальное имя добавляемого элемента. </param>
+        /// <param name="ElementType">Строка - Тип добавляемого элемента</param>
+        /// <param name="ElementParent"><typeparam name="SimpleFormElementGroup,SimpleFormElementFormField">ЭлементФормы</typeparam> Родитель для добавляемого элемента. Если не указан, то добавляется на верхний уровень. </param>
+        /// <returns><typeparam name="SimpleFormElementGroup">ГруппаФормы</typeparam></returns>
+        /// <returns><typeparam name="SimpleFormElementFormField">ПолеФормы</typeparam></returns>
+        /// <returns><typeparam name="SimpleFormFormButton">КнопкаФормы</typeparam></returns>
         [ContextMethod("Добавить", "Add")]
         public IValue add(string ElementName, string ElementType, IValue ElementParent)
         {
@@ -83,25 +102,25 @@ namespace oscriptcomponent
             }
             else
             {
-                parentCntrl = ((SimpleFormElementGroup)ElementParent).getControl();
+                parentCntrl = ((FormGroup)ElementParent).getControl();
             }
 
             IValue newItem = null;
         	if (ElementType.ToUpper() == ("ГруппаФормы").ToUpper()) {
-        		newItem = new SimpleFormElementGroup(parentCntrl);
-                ((SimpleFormElementGroup)newItem).Name = ElementName;
+        		newItem = new FormGroup(parentCntrl);
+                ((FormGroup)newItem).Name = ElementName;
             }
         	
         	if (ElementType.ToUpper() == ("ПолеФормы").ToUpper()) {
 
-        		newItem = new SimpleFormElementFormField(parentCntrl);
-                ((SimpleFormElementFormField)newItem).Name = ElementName;
+        		newItem = new FormField(parentCntrl);
+                ((FormField)newItem).Name = ElementName;
 
             }
 
         	if (ElementType.ToUpper() == ("КнопкаФормы").ToUpper()) {
-                newItem = new SimpleFormFormButton(parentCntrl);
-                ((SimpleFormFormButton)newItem).Name = ElementName;
+                newItem = new FormButton(parentCntrl);
+                ((FormButton)newItem).Name = ElementName;
             }
 
             _elements.Add(ElementName, newItem);

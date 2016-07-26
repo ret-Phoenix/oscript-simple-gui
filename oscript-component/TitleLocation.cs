@@ -7,7 +7,7 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     enum EnumTitleLocation : int
     {

@@ -5,14 +5,14 @@ using ScriptEngine.Machine;
 using System.Windows.Forms;
 
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     [ContextClass("Форма", "Form")]
     public class SimpleForm : AutoContext<SimpleForm>, IValue
     {
         private string _version;
         private Form _form;
-        private SimpleFormElements _elements;
+        private Elements _elements;
         private FormFieldType _formFieldType;
         private FormGroupType _formGroupType;
         private TitleLocation _titleLocation;
@@ -21,7 +21,7 @@ namespace oscriptcomponent
         {
             this._version = "0.0.0.1";
             this._form = new Form();
-            this._elements = new SimpleFormElements(_form);
+            this._elements = new Elements(_form);
             this._formFieldType = new FormFieldType();
             this._formGroupType = new FormGroupType();
             this._titleLocation = new TitleLocation();
@@ -74,7 +74,7 @@ namespace oscriptcomponent
 
 
         [ContextProperty("Элементы", "Items")]
-        public SimpleFormElements Items
+        public Elements Items
         {
             get { return _elements; }
         }

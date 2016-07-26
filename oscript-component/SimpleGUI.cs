@@ -5,8 +5,11 @@ using ScriptEngine.Machine;
 using System.Windows.Forms;
 
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
+    /// <summary>
+    /// Фабрика для работы с формами
+    /// </summary>
     [ContextClass("ПростойГУИ", "SimpleGUI")]
     public class SimpleGUI : AutoContext<SimpleGUI>
     {
@@ -17,6 +20,9 @@ namespace oscriptcomponent
             this._version = "0.0.0.1";
         }
 
+        /// <summary>
+        /// Номер версии библиотеки
+        /// </summary>
         [ContextProperty("Версия", "Version")]
         public string version
         {
@@ -35,12 +41,19 @@ namespace oscriptcomponent
             return new SimpleGUI();
         }
 
+        /// <summary>
+        /// Создать форму
+        /// </summary>
+        /// <returns><see>SimpleForm</see> Возращает форму</returns>
         [ContextMethod("СоздатьФорму", "CreateForm")]
         public SimpleForm CreateForm()
         {
             return new SimpleForm();
         }
 
+        /// <summary>
+        /// Показать форму (модально)
+        /// </summary>
         [ContextMethod("ПоказатьФорму", "ShowNewForm")]
         public void ShowNewForm()
         {

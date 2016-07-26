@@ -4,10 +4,10 @@ using ScriptEngine.Machine;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     [ContextClass("КнопкаФормы", "FormButton")]
-    class SimpleFormFormButton : AutoContext<SimpleFormFormButton>, IValue
+    class FormButton : AutoContext<FormButton>, IValue
     {
         private Control _item;
         private Control _parentControl;
@@ -22,7 +22,7 @@ namespace oscriptcomponent
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
 
-        public SimpleFormFormButton(Control parentCntrl)
+        public FormButton(Control parentCntrl)
         {
             this._item = new Button();
             ((Button)this._item).Click += BtnClick;
