@@ -14,7 +14,7 @@ namespace oscriptGUI
         void setParent(IValue parent);
         IValue Parent { get; }
         string Name { get; set; }
-        Control getParentControl();
+        Control getBaseControl();
         Control getControl();
     }
 }

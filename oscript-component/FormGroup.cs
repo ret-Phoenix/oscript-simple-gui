@@ -74,7 +74,7 @@ namespace oscriptGUI
         //    return new SimpleFormElements(null);
         //}
 
-        public Control getParentControl()
+        public Control getBaseControl()
         {
             return _item;
         }

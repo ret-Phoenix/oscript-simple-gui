@@ -87,7 +87,7 @@ namespace oscriptGUI
             this._methodName = methodName;
         }
 
-        public Control getParentControl()
+        public Control getBaseControl()
         {
             //if (this._parentControl is Form)
             //{

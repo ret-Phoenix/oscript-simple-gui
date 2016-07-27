@@ -113,7 +113,7 @@ namespace oscriptGUI
             return "ПолеФормы";
         }
 
-        public Control getParentControl()
+        public Control getBaseControl()
         {
             return _panelMainContainer;
         }

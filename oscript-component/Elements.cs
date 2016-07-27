@@ -64,7 +64,7 @@ namespace oscriptGUI
             //TODO: Сделал топорно, надо придумать как правильно
             string ElName = ((FormField)Element).Name;
             _elements.Remove(ElName);
-            Control CurControl = ((FormField)Element).getParentControl();
+            Control CurControl = ((FormField)Element).getBaseControl();
             CurControl.Controls.Clear();
             CurControl.Dispose();
             CurControl = null;
@@ -76,32 +76,46 @@ namespace oscriptGUI
         public void Move(IValue Element, IValue ParentElement, IValue BeforeElement)
         {
 
-            Control CurControl = ((IFormElement)Element).getParentControl();
-            Control CurParentControl = ((IFormElement)ParentElement).getParentControl();
+            Control CurControl = ((IFormElement)Element).getBaseControl();
 
             Control CurBeforeControl = null;
             if (BeforeElement != ValueFactory.Create())
             {
-                CurBeforeControl = ((IFormElement)BeforeElement).getParentControl();
+                CurBeforeControl = ((IFormElement)BeforeElement).getBaseControl();
             }
-            if (((IFormElement)Element).Parent == ((IFormElement)ParentElement))
+
+            Control CurParentControl = _frm;
+            if (ParentElement != ValueFactory.Create())
             {
-                int CurIndex = CurParentControl.Controls.GetChildIndex(CurControl);
-                int BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
-                CurParentControl.Controls.SetChildIndex(CurControl, BefIndex);
+                CurParentControl = ((IFormElement)ParentElement).getBaseControl();
+
+                if (((IFormElement)Element).Parent == ((IFormElement)ParentElement))
+                {
+                    int CurIndex = CurParentControl.Controls.GetChildIndex(CurControl);
+                    int BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
+                    CurParentControl.Controls.SetChildIndex(CurControl, BefIndex);
+                }
+                else
+                {
+                    int BefIndex = -1;
+                    if (BeforeElement != ValueFactory.Create())
+                    {
+                        BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
+                    }
+
+                    CurControl.Parent = CurParentControl;
+                    ((IFormElement)Element).setParent(ParentElement);
+                    CurParentControl.Controls.SetChildIndex(CurControl, BefIndex + 1);
+                }
             }
             else
             {
-                int BefIndex = -1;
-                if (BeforeElement != ValueFactory.Create())
-                {
-                    BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
-                }
+                    CurControl.Parent = CurParentControl;
+                    ((IFormElement)Element).setParent(ParentElement);
+                    CurParentControl.Controls.SetChildIndex(CurControl, 0);
 
-                CurControl.Parent = CurParentControl;
-                ((IFormElement)Element).setParent(ParentElement);
-                CurParentControl.Controls.SetChildIndex(CurControl, BefIndex + 1);
             }
+
         }
 
 
