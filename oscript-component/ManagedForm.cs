@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace oscriptGUI
 {
     [ContextClass("Форма", "Form")]
-    public class SimpleForm : AutoContext<SimpleForm>, IValue
+    public class ManagedForm : AutoContext<ManagedForm>, IValue
     {
         private string _version;
         private Form _form;
@@ -17,7 +17,7 @@ namespace oscriptGUI
         private FormGroupType _formGroupType;
         private TitleLocation _titleLocation;
 
-        public SimpleForm()
+        public ManagedForm()
         {
             this._version = "0.0.0.1";
             this._form = new Form();
@@ -27,11 +27,11 @@ namespace oscriptGUI
             this._titleLocation = new TitleLocation();
         }
 
-        [ContextProperty("Версия", "Version")]
-        public string version
-        {
-            get { return _version; }
-        }
+        //[ContextProperty("Версия", "Version")]
+        //public string version
+        //{
+        //    get { return _version; }
+        //}
 
         // можем переопределить строковое отображение наших объектов
         public override string ToString()
@@ -60,16 +60,26 @@ namespace oscriptGUI
 
 
         [ContextProperty("Заголовок", "Caption")]
-        public string newText
+        public string Caption
         {
             get { return _form.Text; }
             set { _form.Text = value; }
         }
 
+
         [ContextMethod("Показать", "Show")]
         public void Show()
         {
             _form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Используется для прохождения тестов. Если открывать не модально сразу закроется и будут доступны другие методы
+        /// </summary>
+        [ContextMethod("ПоказатьНеМодально", "ShowNotModal")]
+        public void ShowNotModal()
+        {
+            _form.Show();
         }
 
 
@@ -82,7 +92,7 @@ namespace oscriptGUI
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
         {
-            return new SimpleForm();
+            return new ManagedForm();
         }
 
     }

@@ -26,7 +26,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>bin\Release\oscript-simple-gui.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,13 +46,14 @@
   <ItemGroup>
     <Compile Include="FormFieldType.cs" />
     <Compile Include="FormGroupType.cs" />
+    <Compile Include="IFormElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormField.cs" />
     <Compile Include="FormGroup.cs" />
-    <Compile Include="SimpleForm.cs" />
+    <Compile Include="ManagedForm.cs" />
     <Compile Include="Elements.cs" />
     <Compile Include="FormButton.cs" />
-    <Compile Include="SimpleGUI.cs" />
+    <Compile Include="ManagedGUI.cs" />
     <Compile Include="TitleLocation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -10,12 +10,13 @@ namespace oscriptGUI
     /// <summary>
     /// Фабрика для работы с формами
     /// </summary>
+    //[ContextClass("УправляемыйИнтерфейс", "ManagedGUI")]
     [ContextClass("ПростойГУИ", "SimpleGUI")]
-    public class SimpleGUI : AutoContext<SimpleGUI>
+    public class ManagedGUI : AutoContext<ManagedGUI>
     {
         private string _version;
 
-        public SimpleGUI()
+        public ManagedGUI()
         {
             this._version = "0.0.0.1";
         }
@@ -38,7 +39,7 @@ namespace oscriptGUI
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
         {
-            return new SimpleGUI();
+            return new ManagedGUI();
         }
 
         /// <summary>
@@ -46,20 +47,20 @@ namespace oscriptGUI
         /// </summary>
         /// <returns><see>SimpleForm</see> Возращает форму</returns>
         [ContextMethod("СоздатьФорму", "CreateForm")]
-        public SimpleForm CreateForm()
+        public ManagedForm CreateForm()
         {
-            return new SimpleForm();
+            return new ManagedForm();
         }
 
-        /// <summary>
-        /// Показать форму (модально)
-        /// </summary>
-        [ContextMethod("ПоказатьФорму", "ShowNewForm")]
-        public void ShowNewForm()
-        {
-            Form frm = new Form();
-            frm.ShowDialog();
-        }
+        ///// <summary>
+        ///// Показать форму (модально)
+        ///// </summary>
+        //[ContextMethod("ПоказатьФорму", "ShowNewForm")]
+        //public void ShowNewForm()
+        //{
+        //    Form frm = new Form();
+        //    frm.ShowDialog();
+        //}
 
     }
 }

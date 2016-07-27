@@ -14,47 +14,26 @@ using System.Windows.Forms;
 
 namespace oscriptGUI
 {
-	/// <summary>
-	/// Description of SFormElements.
-	/// </summary>
-	[ContextClass("Элементы", "Elements")]
-	public class Elements : AutoContext<Elements>
-	{
-        /// <summary>
-        /// Ссылка на форму, элементы которой обрабатываются текущим классом.
-        /// </summary>
-        /// <param name="_frm"></param>
-        //private SimpleForm _frm;
+    /// <summary>
+    /// Description of SFormElements.
+    /// </summary>
+    [ContextClass("Элементы", "Elements")]
+    public class Elements : AutoContext<Elements>
+    {
         private Form _frm;
 
         //private List<FormElement> _elements;
         Dictionary<string, IValue> _elements = new Dictionary<string, IValue>();
-		
-		public Elements(Form frm)
-		{
+
+        public Elements(Form frm)
+        {
             _frm = frm;
-		}
+        }
 
-        //        [ContextMethod("Индекс", "Index")]
-        //        public int Index()
-        //        {
-        //        	return -100;
-        //        }
-
-
-        //            //TextBox tb = new TextBox();
-        //            //_form.Container.Add(tb);
-        //
-        //            ComboBox combo = new ComboBox();
-        //            combo.Items.Add("11111");
-        //            /* если необходимо добавить сразу несколько значений, то:
-        //             * string[] mas=new string[]{"111","222","333"};
-        //             * combo.Items.AddRange(mas);*/
-        //            //combo.Location = new Point(300, 200);
-        //            combo.Width = 50;
-        //            _form.Controls.Add(combo);
-        //
-        //SFormElementGroup dd = new SFormElementGroup();
+        public override string ToString()
+        {
+            return "Элементы";
+        }
 
         /// <summary>
         /// Получает количество элементов коллекции.
@@ -63,79 +42,112 @@ namespace oscriptGUI
         [ContextMethod("Количество", "Count")]
         public int Count()
         {
-        	return _elements.Count;
+            return _elements.Count;
         }
 
         /// <summary>
         /// Осуществляет поиск элемента управления с заданным именем.
         /// </summary>
-        /// <param name="elementName"></param>
-        /// <returns><typeparam name="FormGroup">ГруппаФормы</typeparam></returns>
-        /// <returns><typeparam name="SimpleFormElementFormField">ПолеФормы</typeparam></returns>
-        /// <returns><typeparam name="SimpleFormFormButton">КнопкаФормы</typeparam></returns>
         [ContextMethod("Найти", "Find")]
         public IValue Find(string elementName)
         {
-            if (_elements.ContainsKey(elementName)) {
-            	return _elements[elementName];	
+            if (_elements.ContainsKey(elementName))
+            {
+                return _elements[elementName];
             }
             return ValueFactory.Create();
         }
 
-        /// <summary>
-        /// Создает и возвращает элемент формы
-        /// </summary>
-        /// <param name="ElementName">Строка - Уникальное имя добавляемого элемента. </param>
-        /// <param name="ElementType">Строка - Тип добавляемого элемента</param>
-        /// <param name="ElementParent"><typeparam name="SimpleFormElementGroup,SimpleFormElementFormField">ЭлементФормы</typeparam> Родитель для добавляемого элемента. Если не указан, то добавляется на верхний уровень. </param>
-        /// <returns><typeparam name="SimpleFormElementGroup">ГруппаФормы</typeparam></returns>
-        /// <returns><typeparam name="SimpleFormElementFormField">ПолеФормы</typeparam></returns>
-        /// <returns><typeparam name="SimpleFormFormButton">КнопкаФормы</typeparam></returns>
+        [ContextMethod("Удалить", "Delete")]
+        public void Delete(IValue Element)
+        {
+            //TODO: Сделал топорно, надо придумать как правильно
+            string ElName = ((FormField)Element).Name;
+            _elements.Remove(ElName);
+            Control CurControl = ((FormField)Element).getParentControl();
+            CurControl.Controls.Clear();
+            CurControl.Dispose();
+            CurControl = null;
+            //TODO: А нужно ли очищать входящий IValue Element, если да - то как?
+            Element = ValueFactory.Create();
+        }
+
+        [ContextMethod("Переместить", "Move")]
+        public void Move(IValue Element, IValue ParentElement, IValue BeforeElement)
+        {
+
+            Control CurControl = ((IFormElement)Element).getParentControl();
+            Control CurParentControl = ((IFormElement)ParentElement).getParentControl();
+
+            Control CurBeforeControl = null;
+            if (BeforeElement != ValueFactory.Create())
+            {
+                CurBeforeControl = ((IFormElement)BeforeElement).getParentControl();
+            }
+            if (((IFormElement)Element).Parent == ((IFormElement)ParentElement))
+            {
+                int CurIndex = CurParentControl.Controls.GetChildIndex(CurControl);
+                int BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
+                CurParentControl.Controls.SetChildIndex(CurControl, BefIndex);
+            }
+            else
+            {
+                int BefIndex = -1;
+                if (BeforeElement != ValueFactory.Create())
+                {
+                    BefIndex = CurParentControl.Controls.GetChildIndex(CurBeforeControl);
+                }
+
+                CurControl.Parent = CurParentControl;
+                ((IFormElement)Element).setParent(ParentElement);
+                CurParentControl.Controls.SetChildIndex(CurControl, BefIndex + 1);
+            }
+        }
+
+
         [ContextMethod("Добавить", "Add")]
         public IValue add(string ElementName, string ElementType, IValue ElementParent)
         {
 
-            Control parentCntrl;
-            if (ElementParent == ValueFactory.Create())
+            Control parentCntrl = (this._frm);
+            if (ElementParent != ValueFactory.Create())
             {
-                parentCntrl = (this._frm);
-            }
-            else
-            {
-                parentCntrl = ((FormGroup)ElementParent).getControl();
+                parentCntrl = ((IFormElement)ElementParent).getControl();
             }
 
             IValue newItem = null;
-        	if (ElementType.ToUpper() == ("ГруппаФормы").ToUpper()) {
-        		newItem = new FormGroup(parentCntrl);
-                ((FormGroup)newItem).Name = ElementName;
-            }
-        	
-        	if (ElementType.ToUpper() == ("ПолеФормы").ToUpper()) {
-
-        		newItem = new FormField(parentCntrl);
-                ((FormField)newItem).Name = ElementName;
-
+            if (ElementType.ToUpper() == ("ГруппаФормы").ToUpper())
+            {
+                newItem = new FormGroup(parentCntrl);
             }
 
-        	if (ElementType.ToUpper() == ("КнопкаФормы").ToUpper()) {
+            if (ElementType.ToUpper() == ("ПолеФормы").ToUpper())
+            {
+                newItem = new FormField(parentCntrl);
+            }
+
+            if (ElementType.ToUpper() == ("КнопкаФормы").ToUpper())
+            {
                 newItem = new FormButton(parentCntrl);
-                ((FormButton)newItem).Name = ElementName;
             }
+
+            ((IFormElement)newItem).Name = ElementName;
+            ((IFormElement)newItem).setParent(ElementParent);
+
 
             _elements.Add(ElementName, newItem);
-        	return newItem;
+            return newItem;
         }
 
-//        [ContextMethod("Получить", "Get")]
-//        public SFormElement getElement(int index)
-//        {
-//        	if (index <= this.Count()) {
-//        		this._elements.E
-//        	} else {
-//        		return null;
-//        	}
-//        }  
-        
-	}
+        //        [ContextMethod("Получить", "Get")]
+        //        public SFormElement getElement(int index)
+        //        {
+        //        	if (index <= this.Count()) {
+        //        		this._elements.E
+        //        	} else {
+        //        		return null;
+        //        	}
+        //        }  
+
+    }
 }

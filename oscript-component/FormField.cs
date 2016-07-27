@@ -15,12 +15,12 @@ using ScriptEngine.Machine;
 namespace oscriptGUI
 {
 
- 
+
     /// <summary>
     /// Description of SFormElementFormField.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
-	public class FormField : AutoContext<FormField>, IValue
+    public class FormField : AutoContext<FormField>, IValue, IFormElement
     {
 
         // private IValue _frm;
@@ -32,10 +32,10 @@ namespace oscriptGUI
         private Control _item;
 
         private string _name;
-		private bool _visible;
-		private bool _enabled;
-		private string _title;
-		//private string _toolTip;
+        private bool _visible;
+        private bool _enabled;
+        private string _title;
+        //private string _toolTip;
         private IValue _parent;
         private Control _parentControl;
         private bool _readOnly;
@@ -50,13 +50,10 @@ namespace oscriptGUI
         private ScriptEngine.HostedScript.Library.MapImpl _choiceList;
 
 
-        public FormField(Control parentCntrl) 
-		{
+        public FormField(Control parentCntrl)
+        {
 
             FieldType = new FormFieldType();
-
-            
-            //this._frm = frm;
 
             this._name = "";
             this._visible = true;
@@ -73,14 +70,12 @@ namespace oscriptGUI
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
 
-            
-
             //# Создаем контейнер для элемента формы
             _panelMainContainer = new Panel();
             _panelTitleContainer = new Panel();
             _panelControlContainer = new Panel();
 
-            
+
             _panelMainContainer.Controls.Add(_panelControlContainer);
             _panelMainContainer.Controls.Add(_panelTitleContainer);
 
@@ -113,6 +108,25 @@ namespace oscriptGUI
 
         }
 
+        public override string ToString()
+        {
+            return "ПолеФормы";
+        }
+
+        public Control getParentControl()
+        {
+            return _panelMainContainer;
+        }
+
+        public Control getControl()
+        {
+            return _item;
+        }
+
+        public void setParent(IValue parent)
+        {
+            _parent = parent;
+        }
         //[ScriptConstructor]
         //public static IRuntimeContextInstance Constructor()
         //{
@@ -148,7 +162,7 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.TextDocumentField:
                     newItem = new TextBox();
                     ((TextBox)newItem).Multiline = true;
-                    _panelControlContainer.MinimumSize = new Size(100,100);
+                    _panelControlContainer.MinimumSize = new Size(100, 100);
                     break;
                 case (int)EnumFormFieldType.ComboBox:
                     newItem = new ComboBox();
@@ -204,7 +218,7 @@ namespace oscriptGUI
 
         private IValue getControlValue()
         {
-            
+
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
@@ -217,7 +231,7 @@ namespace oscriptGUI
 
         private void setPropertyReadOnly()
         {
-            
+
             switch (this._formFieldType)
             {
                 case 0:
@@ -239,7 +253,7 @@ namespace oscriptGUI
                     _panelTitleContainer.Dock = DockStyle.Bottom;
                     break;
                 case (int)EnumTitleLocation.Left:
-                    _panelTitleContainer.Dock = DockStyle. Left;
+                    _panelTitleContainer.Dock = DockStyle.Left;
                     break;
                 case (int)EnumTitleLocation.None:
                     _panelTitleContainer.Visible = false;
@@ -250,9 +264,13 @@ namespace oscriptGUI
                 case (int)EnumTitleLocation.Top:
                     _panelTitleContainer.Dock = DockStyle.Top;
                     break;
-
             }
         }
+
+        //public void Dispose()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         [ContextProperty("Значение", "Value")]
         public IValue Value
@@ -273,7 +291,8 @@ namespace oscriptGUI
         public int ControlType
         {
             get { return this._formFieldType; }
-            set {
+            set
+            {
                 this._formFieldType = value;
                 this.createFormFieldByType();
             }
@@ -284,39 +303,43 @@ namespace oscriptGUI
         {
             get { return this._name; }
             set { this._name = value; }
-        }		
-        
+        }
+
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
             get { return this._visible; }
-            set {
+            set
+            {
                 this._visible = value;
                 this._panelMainContainer.Visible = this._visible;
             }
-        }		
+        }
 
         [ContextProperty("Доступность", "Enabled")]
         public bool Enabled
         {
             get { return this._enabled; }
-            set {
+            set
+            {
                 this._enabled = value;
                 this._panelMainContainer.Enabled = this._enabled;
             }
-        }	
+        }
 
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
             get { return this._title; }
-            set {
+            set
+            {
                 this._title = value;
                 this._label.Text = this._title;
                 if (this._label.Text.Trim() == String.Empty)
                 {
                     this._panelTitleContainer.Visible = false;
-                } else
+                }
+                else
                 {
                     this._panelTitleContainer.Visible = true;
                 }
@@ -358,18 +381,19 @@ namespace oscriptGUI
         //    }
         //}
 
-        //      [ContextProperty("Родитель", "Parent")]
-        //public IValue  Parent
-        //{
-        //          get { return this._parent; }
-        //          set { this._parent = value; }
-        //}
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+            //   set { this._parent = value; }
+        }
 
         [ContextProperty("ТолькоПросмотр", "ReadOnly")]
         public bool ReadOnly
         {
             get { return this._readOnly; }
-            set {
+            set
+            {
                 this._readOnly = value;
                 this.setPropertyReadOnly();
             }

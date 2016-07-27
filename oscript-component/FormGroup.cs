@@ -17,7 +17,7 @@ namespace oscriptGUI
     /// Элемент формы, предназначенный для визуальной и/или логической группировки элементов.
     /// </summary>
     [ContextClass("ГруппаФормы", "FormGroup")]
-    public class FormGroup : AutoContext<FormGroup>, IValue
+    public class FormGroup : AutoContext<FormGroup>, IValue, IFormElement
     {
         private Control _item;
         private int _formGroupType;
@@ -50,6 +50,10 @@ namespace oscriptGUI
         }
 
 
+        public override string ToString()
+        {
+            return "ГруппаФормы";
+        }
         /// <summary>
         /// Получение ссылки на элемент формы.
         /// </summary>
@@ -70,6 +74,23 @@ namespace oscriptGUI
         //    return new SimpleFormElements(null);
         //}
 
+        public Control getParentControl()
+        {
+            return _item;
+        }
+
+        public void setParent(IValue parent)
+        {
+            _parent = parent;
+        }
+
+
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+            //   set { this._parent = value; }
+        }
 
         [ContextProperty("Имя", "Name")]
         public string Name
@@ -109,12 +130,12 @@ namespace oscriptGUI
             set { this._toolTip = value; }
         }
 
-        [ContextProperty("Родитель", "Parent")]
-        public IValue Parent
-        {
-            get { return this._parent; }
-            set { this._parent = value; }
-        }
+        //[ContextProperty("Родитель", "Parent")]
+        //public IValue Parent
+        //{
+        //    get { return this._parent; }
+        //    set { this._parent = value; }
+        //}
 
         [ContextProperty("Вид", "Type")]
         public int ControlType

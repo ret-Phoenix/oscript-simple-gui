@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace oscriptGUI
 {
     [ContextClass("КнопкаФормы", "FormButton")]
-    class FormButton : AutoContext<FormButton>, IValue
+    class FormButton : AutoContext<FormButton>, IValue, IFormElement
     {
         private Control _item;
         private Control _parentControl;
@@ -38,29 +38,45 @@ namespace oscriptGUI
             this._enabled = true;
             this._title = "";
             this._parent = ValueFactory.Create();
+            this._methodName = "";
+            this._thisScript = null;
 
-            if (this._parentControl is Form)
-            {
-                _panel.Dock = DockStyle.Top;
-                _panel.AutoSize = true;
-                _panel.Controls.Add(this._item);
-                this._parentControl.Controls.Add(_panel);
-                _panel.BringToFront();
-            }
-            else
-            {
-                this._parentControl.Controls.Add(this._item);
-                this._item.BringToFront();
-            }
+            //if (this._parentControl is Form)
+            //{
+            _panel.Dock = DockStyle.Top;
+            _panel.AutoSize = true;
+            _panel.Controls.Add(this._item);
+            this._parentControl.Controls.Add(_panel);
+            _panel.BringToFront();
+            //}
+            //else
+            //{
+            //this._parentControl.Controls.Add(this._item);
+            //this._item.BringToFront();
+            //}
+        }
 
-            
-            
+
+        public override string ToString()
+        {
+            return "КнопкаФормы";
         }
 
         public void BtnClick(object sender, EventArgs e)
         {
+            if (_thisScript == null)
+            {
+                return;
+            }
+
+            if (_methodName.Trim() == String.Empty)
+            {
+                return;
+            }
+
             ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
             reflector.CallMethod(this._thisScript, this._methodName, null);
+
         }
 
 
@@ -70,6 +86,38 @@ namespace oscriptGUI
             this._thisScript = script;
             this._methodName = methodName;
         }
+
+        public Control getParentControl()
+        {
+            //if (this._parentControl is Form)
+            //{
+            return _panel;
+            //}
+            //else
+            //{
+            //    return _item;
+            //}
+
+        }
+
+        public Control getControl()
+        {
+            return _item;
+        }
+
+        public void setParent(IValue parent)
+        {
+            _parent = parent;
+        }
+
+
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+            //   set { this._parent = value; }
+        }
+
 
         [ContextProperty("Имя", "Name")]
         public string Name
@@ -84,13 +132,13 @@ namespace oscriptGUI
             get { return this._visible; }
             set {
                 this._visible = value;
-                if (this._parentControl is Form)
-                {
-                    this._panel.Visible = value;
-                } else
-                {
-                    this._item.Visible = value;
-                }
+                //if (this._parentControl is Form)
+                //{
+                this._panel.Visible = value;
+                //} else
+                //{
+                //    this._item.Visible = value;
+                //}
             }
         }
 
@@ -100,14 +148,14 @@ namespace oscriptGUI
             get { return this._enabled; }
             set {
                 this._enabled = value;
-                if (this._parentControl is Form)
-                {
-                    this._panel.Enabled = value;
-                }
-                else
-                {
-                    this._item.Enabled = value;
-                }
+                //if (this._parentControl is Form)
+                //{
+                this._panel.Enabled = value;
+                //}
+                //else
+                //{
+                //    this._item.Enabled = value;
+                //}
 
             }
         }
@@ -130,12 +178,12 @@ namespace oscriptGUI
         //    set { this._toolTip = value; }
         //}
 
-        [ContextProperty("Родитель", "Parent")]
-        public IValue Parent
-        {
-            get { return this._parent; }
-            set { this._parent = value; }
-        }
+        //[ContextProperty("Родитель", "Parent")]
+        //public IValue Parent
+        //{
+        //    get { return this._parent; }
+        //    set { this._parent = value; }
+        //}
 
 
     }
