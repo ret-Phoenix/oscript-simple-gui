@@ -16,5 +16,8 @@ namespace oscriptGUI
         string Name { get; set; }
         Control getBaseControl();
         Control getControl();
+
+        void setAction(IRuntimeContextInstance contex, string eventName, string methodName);
+        string GetAction(string eventName);
     }
 }

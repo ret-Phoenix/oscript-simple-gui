@@ -400,5 +400,23 @@ namespace oscriptGUI
         }
 
 
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "Нажатие")
+            {
+                //((Button)this._item).Click += BtnClick;
+                //this._thisScript = contex;
+                //this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return String.Empty;
+        }
+
+
     }
 }

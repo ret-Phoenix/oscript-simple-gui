@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace oscriptGUI
 {
     [ContextClass("Форма", "Form")]
-    public class ManagedForm : AutoContext<ManagedForm>, IValue
+    public class ManagedForm : AutoContext<ManagedForm>, IValue, IFormElement, IElementsContainer
     {
         private string _version;
         private Form _form;
@@ -17,14 +17,18 @@ namespace oscriptGUI
         private FormGroupType _formGroupType;
         private TitleLocation _titleLocation;
 
+        private string _name;
+
         public ManagedForm()
         {
             this._version = "0.0.0.1";
             this._form = new Form();
-            this._elements = new Elements(_form);
+            this._elements = new Elements(this, _form);
             this._formFieldType = new FormFieldType();
             this._formGroupType = new FormGroupType();
             this._titleLocation = new TitleLocation();
+
+            this._name = "";
         }
 
         //[ContextProperty("Версия", "Version")]
@@ -36,7 +40,7 @@ namespace oscriptGUI
         // можем переопределить строковое отображение наших объектов
         public override string ToString()
         {
-            return "Form";
+            return "УправляемаяФорма";
         }
 
         [ContextProperty("ВидПоляФормы", "FormFieldType")]
@@ -66,6 +70,34 @@ namespace oscriptGUI
             set { _form.Text = value; }
         }
 
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return ValueFactory.Create(); }
+        }
+
+        [ContextProperty("Имя", "Name")]
+        public string Name
+        {
+            get { return this._name; }
+            set { this._name = value; }
+        }
+
+        public void setParent(IValue parent)
+        {
+            return;
+        }
+
+
+        public Control getBaseControl()
+        {
+            return _form;
+        }
+
+        public Control getControl()
+        {
+            return _form;
+        }
 
         [ContextMethod("Показать", "Show")]
         public void Show()
@@ -94,6 +126,24 @@ namespace oscriptGUI
         {
             return new ManagedForm();
         }
+
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "Нажатие")
+            {
+                //((Button)this._item).Click += BtnClick;
+                //this._thisScript = contex;
+                //this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return String.Empty;
+        }
+
 
     }
 }

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="FormFieldType.cs" />
     <Compile Include="FormGroupType.cs" />
+    <Compile Include="IElementsContainer.cs" />
     <Compile Include="IFormElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormField.cs" />

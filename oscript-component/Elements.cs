@@ -20,14 +20,16 @@ namespace oscriptGUI
     [ContextClass("Элементы", "Elements")]
     public class Elements : AutoContext<Elements>
     {
-        private Form _frm;
+        private Control _frm;
+        private IValue _parent;
 
         //private List<FormElement> _elements;
-        Dictionary<string, IValue> _elements = new Dictionary<string, IValue>();
+        private Dictionary<string, IValue> _elements = new Dictionary<string, IValue>();
 
-        public Elements(Form frm)
+        public Elements(IValue parent, Control frm)
         {
             _frm = frm;
+            _parent = parent;
         }
 
         public override string ToString()
@@ -110,10 +112,9 @@ namespace oscriptGUI
             }
             else
             {
-                    CurControl.Parent = CurParentControl;
-                    ((IFormElement)Element).setParent(ParentElement);
-                    CurParentControl.Controls.SetChildIndex(CurControl, 0);
-
+                CurControl.Parent = CurParentControl;
+                ((IFormElement)Element).setParent(ParentElement);
+                CurParentControl.Controls.SetChildIndex(CurControl, 0);
             }
 
         }
@@ -127,6 +128,10 @@ namespace oscriptGUI
             if (ElementParent != ValueFactory.Create())
             {
                 parentCntrl = ((IFormElement)ElementParent).getControl();
+            }
+            else
+            {
+                ElementParent = _parent;
             }
 
             IValue newItem = null;
@@ -145,12 +150,22 @@ namespace oscriptGUI
                 newItem = new FormButton(parentCntrl);
             }
 
-            ((IFormElement)newItem).Name = ElementName;
             ((IFormElement)newItem).setParent(ElementParent);
-
+            ((IFormElement)newItem).Name = ElementName;
 
             _elements.Add(ElementName, newItem);
             return newItem;
+        }
+
+        public void renameElement(string oldName, string newName)
+        {
+            var element = Find(oldName);
+            if (element == ValueFactory.Create())
+            {
+                return;
+            }
+            _elements.Remove(oldName);
+            _elements.Add(newName, element);
         }
 
         //        [ContextMethod("Получить", "Get")]

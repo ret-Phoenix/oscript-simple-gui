@@ -17,7 +17,7 @@ namespace oscriptGUI
     /// Элемент формы, предназначенный для визуальной и/или логической группировки элементов.
     /// </summary>
     [ContextClass("ГруппаФормы", "FormGroup")]
-    public class FormGroup : AutoContext<FormGroup>, IValue, IFormElement
+    public class FormGroup : AutoContext<FormGroup>, IValue, IFormElement, IElementsContainer
     {
         private Control _item;
         private int _formGroupType;
@@ -29,6 +29,7 @@ namespace oscriptGUI
         private string _title;
         private string _toolTip;
         private IValue _parent;
+        private Elements _elements;
 
         /// <summary>
         /// Конструктор
@@ -46,6 +47,8 @@ namespace oscriptGUI
             this._title = "";
             this._toolTip = "";
             this._parent = ValueFactory.Create();
+
+            this._elements = new Elements(this, _item);
 
         }
 
@@ -123,12 +126,12 @@ namespace oscriptGUI
             }
         }
 
-        [ContextProperty("Подсказка", "ToolTip")]
-        public string ToolTip
-        {
-            get { return this._toolTip; }
-            set { this._toolTip = value; }
-        }
+        //[ContextProperty("Подсказка", "ToolTip")]
+        //public string ToolTip
+        //{
+        //    get { return this._toolTip; }
+        //    set { this._toolTip = value; }
+        //}
 
         //[ContextProperty("Родитель", "Parent")]
         //public IValue Parent
@@ -148,6 +151,11 @@ namespace oscriptGUI
             }
         }
 
+        [ContextProperty("Элементы", "Items")]
+        public Elements Items
+        {
+            get { return _elements; }
+        }
 
         /////////////////////////////////////////////////////////////
         /// Методы обработки свойств
@@ -212,5 +220,23 @@ namespace oscriptGUI
                     break;
             }
         }
+
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "Нажатие")
+            {
+                //((Button)this._item).Click += BtnClick;
+                //this._thisScript = contex;
+                //this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return string.Empty;
+        }
+
     }
 }
