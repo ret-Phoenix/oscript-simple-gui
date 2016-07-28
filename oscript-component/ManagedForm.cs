@@ -19,6 +19,12 @@ namespace oscriptGUI
 
         private string _name;
 
+        private IRuntimeContextInstance _thisScriptOnShown;
+        private string _methodNameOnShown;
+
+        private IRuntimeContextInstance _thisScriptOnClose;
+        private string _methodNameOnClose;
+
         public ManagedForm()
         {
             this._version = "0.0.0.1";
@@ -29,6 +35,13 @@ namespace oscriptGUI
             this._titleLocation = new TitleLocation();
 
             this._name = "";
+
+            this._methodNameOnShown = "";
+            this._thisScriptOnShown = null;
+
+            this._methodNameOnClose = "";
+            this._thisScriptOnClose = null;
+
         }
 
         //[ContextProperty("Версия", "Version")]
@@ -114,6 +127,12 @@ namespace oscriptGUI
             _form.Show();
         }
 
+        [ContextMethod("Закрыть", "Close")]
+        public void Close()
+        {
+            _form.Close();
+        }
+
 
         [ContextProperty("Элементы", "Items")]
         public Elements Items
@@ -127,15 +146,71 @@ namespace oscriptGUI
             return new ManagedForm();
         }
 
+        //private void runAction()
+        //{
+        //    if (_thisScript == null)
+        //    {
+        //        return;
+        //    }
+
+        //    if (_methodName.Trim() == String.Empty)
+        //    {
+        //        return;
+        //    }
+
+        //    ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
+        //    reflector.CallMethod(this._thisScript, this._methodName, null);
+        //}
+
+        private void runAction(IRuntimeContextInstance script, string method)
+        {
+            if (script == null)
+            {
+                return;
+            }
+
+            if (method.Trim() == String.Empty)
+            {
+                return;
+            }
+
+            ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
+            reflector.CallMethod(script, method, null);
+        }
+
+        private void OnFormShown(object sender, EventArgs e)
+        {
+            runAction(_thisScriptOnShown, _methodNameOnShown);
+        }
+
+        private void OnFormClose(object sender, EventArgs e)
+        {
+            runAction(_thisScriptOnClose, _methodNameOnClose);
+        }
+
+
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
-            if (eventName == "Нажатие")
+            if (eventName == "ПриОткрытии")
             {
-                //((Button)this._item).Click += BtnClick;
-                //this._thisScript = contex;
-                //this._methodName = methodName;
+                this._form.Shown -= OnFormShown;
+                this._form.Shown += OnFormShown;
+                this._thisScriptOnShown = contex;
+                this._methodNameOnShown = methodName;
+
             }
+            else if (eventName == "ПриЗакрытии")
+            {
+                this._form.FormClosing -= OnFormClose;
+                this._form.FormClosing += OnFormClose;
+
+                this._thisScriptOnClose = contex;
+                this._methodNameOnClose = methodName;
+
+            }
+
+
         }
 
         [ContextMethod("ПолучитьДействие", "GetAction")]

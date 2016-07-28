@@ -229,6 +229,10 @@ namespace oscriptGUI
             {
                 case (int)EnumFormFieldType.ComboBox:
                     return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                case (int)EnumFormFieldType.ProgressBarField:
+                    return ValueFactory.Create(((ProgressBar)this._item).Value);
+                case (int)EnumFormFieldType.CalendarField:
+                    return ValueFactory.Create(((DateTimePicker)this._item).Value);
                 default:
                     return ValueFactory.Create(this._item.Text);
             }
@@ -308,7 +312,8 @@ namespace oscriptGUI
         public string Name
         {
             get { return this._name; }
-            set {
+            set
+            {
                 this._parent.Items.renameElement(this._name, value);
                 this._name = value;
             }
@@ -426,7 +431,7 @@ namespace oscriptGUI
             reflector.CallMethod(this._thisScript, this._methodName, null);
         }
 
-        private void TextChanged(object sender, EventArgs e)
+        private void FormFieldValueChanged(object sender, EventArgs e)
         {
             runAction();
         }
@@ -437,8 +442,31 @@ namespace oscriptGUI
         {
             if (eventName == "ПриИзменении")
             {
-                _item.TextChanged -= TextChanged;
-                _item.TextChanged += TextChanged;
+
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ComboBox: break;
+                    //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                    case (int)EnumFormFieldType.ProgressBarField:
+                        {
+                            Console.WriteLine("ProgressBarField - Disabled setAction");
+                            break;
+                        }
+                    case (int)EnumFormFieldType.CalendarField:
+                        {
+                            ((DateTimePicker)_item).ValueChanged -= FormFieldValueChanged;
+                            ((DateTimePicker)_item).ValueChanged += FormFieldValueChanged;
+                            break;
+                        }
+                    default:
+                        {
+                            _item.TextChanged -= FormFieldValueChanged;
+                            _item.TextChanged += FormFieldValueChanged;
+                            break;
+                        }
+
+                }
+
                 this._thisScript = contex;
                 this._methodName = methodName;
             }

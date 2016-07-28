@@ -196,7 +196,7 @@ API очень похож на 1С
 
 - ПолеВвода/InputField
 
-- ПолеHTMLДокумента/HTMLDocumentField
+///////- ПолеHTMLДокумента/HTMLDocumentField
 
 - ПолеИндикатора/ProgressBarField
 

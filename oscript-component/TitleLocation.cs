@@ -19,7 +19,7 @@ namespace oscriptGUI
         Right = 6,
     }
 
-    [ContextClass("ПоложениеЗаголовка", "TitleLocation")]
+    [ContextClass("ПоложениеЗаголовкаЭлементаФормы", "FormItemTitleLocation")]
     public class TitleLocation : AutoContext<TitleLocation>, IValue
     {
 
