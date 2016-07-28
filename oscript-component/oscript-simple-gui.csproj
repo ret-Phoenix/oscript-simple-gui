@@ -44,6 +44,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormFieldActions.cs" />
     <Compile Include="FormFieldType.cs" />
     <Compile Include="FormGroupType.cs" />
     <Compile Include="IElementsContainer.cs" />

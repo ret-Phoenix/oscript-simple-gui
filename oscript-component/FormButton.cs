@@ -69,7 +69,7 @@ namespace oscriptGUI
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
-            return "" + this._thisScript.ToString() + ":" + this._methodName;
+            return "" + ((ScriptInformationContext)this._thisScript).Source + ":" + this._methodName;
         }
 
         private void BtnClick(object sender, EventArgs e)

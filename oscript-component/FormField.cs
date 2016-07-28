@@ -36,7 +36,7 @@ namespace oscriptGUI
         private bool _enabled;
         private string _title;
         //private string _toolTip;
-        private IValue _parent;
+        private IElementsContainer _parent;
         private Control _parentControl;
         private bool _readOnly;
 
@@ -49,6 +49,9 @@ namespace oscriptGUI
         private FormFieldType FieldType;
         private ScriptEngine.HostedScript.Library.MapImpl _choiceList;
 
+        private IRuntimeContextInstance _thisScript;
+        private string _methodName;
+
 
         public FormField(Control parentCntrl)
         {
@@ -60,12 +63,15 @@ namespace oscriptGUI
             this._enabled = true;
             this._title = "";
             //this._toolTip = "";
-            this._parent = ValueFactory.Create();
+            this._parent = null;
             this._readOnly = false;
             this._parentControl = parentCntrl;
             this._choiceList = null;
 
             this._item = new TextBox();
+
+            this._methodName = "";
+            this._thisScript = null;
 
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
@@ -125,7 +131,7 @@ namespace oscriptGUI
 
         public void setParent(IValue parent)
         {
-            _parent = parent;
+            _parent = (IElementsContainer)parent;
         }
         //[ScriptConstructor]
         //public static IRuntimeContextInstance Constructor()
@@ -302,7 +308,10 @@ namespace oscriptGUI
         public string Name
         {
             get { return this._name; }
-            set { this._name = value; }
+            set {
+                this._parent.Items.renameElement(this._name, value);
+                this._name = value;
+            }
         }
 
         [ContextProperty("Видимость", "Visible")]
@@ -385,7 +394,6 @@ namespace oscriptGUI
         public IValue Parent
         {
             get { return this._parent; }
-            //   set { this._parent = value; }
         }
 
         [ContextProperty("ТолькоПросмотр", "ReadOnly")]
@@ -400,21 +408,46 @@ namespace oscriptGUI
         }
 
 
+        //# Блок по работе с событиями
+
+        private void runAction()
+        {
+            if (_thisScript == null)
+            {
+                return;
+            }
+
+            if (_methodName.Trim() == String.Empty)
+            {
+                return;
+            }
+
+            ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
+            reflector.CallMethod(this._thisScript, this._methodName, null);
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            runAction();
+        }
+
+
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
-            if (eventName == "Нажатие")
+            if (eventName == "ПриИзменении")
             {
-                //((Button)this._item).Click += BtnClick;
-                //this._thisScript = contex;
-                //this._methodName = methodName;
+                _item.TextChanged -= TextChanged;
+                _item.TextChanged += TextChanged;
+                this._thisScript = contex;
+                this._methodName = methodName;
             }
         }
 
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
-            return String.Empty;
+            return "" + this._thisScript.ToString() + ":" + this._methodName;
         }
 
 

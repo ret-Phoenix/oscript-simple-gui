@@ -27,7 +27,7 @@ namespace oscriptGUI
         private bool _visible;
         private bool _enabled;
         private string _title;
-        private string _toolTip;
+        //private string _toolTip;
         private IValue _parent;
         private Elements _elements;
 
@@ -45,7 +45,7 @@ namespace oscriptGUI
             this._visible = true;
             this._enabled = true;
             this._title = "";
-            this._toolTip = "";
+            //this._toolTip = "";
             this._parent = ValueFactory.Create();
 
             this._elements = new Elements(this, _item);
