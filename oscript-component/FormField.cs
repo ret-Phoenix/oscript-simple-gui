@@ -12,15 +12,15 @@ using System.Windows.Forms;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
 
- 
+
     /// <summary>
     /// Description of SFormElementFormField.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
-	public class SimpleFormElementFormField : AutoContext<SimpleFormElementFormField>, IValue
+    public class FormField : AutoContext<FormField>, IValue, IFormElement
     {
 
         // private IValue _frm;
@@ -32,11 +32,11 @@ namespace oscriptcomponent
         private Control _item;
 
         private string _name;
-		private bool _visible;
-		private bool _enabled;
-		private string _title;
-		//private string _toolTip;
-        private IValue _parent;
+        private bool _visible;
+        private bool _enabled;
+        private string _title;
+        //private string _toolTip;
+        private IElementsContainer _parent;
         private Control _parentControl;
         private bool _readOnly;
 
@@ -49,38 +49,39 @@ namespace oscriptcomponent
         private FormFieldType FieldType;
         private ScriptEngine.HostedScript.Library.MapImpl _choiceList;
 
+        private IRuntimeContextInstance _thisScript;
+        private string _methodName;
 
-        public SimpleFormElementFormField(Control parentCntrl) 
-		{
+
+        public FormField(Control parentCntrl)
+        {
 
             FieldType = new FormFieldType();
-
-            
-            //this._frm = frm;
 
             this._name = "";
             this._visible = true;
             this._enabled = true;
             this._title = "";
             //this._toolTip = "";
-            this._parent = ValueFactory.Create();
+            this._parent = null;
             this._readOnly = false;
             this._parentControl = parentCntrl;
             this._choiceList = null;
 
             this._item = new TextBox();
 
+            this._methodName = "";
+            this._thisScript = null;
+
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
-
-            
 
             //# Создаем контейнер для элемента формы
             _panelMainContainer = new Panel();
             _panelTitleContainer = new Panel();
             _panelControlContainer = new Panel();
 
-            
+
             _panelMainContainer.Controls.Add(_panelControlContainer);
             _panelMainContainer.Controls.Add(_panelTitleContainer);
 
@@ -113,6 +114,25 @@ namespace oscriptcomponent
 
         }
 
+        public override string ToString()
+        {
+            return "ПолеФормы";
+        }
+
+        public Control getBaseControl()
+        {
+            return _panelMainContainer;
+        }
+
+        public Control getControl()
+        {
+            return _item;
+        }
+
+        public void setParent(IValue parent)
+        {
+            _parent = (IElementsContainer)parent;
+        }
         //[ScriptConstructor]
         //public static IRuntimeContextInstance Constructor()
         //{
@@ -148,7 +168,7 @@ namespace oscriptcomponent
                 case (int)EnumFormFieldType.TextDocumentField:
                     newItem = new TextBox();
                     ((TextBox)newItem).Multiline = true;
-                    _panelControlContainer.MinimumSize = new Size(100,100);
+                    _panelControlContainer.MinimumSize = new Size(100, 100);
                     break;
                 case (int)EnumFormFieldType.ComboBox:
                     newItem = new ComboBox();
@@ -204,11 +224,22 @@ namespace oscriptcomponent
 
         private IValue getControlValue()
         {
-            
+
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
+                    //Console.WriteLine("****");
+                    //Console.WriteLine(((ComboBox)this._item).SelectedValue);
+                    //Console.WriteLine("****");
                     return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                case (int)EnumFormFieldType.ProgressBarField:
+                    return ValueFactory.Create(((ProgressBar)this._item).Value);
+                case (int)EnumFormFieldType.CalendarField:
+                    return ValueFactory.Create(((DateTimePicker)this._item).Value);
+                case (int)EnumFormFieldType.CheckBoxField:
+                    return ValueFactory.Create(((CheckBox)this._item).Checked);
+                //case (int)EnumFormFieldType.ComboBox:
+                //    return ValueFactory.Create(((ComboBox)this._item).SelectedValue);
                 default:
                     return ValueFactory.Create(this._item.Text);
             }
@@ -217,7 +248,7 @@ namespace oscriptcomponent
 
         private void setPropertyReadOnly()
         {
-            
+
             switch (this._formFieldType)
             {
                 case 0:
@@ -239,7 +270,7 @@ namespace oscriptcomponent
                     _panelTitleContainer.Dock = DockStyle.Bottom;
                     break;
                 case (int)EnumTitleLocation.Left:
-                    _panelTitleContainer.Dock = DockStyle. Left;
+                    _panelTitleContainer.Dock = DockStyle.Left;
                     break;
                 case (int)EnumTitleLocation.None:
                     _panelTitleContainer.Visible = false;
@@ -250,9 +281,13 @@ namespace oscriptcomponent
                 case (int)EnumTitleLocation.Top:
                     _panelTitleContainer.Dock = DockStyle.Top;
                     break;
-
             }
         }
+
+        //public void Dispose()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         [ContextProperty("Значение", "Value")]
         public IValue Value
@@ -273,7 +308,8 @@ namespace oscriptcomponent
         public int ControlType
         {
             get { return this._formFieldType; }
-            set {
+            set
+            {
                 this._formFieldType = value;
                 this.createFormFieldByType();
             }
@@ -283,40 +319,48 @@ namespace oscriptcomponent
         public string Name
         {
             get { return this._name; }
-            set { this._name = value; }
-        }		
-        
+            set
+            {
+                this._parent.Items.renameElement(this._name, value);
+                this._name = value;
+            }
+        }
+
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
             get { return this._visible; }
-            set {
+            set
+            {
                 this._visible = value;
                 this._panelMainContainer.Visible = this._visible;
             }
-        }		
+        }
 
         [ContextProperty("Доступность", "Enabled")]
         public bool Enabled
         {
             get { return this._enabled; }
-            set {
+            set
+            {
                 this._enabled = value;
                 this._panelMainContainer.Enabled = this._enabled;
             }
-        }	
+        }
 
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
             get { return this._title; }
-            set {
+            set
+            {
                 this._title = value;
                 this._label.Text = this._title;
                 if (this._label.Text.Trim() == String.Empty)
                 {
                     this._panelTitleContainer.Visible = false;
-                } else
+                }
+                else
                 {
                     this._panelTitleContainer.Visible = true;
                 }
@@ -358,21 +402,99 @@ namespace oscriptcomponent
         //    }
         //}
 
-        //      [ContextProperty("Родитель", "Parent")]
-        //public IValue  Parent
-        //{
-        //          get { return this._parent; }
-        //          set { this._parent = value; }
-        //}
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+        }
 
         [ContextProperty("ТолькоПросмотр", "ReadOnly")]
         public bool ReadOnly
         {
             get { return this._readOnly; }
-            set {
+            set
+            {
                 this._readOnly = value;
                 this.setPropertyReadOnly();
             }
+        }
+
+
+        //# Блок по работе с событиями
+
+        private void runAction()
+        {
+            if (_thisScript == null)
+            {
+                return;
+            }
+
+            if (_methodName.Trim() == String.Empty)
+            {
+                return;
+            }
+
+            ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
+            reflector.CallMethod(this._thisScript, this._methodName, null);
+        }
+
+        private void FormFieldValueChanged(object sender, EventArgs e)
+        {
+            runAction();
+        }
+
+
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "ПриИзменении")
+            {
+
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ComboBox:
+                        {
+                            ((ComboBox)_item).SelectedValueChanged -= FormFieldValueChanged;
+                            ((ComboBox)_item).SelectedValueChanged += FormFieldValueChanged;
+                            break;
+                        }
+                    //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                    case (int)EnumFormFieldType.ProgressBarField:
+                        {
+                            Console.WriteLine("ProgressBarField - Disabled setAction");
+                            break;
+                        }
+                    case (int)EnumFormFieldType.CalendarField:
+                        {
+                            ((DateTimePicker)_item).ValueChanged -= FormFieldValueChanged;
+                            ((DateTimePicker)_item).ValueChanged += FormFieldValueChanged;
+                            break;
+                        }
+                    case (int)EnumFormFieldType.CheckBoxField:
+                        {
+                            ((CheckBox)_item).CheckedChanged -= FormFieldValueChanged;
+                            ((CheckBox)_item).CheckedChanged += FormFieldValueChanged;
+                            break;
+                        }
+
+                    default:
+                        {
+                            _item.TextChanged -= FormFieldValueChanged;
+                            _item.TextChanged += FormFieldValueChanged;
+                            break;
+                        }
+
+                }
+
+                this._thisScript = contex;
+                this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return "" + this._thisScript.ToString() + ":" + this._methodName;
         }
 
 

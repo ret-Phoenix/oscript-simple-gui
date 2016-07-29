@@ -11,13 +11,13 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Drawing;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     /// <summary>
-    /// Description of SFormElementGroup.
+    /// Элемент формы, предназначенный для визуальной и/или логической группировки элементов.
     /// </summary>
     [ContextClass("ГруппаФормы", "FormGroup")]
-    public class SimpleFormElementGroup : AutoContext<SimpleFormElementGroup>, IValue
+    public class FormGroup : AutoContext<FormGroup>, IValue, IFormElement, IElementsContainer
     {
         private Control _item;
         private int _formGroupType;
@@ -27,10 +27,15 @@ namespace oscriptcomponent
         private bool _visible;
         private bool _enabled;
         private string _title;
-        private string _toolTip;
+        //private string _toolTip;
         private IValue _parent;
+        private Elements _elements;
 
-        public SimpleFormElementGroup(Control parentCntrl)
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="parentCntrl"></param>
+        public FormGroup(Control parentCntrl)
         {
             this._item = new GroupBox();
             this._formGroupType = (int)EnumFormGroupType.UsualGroup;
@@ -40,12 +45,22 @@ namespace oscriptcomponent
             this._visible = true;
             this._enabled = true;
             this._title = "";
-            this._toolTip = "";
+            //this._toolTip = "";
             this._parent = ValueFactory.Create();
+
+            this._elements = new Elements(this, _item);
 
         }
 
 
+        public override string ToString()
+        {
+            return "ГруппаФормы";
+        }
+        /// <summary>
+        /// Получение ссылки на элемент формы.
+        /// </summary>
+        /// <returns></returns>
         public Control getControl()
         {
             return this._item;
@@ -56,12 +71,29 @@ namespace oscriptcomponent
         //    return new SimpleFormElementGroup();
         //}
 
-        [ContextMethod("ПодчиненныеЭлементы", "ChildItems")]
-        public SimpleFormElements ChildItems()
+        //[ContextMethod("ПодчиненныеЭлементы", "ChildItems")]
+        //public SimpleFormElements ChildItems()
+        //{
+        //    return new SimpleFormElements(null);
+        //}
+
+        public Control getBaseControl()
         {
-            return new SimpleFormElements(null);
+            return _item;
         }
 
+        public void setParent(IValue parent)
+        {
+            _parent = parent;
+        }
+
+
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+            //   set { this._parent = value; }
+        }
 
         [ContextProperty("Имя", "Name")]
         public string Name
@@ -94,19 +126,19 @@ namespace oscriptcomponent
             }
         }
 
-        [ContextProperty("Подсказка", "ToolTip")]
-        public string ToolTip
-        {
-            get { return this._toolTip; }
-            set { this._toolTip = value; }
-        }
+        //[ContextProperty("Подсказка", "ToolTip")]
+        //public string ToolTip
+        //{
+        //    get { return this._toolTip; }
+        //    set { this._toolTip = value; }
+        //}
 
-        [ContextProperty("Родитель", "Parent")]
-        public IValue Parent
-        {
-            get { return this._parent; }
-            set { this._parent = value; }
-        }
+        //[ContextProperty("Родитель", "Parent")]
+        //public IValue Parent
+        //{
+        //    get { return this._parent; }
+        //    set { this._parent = value; }
+        //}
 
         [ContextProperty("Вид", "Type")]
         public int ControlType
@@ -119,6 +151,11 @@ namespace oscriptcomponent
             }
         }
 
+        [ContextProperty("Элементы", "Items")]
+        public Elements Items
+        {
+            get { return _elements; }
+        }
 
         /////////////////////////////////////////////////////////////
         /// Методы обработки свойств
@@ -183,5 +220,23 @@ namespace oscriptcomponent
                     break;
             }
         }
+
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "Нажатие")
+            {
+                //((Button)this._item).Click += BtnClick;
+                //this._thisScript = contex;
+                //this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return string.Empty;
+        }
+
     }
 }

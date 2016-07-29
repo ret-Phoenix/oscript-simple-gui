@@ -7,7 +7,7 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     enum EnumTitleLocation : int
     {
@@ -19,7 +19,7 @@ namespace oscriptcomponent
         Right = 6,
     }
 
-    [ContextClass("ПоложениеЗаголовка", "TitleLocation")]
+    [ContextClass("ПоложениеЗаголовкаЭлементаФормы", "FormItemTitleLocation")]
     public class TitleLocation : AutoContext<TitleLocation>, IValue
     {
 

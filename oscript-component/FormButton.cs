@@ -4,10 +4,10 @@ using ScriptEngine.Machine;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace oscriptcomponent
+namespace oscriptGUI
 {
     [ContextClass("КнопкаФормы", "FormButton")]
-    class SimpleFormFormButton : AutoContext<SimpleFormFormButton>, IValue
+    class FormButton : AutoContext<FormButton>, IValue, IFormElement
     {
         private Control _item;
         private Control _parentControl;
@@ -18,11 +18,11 @@ namespace oscriptcomponent
         private bool _enabled;
         private string _title;
         //private string _toolTip;
-        private IValue _parent;
+        private IElementsContainer _parent;
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
 
-        public SimpleFormFormButton(Control parentCntrl)
+        public FormButton(Control parentCntrl)
         {
             this._item = new Button();
             ((Button)this._item).Click += BtnClick;
@@ -37,45 +37,98 @@ namespace oscriptcomponent
             this._visible = true;
             this._enabled = true;
             this._title = "";
-            this._parent = ValueFactory.Create();
+            this._parent = null;
+            this._methodName = "";
+            this._thisScript = null;
 
-            if (this._parentControl is Form)
-            {
-                _panel.Dock = DockStyle.Top;
-                _panel.AutoSize = true;
-                _panel.Controls.Add(this._item);
-                this._parentControl.Controls.Add(_panel);
-                _panel.BringToFront();
-            }
-            else
-            {
-                this._parentControl.Controls.Add(this._item);
-                this._item.BringToFront();
-            }
-
-            
-            
+            this._panel.Dock = DockStyle.Top;
+            this._panel.AutoSize = true;
+            this._panel.Controls.Add(this._item);
+            this._parentControl.Controls.Add(_panel);
+            this._panel.BringToFront();
         }
 
-        public void BtnClick(object sender, EventArgs e)
+
+        public override string ToString()
         {
+            return "КнопкаФормы";
+        }
+
+        [ContextMethod("УстановитьДействие", "SetAction")]
+        public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
+        {
+            if (eventName == "Нажатие")
+            {
+                ((Button)this._item).Click -= BtnClick;
+                ((Button)this._item).Click += BtnClick;
+                this._thisScript = contex;
+                this._methodName = methodName;
+            }
+        }
+
+        [ContextMethod("ПолучитьДействие", "GetAction")]
+        public string GetAction(string eventName)
+        {
+            return "" + ((ScriptInformationContext)this._thisScript).Source + ":" + this._methodName;
+        }
+
+        private void BtnClick(object sender, EventArgs e)
+        {
+            if (_thisScript == null)
+            {
+                return;
+            }
+
+            if (_methodName.Trim() == String.Empty)
+            {
+                return;
+            }
+
             ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
             reflector.CallMethod(this._thisScript, this._methodName, null);
+
         }
 
 
         [ContextMethod("КнопкаНажатие", "ButtonClick")]
         public void ButtonClick(IRuntimeContextInstance script, string methodName)
         {
+            Console.WriteLine("Deprecated: ButtonClick. Use: SetAction");
             this._thisScript = script;
             this._methodName = methodName;
         }
+
+        public Control getBaseControl()
+        {
+            return _panel;
+        }
+
+        public Control getControl()
+        {
+            return _item;
+        }
+
+        public void setParent(IValue parent)
+        {
+            _parent = (IElementsContainer)parent;
+        }
+
+        [ContextProperty("Родитель", "Parent")]
+        public IValue Parent
+        {
+            get { return this._parent; }
+        }
+
 
         [ContextProperty("Имя", "Name")]
         public string Name
         {
             get { return this._name; }
-            set { this._name = value; }
+            set {
+
+                this._parent.Items.renameElement(this._name, value);
+                this._name = value;
+            }
         }
 
         [ContextProperty("Видимость", "Visible")]
@@ -84,13 +137,7 @@ namespace oscriptcomponent
             get { return this._visible; }
             set {
                 this._visible = value;
-                if (this._parentControl is Form)
-                {
-                    this._panel.Visible = value;
-                } else
-                {
-                    this._item.Visible = value;
-                }
+                this._panel.Visible = value;
             }
         }
 
@@ -100,15 +147,7 @@ namespace oscriptcomponent
             get { return this._enabled; }
             set {
                 this._enabled = value;
-                if (this._parentControl is Form)
-                {
-                    this._panel.Enabled = value;
-                }
-                else
-                {
-                    this._item.Enabled = value;
-                }
-
+                this._panel.Enabled = value;
             }
         }
 
@@ -122,21 +161,5 @@ namespace oscriptcomponent
                 ((Button)this._item).Text = this._title;
             }
         }
-
-        //[ContextProperty("Подсказка", "ToolTip")]
-        //public string ToolTip
-        //{
-        //    get { return this._toolTip; }
-        //    set { this._toolTip = value; }
-        //}
-
-        [ContextProperty("Родитель", "Parent")]
-        public IValue Parent
-        {
-            get { return this._parent; }
-            set { this._parent = value; }
-        }
-
-
     }
 }

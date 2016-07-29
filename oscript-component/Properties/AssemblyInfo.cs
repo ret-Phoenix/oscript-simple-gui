@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("oscript-component")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("oscript-GUI")]
+[assembly: AssemblyDescription("Работа с формами для 1script")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("dmpas")]
+[assembly: AssemblyCopyright("ret-Phoenix")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
