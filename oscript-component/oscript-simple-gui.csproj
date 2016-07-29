@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EA173D06-CCD2-45D5-A263-DC866289517A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>oscriptSimpleGUI</RootNamespace>
+    <RootNamespace>oscriptGUI</RootNamespace>
     <AssemblyName>oscript-simple-gui</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
