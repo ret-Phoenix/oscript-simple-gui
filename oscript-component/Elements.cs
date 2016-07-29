@@ -137,6 +137,7 @@ namespace oscriptGUI
                     }
 
                     CurControl.Parent = CurParentControl;
+                    this.MoveInElementsLists(((IFormElement)Element).Parent, ParentElement, Element);
                     ((IFormElement)Element).setParent(ParentElement);
                     CurParentControl.Controls.SetChildIndex(CurControl, BefIndex + 1);
                 }
@@ -144,8 +145,10 @@ namespace oscriptGUI
             else
             {
                 CurControl.Parent = CurParentControl;
+                this.MoveInElementsLists(((IFormElement)Element).Parent, ParentElement, Element);
                 ((IFormElement)Element).setParent(ParentElement);
                 CurParentControl.Controls.SetChildIndex(CurControl, 0);
+                
             }
 
         }
@@ -184,9 +187,30 @@ namespace oscriptGUI
             ((IFormElement)newItem).setParent(ElementParent);
             ((IFormElement)newItem).Name = ElementName;
 
-            _elements.Add(ElementName, newItem);
+            ((IElementsContainer)ElementParent).Items.AddElement(ElementName, newItem);
+            //_elements.Add(ElementName, newItem);
             return newItem;
         }
+
+        #region ЗаплаткаДляПеремещений
+        public void AddElement(string ElementName, IValue newItem)
+        {
+            _elements.Add(ElementName, newItem);
+        }
+
+        public void DelElementByName(string ElementName)
+        {
+            _elements.Remove(ElementName);
+        }
+
+
+        public void MoveInElementsLists(IValue oldParent, IValue newParent, IValue Element)
+        {
+            string ElementName = ((IFormElement)Element).Name;
+            ((IElementsContainer)oldParent).Items.DelElementByName(ElementName);
+            ((IElementsContainer)newParent).Items.AddElement(ElementName, Element);
+        }
+        #endregion ЗаплаткаДляПеремещений
 
         public void renameElement(string oldName, string newName)
         {
