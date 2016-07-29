@@ -6,11 +6,11 @@
  * 
  * Для изменения этого шаблона используйте меню "Инструменты | Параметры | Кодирование | Стандартные заголовки".
  */
-using System;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ScriptEngine.HostedScript.Library;
 
 namespace oscriptGUI
 {
@@ -18,7 +18,7 @@ namespace oscriptGUI
     /// Description of SFormElements.
     /// </summary>
     [ContextClass("Элементы", "Elements")]
-    public class Elements : AutoContext<Elements>
+    public class Elements : AutoContext<Elements>, ICollectionContext
     {
         private Control _frm;
         private IValue _parent;
@@ -37,6 +37,37 @@ namespace oscriptGUI
             return "Элементы";
         }
 
+
+        #region Enumerator
+
+        public IEnumerator<IValue> GetEnumerator()
+        {
+            foreach (var item in _elements)
+            {
+                //yield return new KeyAndValueImpl(ValueFactory.Create(item.Key), item.Value);
+                yield return item.Value;
+            }
+        }
+
+        public CollectionEnumerator GetManagedIterator()
+        {
+            return new CollectionEnumerator(GetEnumerator());
+        }
+
+        #region IEnumerable<IValue> Members
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #endregion Enumerator
         /// <summary>
         /// Получает количество элементов коллекции.
         /// </summary>
@@ -167,16 +198,5 @@ namespace oscriptGUI
             _elements.Remove(oldName);
             _elements.Add(newName, element);
         }
-
-        //        [ContextMethod("Получить", "Get")]
-        //        public SFormElement getElement(int index)
-        //        {
-        //        	if (index <= this.Count()) {
-        //        		this._elements.E
-        //        	} else {
-        //        		return null;
-        //        	}
-        //        }  
-
     }
 }
