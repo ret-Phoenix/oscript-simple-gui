@@ -228,11 +228,18 @@ namespace oscriptGUI
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
+                    //Console.WriteLine("****");
+                    //Console.WriteLine(((ComboBox)this._item).SelectedValue);
+                    //Console.WriteLine("****");
                     return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
                 case (int)EnumFormFieldType.ProgressBarField:
                     return ValueFactory.Create(((ProgressBar)this._item).Value);
                 case (int)EnumFormFieldType.CalendarField:
                     return ValueFactory.Create(((DateTimePicker)this._item).Value);
+                case (int)EnumFormFieldType.CheckBoxField:
+                    return ValueFactory.Create(((CheckBox)this._item).Checked);
+                //case (int)EnumFormFieldType.ComboBox:
+                //    return ValueFactory.Create(((ComboBox)this._item).SelectedValue);
                 default:
                     return ValueFactory.Create(this._item.Text);
             }
@@ -445,7 +452,12 @@ namespace oscriptGUI
 
                 switch (this._formFieldType)
                 {
-                    case (int)EnumFormFieldType.ComboBox: break;
+                    case (int)EnumFormFieldType.ComboBox:
+                        {
+                            ((ComboBox)_item).SelectedValueChanged -= FormFieldValueChanged;
+                            ((ComboBox)_item).SelectedValueChanged += FormFieldValueChanged;
+                            break;
+                        }
                     //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
                     case (int)EnumFormFieldType.ProgressBarField:
                         {
@@ -458,6 +470,13 @@ namespace oscriptGUI
                             ((DateTimePicker)_item).ValueChanged += FormFieldValueChanged;
                             break;
                         }
+                    case (int)EnumFormFieldType.CheckBoxField:
+                        {
+                            ((CheckBox)_item).CheckedChanged -= FormFieldValueChanged;
+                            ((CheckBox)_item).CheckedChanged += FormFieldValueChanged;
+                            break;
+                        }
+
                     default:
                         {
                             _item.TextChanged -= FormFieldValueChanged;
