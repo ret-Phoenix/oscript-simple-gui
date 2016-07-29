@@ -26,8 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Release\oscript-simple-gui.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,6 +43,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormControlDockStyle.cs" />
     <Compile Include="FormFieldActions.cs" />
     <Compile Include="FormFieldType.cs" />
     <Compile Include="FormGroupType.cs" />

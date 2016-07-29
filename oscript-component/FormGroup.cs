@@ -238,5 +238,35 @@ namespace oscriptGUI
             return string.Empty;
         }
 
+        [ContextProperty("Высота", "Height")]
+        public int Height
+        {
+            get { return _item.Height; }
+            set { _item.Height = value; }
+        }
+
+        [ContextProperty("Ширина", "Width")]
+        public int Width
+        {
+            get { return _item.Width; }
+            set { _item.Width = value; }
+        }
+
+        [ContextProperty("АвтоматическийРазмер", "AutoSize")]
+        public bool AutoSize
+        {
+            get { return _item.AutoSize; }
+            set { _item.AutoSize = value; }
+        }
+
+        [ContextProperty("Закрепление", "Dock")]
+        public int Dock
+        {
+            get { return _item.Dock.GetHashCode() ; }
+            set {
+                _item.Dock = (DockStyle)value;
+            }
+        }
+
     }
 }

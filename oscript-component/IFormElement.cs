@@ -19,5 +19,12 @@ namespace oscriptGUI
 
         void setAction(IRuntimeContextInstance contex, string eventName, string methodName);
         string GetAction(string eventName);
+
+        bool AutoSize { get; set; }
+
+        int Height { get; set; }
+        int Width { get; set; }
+
+        int Dock { get; set; }
     }
 }
