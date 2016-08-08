@@ -7,7 +7,7 @@ namespace oscriptGUI
 {
 
     [ContextClass("СтильЗакрепления", "DockStyle")]
-    class FormControlDockStyle : AutoContext<FormControlDockStyle>, IValue
+    class FormControlDockStyle : AutoContext<FormControlDockStyle>
     {
 
         [ContextProperty("Нет", "None")]

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace oscriptGUI
 {
     [ContextClass("КнопкаФормы", "FormButton")]
-    class FormButton : AutoContext<FormButton>, IValue, IFormElement
+    class FormButton : AutoContext<FormButton>, IFormElement
     {
         private Control _item;
         private Control _parentControl;

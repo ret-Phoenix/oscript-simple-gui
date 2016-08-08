@@ -49,6 +49,7 @@
     <Compile Include="FormGroupType.cs" />
     <Compile Include="IElementsContainer.cs" />
     <Compile Include="IFormElement.cs" />
+    <Compile Include="ManagedInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormField.cs" />
     <Compile Include="FormGroup.cs" />

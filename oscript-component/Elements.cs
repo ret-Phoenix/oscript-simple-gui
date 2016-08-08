@@ -10,7 +10,6 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ScriptEngine.HostedScript.Library;
 
 namespace oscriptGUI
 {

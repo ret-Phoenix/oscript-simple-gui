@@ -52,6 +52,9 @@ namespace oscriptGUI
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
 
+        private IRuntimeContextInstance _thisScriptDblClick;
+        private string _methodNameDblClick;
+
 
         public FormField(Control parentCntrl)
         {
@@ -73,6 +76,9 @@ namespace oscriptGUI
             this._methodName = "";
             this._thisScript = null;
 
+            this._methodNameDblClick = "";
+            this._thisScriptDblClick = null;
+
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
 
@@ -85,7 +91,7 @@ namespace oscriptGUI
             _panelMainContainer.Controls.Add(_panelControlContainer);
             _panelMainContainer.Controls.Add(_panelTitleContainer);
 
-            _panelMainContainer.Dock = DockStyle.Top;
+            _panelMainContainer.Dock = DockStyle.Fill;
             _panelMainContainer.MinimumSize = new Size(150, 22);
             _panelMainContainer.AutoSize = true;
             _panelMainContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -175,6 +181,8 @@ namespace oscriptGUI
                     break;
                 case (int)EnumFormFieldType.ListBox:
                     newItem = new ListBox();
+                    ((ListBox)newItem).ScrollAlwaysVisible = true;
+                    ((ListBox)newItem).MinimumSize =  new Size(100, 100);
                     break;
                 default:
                     newItem = new TextBox();
@@ -460,6 +468,11 @@ namespace oscriptGUI
             runAction();
         }
 
+        private void FormFieldDblClick(object sender, EventArgs e)
+        {
+            runAction();
+        }
+
 
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
@@ -513,19 +526,54 @@ namespace oscriptGUI
                 this._thisScript = contex;
                 this._methodName = methodName;
             }
+            else if (eventName == "ПриДвойномКлике")
+            {
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        {
+                            ((ListBox)_item).DoubleClick -= FormFieldDblClick;
+                            ((ListBox)_item).DoubleClick += FormFieldDblClick;
+                            break;
+                        }
+
+                }
+                this._thisScriptDblClick = contex;
+                this._methodNameDblClick = methodName;
+
+            }
         }
 
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
-            return "" + this._thisScript.ToString() + ":" + this._methodName;
+            if (eventName == "ПриИзменении")
+            {
+                return "" + this._thisScript.ToString() + ":" + this._methodName;
+            }
+            else if (eventName == "ПриДвойномКлике")
+            {
+                return "" + this._thisScriptDblClick.ToString() + ":" + this._methodNameDblClick;
+            }
+            return "";
+            //return "GetAction: Action not supported - " + eventName;
         }
 
         [ContextProperty("Высота", "Height")]
         public int Height
         {
             get { return _item.Height; }
-            set { _item.Height = value; }
+            set {
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        _panelMainContainer.Height = value;
+                        break;
+                    default:
+                        _item.Height = value;
+                        break;
+                }
+            }
         }
 
         [ContextProperty("Ширина", "Width")]
@@ -548,7 +596,17 @@ namespace oscriptGUI
             get { return _item.Dock.GetHashCode(); }
             set
             {
-                _item.Dock = (DockStyle)value;
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        _panelMainContainer.Dock = (DockStyle)value;
+                        break;
+                    default:
+                        _item.Dock = (DockStyle)value;
+                        break;
+                }
+
+                
             }
         }
 

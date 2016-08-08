@@ -8,7 +8,7 @@ using System.Drawing;
 namespace oscriptGUI
 {
     [ContextClass("Форма", "Form")]
-    public class ManagedForm : AutoContext<ManagedForm>, IValue, IFormElement, IElementsContainer
+    public class ManagedForm : AutoContext<ManagedForm>, IFormElement, IElementsContainer
     {
         private string _version;
         private Form _form;

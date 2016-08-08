@@ -1,6 +1,6 @@
 ﻿/*
  * Создано в SharpDevelop.
- * Пользователь: phoen
+ * Пользователь: ret-Phoenix
  * Дата: 24.07.2016
  * Время: 14:33
  * 
@@ -17,7 +17,7 @@ namespace oscriptGUI
     /// Элемент формы, предназначенный для визуальной и/или логической группировки элементов.
     /// </summary>
     [ContextClass("ГруппаФормы", "FormGroup")]
-    public class FormGroup : AutoContext<FormGroup>, IValue, IFormElement, IElementsContainer
+    public class FormGroup : AutoContext<FormGroup>, IFormElement, IElementsContainer
     {
         private Control _item;
         private int _formGroupType;

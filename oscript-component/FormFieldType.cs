@@ -24,7 +24,7 @@ namespace oscriptGUI
     /// Вид поля формы
     /// </summary>
     [ContextClass("ВидПоляФормы", "FormFieldType")]
-    public class FormFieldType : AutoContext<FormFieldType>, IValue
+    public class FormFieldType : AutoContext<FormFieldType>
     {
 
         /// <summary>

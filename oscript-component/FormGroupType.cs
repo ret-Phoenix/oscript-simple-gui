@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine;
+﻿using ScriptEngine.Machine.Contexts;
 
 namespace oscriptGUI
 {
@@ -17,7 +11,7 @@ namespace oscriptGUI
     }
 
     [ContextClass("ВидГруппыФормы", "FormGroupType")]
-    class FormGroupType : AutoContext<FormGroupType>, IValue
+    class FormGroupType : AutoContext<FormGroupType>
     {
         [ContextProperty("ОбычнаяГруппа", "UsualGroup")]
         public int UsualGroup

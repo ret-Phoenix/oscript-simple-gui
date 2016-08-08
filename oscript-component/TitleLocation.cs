@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine;
+﻿using ScriptEngine.Machine.Contexts;
 
 
 namespace oscriptGUI
@@ -20,7 +14,7 @@ namespace oscriptGUI
     }
 
     [ContextClass("ПоложениеЗаголовкаЭлементаФормы", "FormItemTitleLocation")]
-    public class TitleLocation : AutoContext<TitleLocation>, IValue
+    public class TitleLocation : AutoContext<TitleLocation>
     {
 
         [ContextProperty("Авто", "Auto")]
