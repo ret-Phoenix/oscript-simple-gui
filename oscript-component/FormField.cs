@@ -1,6 +1,6 @@
 ﻿/*
  * Создано в SharpDevelop.
- * Пользователь: phoen
+ * Пользователь: ret-Phoenix
  * Дата: 25.07.2016
  * Время: 0:39
  * 
@@ -20,7 +20,7 @@ namespace oscriptGUI
     /// Description of SFormElementFormField.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
-    public class FormField : AutoContext<FormField>, IValue, IFormElement
+    public class FormField : AutoContext<FormField>, IFormElement
     {
 
         // private IValue _frm;
@@ -173,6 +173,9 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ComboBox:
                     newItem = new ComboBox();
                     break;
+                case (int)EnumFormFieldType.ListBox:
+                    newItem = new ListBox();
+                    break;
                 default:
                     newItem = new TextBox();
                     break;
@@ -216,6 +219,9 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ComboBox:
                     ((ComboBox)this._item).SelectedValue = this._value;
                     break;
+                case (int)EnumFormFieldType.ListBox:
+                    ((ListBox)this._item).SelectedValue = this._value;
+                    break;
                 default:
                     this._item.Text = this._value.ToString();
                     break;
@@ -228,10 +234,9 @@ namespace oscriptGUI
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
-                    //Console.WriteLine("****");
-                    //Console.WriteLine(((ComboBox)this._item).SelectedValue);
-                    //Console.WriteLine("****");
                     return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                case (int)EnumFormFieldType.ListBox:
+                    return ValueFactory.Create(((ListBox)this._item).SelectedValue.ToString());
                 case (int)EnumFormFieldType.ProgressBarField:
                     return ValueFactory.Create(((ProgressBar)this._item).Value);
                 case (int)EnumFormFieldType.CalendarField:
@@ -384,11 +389,23 @@ namespace oscriptGUI
             get { return this._choiceList; }
             set
             {
-                this._choiceList = value;
-                ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
-                ((ComboBox)this._item).DisplayMember = "Key";
-                ((ComboBox)this._item).ValueMember = "Value";
+                if (this._formFieldType == (int)EnumFormFieldType.ListBox)
+                {
+                    this._choiceList = value;
+                    ((ListBox)this._item).DataSource = new BindingSource(ChoiceList, null);
+                    ((ListBox)this._item).DisplayMember = "Key";
+                    ((ListBox)this._item).ValueMember = "Value";
 
+                }
+                else
+                {
+
+
+                    this._choiceList = value;
+                    ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
+                    ((ComboBox)this._item).DisplayMember = "Key";
+                    ((ComboBox)this._item).ValueMember = "Value";
+                }
             }
         }
 
@@ -458,6 +475,13 @@ namespace oscriptGUI
                             ((ComboBox)_item).SelectedValueChanged += FormFieldValueChanged;
                             break;
                         }
+                    case (int)EnumFormFieldType.ListBox:
+                        {
+                            ((ListBox)_item).SelectedValueChanged -= FormFieldValueChanged;
+                            ((ListBox)_item).SelectedValueChanged += FormFieldValueChanged;
+                            break;
+                        }
+
                     //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
                     case (int)EnumFormFieldType.ProgressBarField:
                         {
