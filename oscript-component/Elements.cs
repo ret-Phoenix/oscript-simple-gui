@@ -1,6 +1,6 @@
 ﻿/*
  * Создано в SharpDevelop.
- * Пользователь: phoen
+ * Пользователь: ret-Phoenix
  * Дата: 23.07.2016
  * Время: 14:42
  * 
@@ -10,7 +10,6 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ScriptEngine.HostedScript.Library;
 
 namespace oscriptGUI
 {

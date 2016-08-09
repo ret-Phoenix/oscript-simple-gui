@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine;
+﻿using ScriptEngine.Machine;
 using System.Windows.Forms;
 
 namespace oscriptGUI
@@ -19,5 +13,12 @@ namespace oscriptGUI
 
         void setAction(IRuntimeContextInstance contex, string eventName, string methodName);
         string GetAction(string eventName);
+
+        bool AutoSize { get; set; }
+
+        int Height { get; set; }
+        int Width { get; set; }
+
+        int Dock { get; set; }
     }
 }

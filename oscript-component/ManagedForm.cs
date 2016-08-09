@@ -3,12 +3,12 @@ using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
 using System.Windows.Forms;
-
+using System.Drawing;
 
 namespace oscriptGUI
 {
     [ContextClass("Форма", "Form")]
-    public class ManagedForm : AutoContext<ManagedForm>, IValue, IFormElement, IElementsContainer
+    public class ManagedForm : AutoContext<ManagedForm>, IFormElement, IElementsContainer
     {
         private string _version;
         private Form _form;
@@ -25,10 +25,16 @@ namespace oscriptGUI
         private IRuntimeContextInstance _thisScriptOnClose;
         private string _methodNameOnClose;
 
+        private IRuntimeContextInstance _thisScriptOnCreated;
+        private string _methodNameOnCreated;
+
+
         public ManagedForm()
         {
             this._version = "0.0.0.1";
             this._form = new Form();
+            this._form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this._form.MinimumSize = new Size(50, 50);
             this._elements = new Elements(this, _form);
             this._formFieldType = new FormFieldType();
             this._formGroupType = new FormGroupType();
@@ -41,6 +47,9 @@ namespace oscriptGUI
 
             this._methodNameOnClose = "";
             this._thisScriptOnClose = null;
+
+            this._methodNameOnCreated = "";
+            this._thisScriptOnCreated = null;
 
         }
 
@@ -115,7 +124,7 @@ namespace oscriptGUI
         [ContextMethod("Показать", "Show")]
         public void Show()
         {
-            _form.ShowDialog();
+            _form.ShowDialog(null);
         }
 
         /// <summary>
@@ -139,6 +148,28 @@ namespace oscriptGUI
         {
             get { return _elements; }
         }
+
+        [ContextProperty("АвтоматическийРазмер", "AutoSize")]
+        public bool AutoSize
+        {
+            get { return _form.AutoSize; }
+            set { _form.AutoSize = value;  }
+        }
+
+        [ContextProperty("Высота", "Height")]
+        public int Height
+        {
+            get { return _form.Height; }
+            set { _form.Height = value; }
+        }
+
+        [ContextProperty("Ширина", "Width")]
+        public int Width
+        {
+            get { return _form.Width; }
+            set { _form.Width = value; }
+        }
+
 
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
@@ -188,10 +219,23 @@ namespace oscriptGUI
             runAction(_thisScriptOnClose, _methodNameOnClose);
         }
 
+        //private void OnFormCreated(object sender, EventArgs e)
+        //{
+        //    runAction(_thisScriptOnCreated, _methodNameOnCreated);
+        //}
 
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
+            //if (eventName == "ПриСоздании")
+            //{
+            //    this._form.HandleCreated -= OnFormCreated;
+            //    this._form.HandleCreated += OnFormCreated;
+            //    this._thisScriptOnCreated = contex;
+            //    this._methodNameOnCreated = methodName;
+
+            //}
+
             if (eventName == "ПриОткрытии")
             {
                 this._form.Shown -= OnFormShown;
@@ -217,6 +261,28 @@ namespace oscriptGUI
         public string GetAction(string eventName)
         {
             return String.Empty;
+        }
+
+        [ContextProperty("Закрепление", "Dock")]
+        public int Dock
+        {
+            get { return 0; }
+            set {; }
+        }
+
+        private void setCurrentItem(IValue curItm)
+        {
+            if (curItm.ToString() == "ПолеФормы")
+            {
+                ((FormField)curItm).getControl().Focus();
+            }
+        }
+
+        [ContextProperty("ТекущийЭлемент", "CurrentItem")]
+        public IValue CurrentItem
+        {
+            //get { return 0; }
+            set { setCurrentItem(value);}
         }
 
 

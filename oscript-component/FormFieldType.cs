@@ -16,14 +16,15 @@ namespace oscriptGUI
         LabelField = 5,
         CheckBoxField = 6,
         TextDocumentField = 7,
-        ComboBox = 8
+        ComboBox = 8,
+        ListBox = 9
     }
 
     /// <summary>
     /// Вид поля формы
     /// </summary>
     [ContextClass("ВидПоляФормы", "FormFieldType")]
-    public class FormFieldType : AutoContext<FormFieldType>, IValue
+    public class FormFieldType : AutoContext<FormFieldType>
     {
 
         /// <summary>
@@ -107,6 +108,15 @@ namespace oscriptGUI
         public int ComboBox
         {
             get { return (int)EnumFormFieldType.ComboBox; }
+        }
+
+        /// <summary>
+        /// Поле списка
+        /// </summary>
+        [ContextProperty("ПолеСписка", "ListBox")]
+        public int ListBox
+        {
+            get { return (int)EnumFormFieldType.ListBox; }
         }
 
 

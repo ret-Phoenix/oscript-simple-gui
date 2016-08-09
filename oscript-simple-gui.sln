@@ -8,11 +8,17 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		GitHub|Any CPU = GitHub|Any CPU
+		oscript-bin|Any CPU = oscript-bin|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EA173D06-CCD2-45D5-A263-DC866289517A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA173D06-CCD2-45D5-A263-DC866289517A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA173D06-CCD2-45D5-A263-DC866289517A}.GitHub|Any CPU.ActiveCfg = GitHub|Any CPU
+		{EA173D06-CCD2-45D5-A263-DC866289517A}.GitHub|Any CPU.Build.0 = GitHub|Any CPU
+		{EA173D06-CCD2-45D5-A263-DC866289517A}.oscript-bin|Any CPU.ActiveCfg = oscript-bin|Any CPU
+		{EA173D06-CCD2-45D5-A263-DC866289517A}.oscript-bin|Any CPU.Build.0 = oscript-bin|Any CPU
 		{EA173D06-CCD2-45D5-A263-DC866289517A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA173D06-CCD2-45D5-A263-DC866289517A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

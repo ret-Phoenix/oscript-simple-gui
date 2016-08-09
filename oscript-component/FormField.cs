@@ -1,6 +1,6 @@
 ﻿/*
  * Создано в SharpDevelop.
- * Пользователь: phoen
+ * Пользователь: ret-Phoenix
  * Дата: 25.07.2016
  * Время: 0:39
  * 
@@ -20,7 +20,7 @@ namespace oscriptGUI
     /// Description of SFormElementFormField.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
-    public class FormField : AutoContext<FormField>, IValue, IFormElement
+    public class FormField : AutoContext<FormField>, IFormElement
     {
 
         // private IValue _frm;
@@ -52,6 +52,11 @@ namespace oscriptGUI
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
 
+        private IRuntimeContextInstance _thisScriptDblClick;
+        private string _methodNameDblClick;
+
+        private IRuntimeContextInstance _scriptOnChoice;
+        private string _methodOnChoice;
 
         public FormField(Control parentCntrl)
         {
@@ -73,6 +78,12 @@ namespace oscriptGUI
             this._methodName = "";
             this._thisScript = null;
 
+            this._methodNameDblClick = "";
+            this._thisScriptDblClick = null;
+
+            this._methodOnChoice = "";
+            this._scriptOnChoice = null;
+
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
 
@@ -80,7 +91,6 @@ namespace oscriptGUI
             _panelMainContainer = new Panel();
             _panelTitleContainer = new Panel();
             _panelControlContainer = new Panel();
-
 
             _panelMainContainer.Controls.Add(_panelControlContainer);
             _panelMainContainer.Controls.Add(_panelTitleContainer);
@@ -173,6 +183,11 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ComboBox:
                     newItem = new ComboBox();
                     break;
+                case (int)EnumFormFieldType.ListBox:
+                    newItem = new ListBox();
+                    ((ListBox)newItem).ScrollAlwaysVisible = true;
+                    ((ListBox)newItem).MinimumSize =  new Size(100, 100);
+                    break;
                 default:
                     newItem = new TextBox();
                     break;
@@ -216,6 +231,9 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ComboBox:
                     ((ComboBox)this._item).SelectedValue = this._value;
                     break;
+                case (int)EnumFormFieldType.ListBox:
+                    ((ListBox)this._item).SelectedValue = this._value;
+                    break;
                 default:
                     this._item.Text = this._value.ToString();
                     break;
@@ -228,10 +246,9 @@ namespace oscriptGUI
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
-                    //Console.WriteLine("****");
-                    //Console.WriteLine(((ComboBox)this._item).SelectedValue);
-                    //Console.WriteLine("****");
                     return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
+                case (int)EnumFormFieldType.ListBox:
+                    return ValueFactory.Create(((ListBox)this._item).SelectedValue.ToString());
                 case (int)EnumFormFieldType.ProgressBarField:
                     return ValueFactory.Create(((ProgressBar)this._item).Value);
                 case (int)EnumFormFieldType.CalendarField:
@@ -384,11 +401,23 @@ namespace oscriptGUI
             get { return this._choiceList; }
             set
             {
-                this._choiceList = value;
-                ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
-                ((ComboBox)this._item).DisplayMember = "Key";
-                ((ComboBox)this._item).ValueMember = "Value";
+                if (this._formFieldType == (int)EnumFormFieldType.ListBox)
+                {
+                    this._choiceList = value;
+                    ((ListBox)this._item).DataSource = new BindingSource(ChoiceList, null);
+                    ((ListBox)this._item).DisplayMember = "Key";
+                    ((ListBox)this._item).ValueMember = "Value";
 
+                }
+                else
+                {
+
+
+                    this._choiceList = value;
+                    ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
+                    ((ComboBox)this._item).DisplayMember = "Key";
+                    ((ComboBox)this._item).ValueMember = "Value";
+                }
             }
         }
 
@@ -422,27 +451,41 @@ namespace oscriptGUI
 
         //# Блок по работе с событиями
 
-        private void runAction()
+        private void runAction(IRuntimeContextInstance script, string method)
         {
-            if (_thisScript == null)
+            if (script == null)
             {
                 return;
             }
 
-            if (_methodName.Trim() == String.Empty)
+            if (method.Trim() == String.Empty)
             {
                 return;
             }
 
             ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
-            reflector.CallMethod(this._thisScript, this._methodName, null);
+            reflector.CallMethod(script, method, null);
         }
 
         private void FormFieldValueChanged(object sender, EventArgs e)
         {
-            runAction();
+            runAction(this._thisScript, this._methodName);
         }
 
+        private void FormFieldDblClick(object sender, EventArgs e)
+        {
+            runAction(this._thisScriptDblClick, this._methodNameDblClick); 
+        }
+
+
+        private void FormFieldOnChoice(object sender, KeyPressEventArgs e)
+        {
+
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                runAction(this._scriptOnChoice, this._methodOnChoice);
+            }
+        }
 
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
@@ -458,6 +501,13 @@ namespace oscriptGUI
                             ((ComboBox)_item).SelectedValueChanged += FormFieldValueChanged;
                             break;
                         }
+                    case (int)EnumFormFieldType.ListBox:
+                        {
+                            ((ListBox)_item).SelectedValueChanged -= FormFieldValueChanged;
+                            ((ListBox)_item).SelectedValueChanged += FormFieldValueChanged;
+                            break;
+                        }
+
                     //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
                     case (int)EnumFormFieldType.ProgressBarField:
                         {
@@ -489,14 +539,102 @@ namespace oscriptGUI
                 this._thisScript = contex;
                 this._methodName = methodName;
             }
+            else if (eventName == "ПриДвойномКлике")
+            {
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        {
+                            ((ListBox)_item).DoubleClick -= FormFieldDblClick;
+                            ((ListBox)_item).DoubleClick += FormFieldDblClick;
+                            break;
+                        }
+
+                }
+                this._thisScriptDblClick = contex;
+                this._methodNameDblClick = methodName;
+
+            }
+            else if (eventName == "ПриВыборе")
+            {
+                (_item).KeyPress -= FormFieldOnChoice;
+                (_item).KeyPress += FormFieldOnChoice;
+
+                this._scriptOnChoice = contex;
+                this._methodOnChoice = methodName;
+            }
+
         }
 
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
-            return "" + this._thisScript.ToString() + ":" + this._methodName;
+            if (eventName == "ПриИзменении")
+            {
+                return "" + this._thisScript.ToString() + ":" + this._methodName;
+            }
+            else if (eventName == "ПриДвойномКлике")
+            {
+                return "" + this._thisScriptDblClick.ToString() + ":" + this._methodNameDblClick;
+            }
+            else if (eventName == "ПриВыборе")
+            {
+                return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
+            }
+            return "";
+            //return "GetAction: Action not supported - " + eventName;
         }
 
+        [ContextProperty("Высота", "Height")]
+        public int Height
+        {
+            get { return _item.Height; }
+            set {
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        _panelMainContainer.Height = value;
+                        break;
+                    default:
+                        _item.Height = value;
+                        break;
+                }
+            }
+        }
+
+        [ContextProperty("Ширина", "Width")]
+        public int Width
+        {
+            get { return _item.Width; }
+            set { _item.Width = value; }
+        }
+
+        [ContextProperty("АвтоматическийРазмер", "AutoSize")]
+        public bool AutoSize
+        {
+            get { return _item.AutoSize; }
+            set { _item.AutoSize = value; }
+        }
+
+        [ContextProperty("Закрепление", "Dock")]
+        public int Dock
+        {
+            get { return _item.Dock.GetHashCode(); }
+            set
+            {
+                switch (this._formFieldType)
+                {
+                    case (int)EnumFormFieldType.ListBox:
+                        _panelMainContainer.Dock = (DockStyle)value;
+                        break;
+                    default:
+                        _item.Dock = (DockStyle)value;
+                        break;
+                }
+
+                
+            }
+        }
 
     }
 }
