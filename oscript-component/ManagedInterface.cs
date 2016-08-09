@@ -59,12 +59,10 @@ namespace oscriptGUI
             get { return _titleLocation; }
         }
 
-
-
         // можем переопределить строковое отображение наших объектов
         public override string ToString()
         {
-            return "ManagedInterface";
+            return "УправляемыйИнтерфейс";
         }
 
         [ScriptConstructor]

@@ -55,6 +55,8 @@ namespace oscriptGUI
         private IRuntimeContextInstance _thisScriptDblClick;
         private string _methodNameDblClick;
 
+        private IRuntimeContextInstance _scriptOnChoice;
+        private string _methodOnChoice;
 
         public FormField(Control parentCntrl)
         {
@@ -79,6 +81,9 @@ namespace oscriptGUI
             this._methodNameDblClick = "";
             this._thisScriptDblClick = null;
 
+            this._methodOnChoice = "";
+            this._scriptOnChoice = null;
+
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
 
@@ -87,11 +92,10 @@ namespace oscriptGUI
             _panelTitleContainer = new Panel();
             _panelControlContainer = new Panel();
 
-
             _panelMainContainer.Controls.Add(_panelControlContainer);
             _panelMainContainer.Controls.Add(_panelTitleContainer);
 
-            _panelMainContainer.Dock = DockStyle.Fill;
+            _panelMainContainer.Dock = DockStyle.Top;
             _panelMainContainer.MinimumSize = new Size(150, 22);
             _panelMainContainer.AutoSize = true;
             _panelMainContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -447,32 +451,41 @@ namespace oscriptGUI
 
         //# Блок по работе с событиями
 
-        private void runAction()
+        private void runAction(IRuntimeContextInstance script, string method)
         {
-            if (_thisScript == null)
+            if (script == null)
             {
                 return;
             }
 
-            if (_methodName.Trim() == String.Empty)
+            if (method.Trim() == String.Empty)
             {
                 return;
             }
 
             ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
-            reflector.CallMethod(this._thisScript, this._methodName, null);
+            reflector.CallMethod(script, method, null);
         }
 
         private void FormFieldValueChanged(object sender, EventArgs e)
         {
-            runAction();
+            runAction(this._thisScript, this._methodName);
         }
 
         private void FormFieldDblClick(object sender, EventArgs e)
         {
-            runAction();
+            runAction(this._thisScriptDblClick, this._methodNameDblClick); 
         }
 
+
+        private void FormFieldOnChoice(object sender, KeyPressEventArgs e)
+        {
+
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                runAction(this._scriptOnChoice, this._methodOnChoice);
+            }
+        }
 
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
@@ -542,6 +555,15 @@ namespace oscriptGUI
                 this._methodNameDblClick = methodName;
 
             }
+            else if (eventName == "ПриВыборе")
+            {
+                (_item).KeyPress -= FormFieldOnChoice;
+                (_item).KeyPress += FormFieldOnChoice;
+
+                this._scriptOnChoice = contex;
+                this._methodOnChoice = methodName;
+            }
+
         }
 
         [ContextMethod("ПолучитьДействие", "GetAction")]
@@ -554,6 +576,10 @@ namespace oscriptGUI
             else if (eventName == "ПриДвойномКлике")
             {
                 return "" + this._thisScriptDblClick.ToString() + ":" + this._methodNameDblClick;
+            }
+            else if (eventName == "ПриВыборе")
+            {
+                return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
             }
             return "";
             //return "GetAction: Action not supported - " + eventName;

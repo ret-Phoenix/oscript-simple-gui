@@ -270,6 +270,21 @@ namespace oscriptGUI
             set {; }
         }
 
+        private void setCurrentItem(IValue curItm)
+        {
+            if (curItm.ToString() == "ПолеФормы")
+            {
+                ((FormField)curItm).getControl().Focus();
+            }
+        }
+
+        [ContextProperty("ТекущийЭлемент", "CurrentItem")]
+        public IValue CurrentItem
+        {
+            //get { return 0; }
+            set { setCurrentItem(value);}
+        }
+
 
     }
 }

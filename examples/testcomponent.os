@@ -12,7 +12,7 @@
 
 Сообщить("начали...");
 //ПодключитьВнешнююКомпоненту("oscript-component/bin/Debug/oscript-simple-gui.dll");
-ПодключитьВнешнююКомпоненту("releases/oscript-simple-gui.dll");
+ПодключитьВнешнююКомпоненту("../releases/oscript-simple-gui.dll");
 
 
 ПростойГУИ = Новый SimpleGUI();
