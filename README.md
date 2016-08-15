@@ -37,6 +37,12 @@ API очень похож на 1С
 
 <img src="https://files.gitter.im/xDrivenDevelopment/1c-syntax/blob">
 
+# Примеры использования
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/examples
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/bin/src
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/tests
+- http://infostart.ru/public/540284/
+
 # Классы
 
 ## УправляемыйИнтерфейс/ManagedInterface
