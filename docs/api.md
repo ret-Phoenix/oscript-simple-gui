@@ -7,7 +7,7 @@
 - Версия/Version - Строка - Только чтение - Номер версии;
 - [СтильЗакрепления/DockStyle](#СтильЗакрепления)
 - [ВидПоляФормы/FormFieldType](#ВидПоляФормыformfieldtype)
-- [ВидГруппыФормы/FormGroupType](#ВидГруппыФормыFormGroupType)
+- [ВидГруппыФормы/FormGroupType](#ВидГруппыФормыformgrouptype)
 - [ПоложениеЗаголовка/TitleLocation](#ПоложениеЗаголовка)
 
 ### Методы
