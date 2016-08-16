@@ -29,7 +29,7 @@
 
 ### Создание формы и вывод надписи
 
-<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/refactoring-docs/docs/example-decoration.png" alt="Декорация">
+<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/master/docs/example-decoration.png" alt="Декорация">
 
 <pre>
 Перем Форма;
@@ -64,7 +64,7 @@
 
 ### Создание формы с кнопкой и обработка события нажатия на кнопку
 
-<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/refactoring-docs/docs/example-button-n-edit.gif" alt="Кнопка + обработка события нажатия на кнопку">
+<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/master/docs/example-button-n-edit.gif" alt="Кнопка + обработка события нажатия на кнопку">
 
 <pre>
 Перем Форма;
@@ -106,7 +106,7 @@
 
 ### Пример работы с выпадающим списком
 
-<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/refactoring-docs/docs/example-combobox-change-event.png" alt="Поле со списком">
+<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/master/docs/example-combobox-change-event.png" alt="Поле со списком">
 
 <pre>
 Перем Форма;
