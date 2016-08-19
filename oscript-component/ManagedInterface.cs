@@ -4,6 +4,9 @@ using ScriptEngine.Machine;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Фабрика для работы с формами
+    /// </summary>
     [ContextClass("УправляемыйИнтерфейс", "ManagedInterface")]
     class ManagedInterface : AutoContext<ManagedInterface>
     {
@@ -34,25 +37,40 @@ namespace oscriptGUI
             get { return _version; }
         }
 
+        /// <summary>
+        /// Системное перечисление. Вариант закрепления. <see cref="FormControlDockStyle"/>
+        /// </summary>
+        /// <value>СтильЗакрепления</value>
         [ContextProperty("СтильЗакрепления", "DockStyle")]
         public IValue FormControlDockStyle
         {
             get { return _formControlDockStyle; }
         }
 
+        /// <summary>
+        /// Системное перечисление.
+        /// </summary>
+        /// <value>ВидПоляФормы</value>
         [ContextProperty("ВидПоляФормы", "FormFieldType")]
         public IValue FormFieldType
         {
             get { return _formFieldType; }
         }
 
+        /// <summary>
+        /// Системное перечисление.
+        /// </summary>
+        /// <value>ВидГруппыФормы</value>
         [ContextProperty("ВидГруппыФормы", "FormGroupType")]
         public IValue FormGroupType
         {
             get { return _formGroupType; }
         }
 
-
+        /// <summary>
+        /// Системное перечисление.
+        /// </summary>
+        /// <value>ПоложениеЗаголовка</value>
         [ContextProperty("ПоложениеЗаголовка", "TitleLocation")]
         public IValue TitleLocation
         {
@@ -74,7 +92,7 @@ namespace oscriptGUI
         /// <summary>
         /// Создать форму
         /// </summary>
-        /// <returns><see>SimpleForm</see> Возращает форму</returns>
+        /// <returns>УправляемаяФорма</returns>
         [ContextMethod("СоздатьФорму", "CreateForm")]
         public ManagedForm CreateForm()
         {

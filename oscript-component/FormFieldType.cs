@@ -40,14 +40,14 @@ namespace oscriptGUI
             get { return (int)EnumFormFieldType.InputField; }
         }
 
-        /// <summary>
-        /// ПолеHTMLДокумента - WebBrowser
-        /// </summary>
-        [ContextProperty("ПолеHTMLДокумента", "HTMLDocumentField")]
-        public int HTMLDocumentField
-        {
-            get { return (int)EnumFormFieldType.HTMLDocumentField; }
-        }
+        ///// <summary>
+        ///// ПолеHTMLДокумента - WebBrowser
+        ///// </summary>
+        //[ContextProperty("ПолеHTMLДокумента", "HTMLDocumentField")]
+        //public int HTMLDocumentField
+        //{
+        //    get { return (int)EnumFormFieldType.HTMLDocumentField; }
+        //}
 
         /// <summary>
         /// ProgressBar

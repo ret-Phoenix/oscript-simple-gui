@@ -54,6 +54,17 @@ namespace oscriptGUI
             return "КнопкаФормы";
         }
 
+        /// <summary>
+        /// Установить обработчик события.
+        /// Возможные события:
+        /// - Нажатие - Нажатие на кнопку
+        /// </summary>
+        /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
+        /// <param name="eventName">Имя обрабатываемого события</param>
+        /// <param name="methodName">Имя метода обработчика события</param>
+        /// <example>
+        ///  Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
+        /// </example>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
@@ -66,6 +77,16 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Получает имя установленного обработчика события.
+        /// </summary>
+        /// <param name="eventName">Имя события</param>
+        /// <returns>Имя метода обработчика события</returns>
+        /// <example>
+        /// Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
+        /// Форма.ПолучитьДействие("ПриОткрытии");
+        /// // вернет: "ПриОткрытииФормы"
+        /// </example>
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
@@ -113,6 +134,10 @@ namespace oscriptGUI
             _parent = (IElementsContainer)parent;
         }
 
+        /// <summary>
+        /// Содержит ссылку на родительский элемент. <see cref="FormGroup"/>
+        /// </summary>
+        /// <value>ГруппаФормы, Форма</value>
         [ContextProperty("Родитель", "Parent")]
         public IValue Parent
         {
@@ -120,6 +145,9 @@ namespace oscriptGUI
         }
 
 
+        /// <summary>
+        /// Уникальное имя элемента
+        /// </summary>
         [ContextProperty("Имя", "Name")]
         public string Name
         {
@@ -131,6 +159,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Управление видимостью кнопки
+        /// </summary>
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
@@ -141,6 +172,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Управление доступностью
+        /// </summary>
         [ContextProperty("Доступность", "Enabled")]
         public bool Enabled
         {
@@ -151,6 +185,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Надпись на кнопке
+        /// </summary>
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
@@ -162,6 +199,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Высота кнопки
+        /// </summary>
         [ContextProperty("Высота", "Height")]
         public int Height
         {
@@ -169,6 +209,9 @@ namespace oscriptGUI
             set { _item.Height = value; }
         }
 
+        /// <summary>
+        /// Ширина кнопки
+        /// </summary>
         [ContextProperty("Ширина", "Width")]
         public int Width
         {
@@ -176,6 +219,9 @@ namespace oscriptGUI
             set { _item.Width = value; }
         }
 
+        /// <summary>
+        /// Автоматический размер
+        /// </summary>
         [ContextProperty("АвтоматическийРазмер", "AutoSize")]
         public bool AutoSize
         {
@@ -183,6 +229,10 @@ namespace oscriptGUI
             set { _item.AutoSize = value; }
         }
 
+        /// <summary>
+        /// Вариант закрепления. <see cref="FormControlDockStyle"/>
+        /// </summary>
+        /// <value>СтильЗакрепления</value>
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {

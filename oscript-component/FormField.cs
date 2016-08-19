@@ -17,7 +17,7 @@ namespace oscriptGUI
 
 
     /// <summary>
-    /// Description of SFormElementFormField.
+    /// Предназначен для отображения и редактирования реквизитов формы.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
     public class FormField : AutoContext<FormField>, IFormElement
@@ -129,6 +129,10 @@ namespace oscriptGUI
             return "ПолеФормы";
         }
 
+        /// <summary>
+        /// Возвращает основной контейнер элемента (Panel на котором лежит сам контрол и декорация к нему)
+        /// </summary>
+        /// <returns>Control - Panel</returns>
         public Control getBaseControl()
         {
             return _panelMainContainer;
@@ -306,6 +310,10 @@ namespace oscriptGUI
         //    throw new NotImplementedException();
         //}
 
+        /// <summary>
+        /// Значение элемента формы.
+        /// </summary>
+        /// <value>Строка, Дата, Число</value>
         [ContextProperty("Значение", "Value")]
         public IValue Value
         {
@@ -321,6 +329,10 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Определяет способ представления данных реквизита в форме.
+        /// </summary>
+        /// <value>ВидПоляФормы</value>
         [ContextProperty("Вид", "Type")]
         public int ControlType
         {
@@ -332,6 +344,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Имя элемента
+        /// </summary>
         [ContextProperty("Имя", "Name")]
         public string Name
         {
@@ -343,6 +358,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Управление видимостью
+        /// </summary>
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
@@ -354,6 +372,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Управление доступностью
+        /// </summary>
         [ContextProperty("Доступность", "Enabled")]
         public bool Enabled
         {
@@ -365,6 +386,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Заголовок к полю. Пустая строка означает автоматическое определение. Для отключения вывода заголовка следует установить свойство ПоложениеЗаголовка в значение Нет.
+        /// </summary>
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
@@ -375,15 +399,22 @@ namespace oscriptGUI
                 this._label.Text = this._title;
                 if (this._label.Text.Trim() == String.Empty)
                 {
-                    this._panelTitleContainer.Visible = false;
+                    this._label.Text = this.Name;
+                    //this._panelTitleContainer.Visible = false;
                 }
                 else
                 {
-                    this._panelTitleContainer.Visible = true;
+                    //this._panelTitleContainer.Visible = true;
                 }
             }
         }
 
+        /// <summary>
+        /// Определяет положение заголовка относительно поля в макете формы. 
+        /// Следует заметить, что для отключения вывода заголовка следует установить это свойство в значение Нет. 
+        /// Свойство Заголовок, содержащее пустую строку, означает автоматическое определение заголовка, а не ее отключение.
+        /// </summary>
+        /// <value>ПоложениеЗаголовкаЭлементаФормы</value>
         [ContextProperty("ПоложениеЗаголовка", "TitleLocation")]
         public int TitleLocation
         {
@@ -395,6 +426,10 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Установка / получение списка выбора для ПолеСоСписком, ПолеСписка
+        /// </summary>
+        /// <value>Соответствие</value>
         [ContextProperty("СписокВыбора", "ChoiceList")]
         public ScriptEngine.HostedScript.Library.MapImpl ChoiceList
         {
@@ -411,8 +446,6 @@ namespace oscriptGUI
                 }
                 else
                 {
-
-
                     this._choiceList = value;
                     ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
                     ((ComboBox)this._item).DisplayMember = "Key";
@@ -431,12 +464,19 @@ namespace oscriptGUI
         //    }
         //}
 
+        /// <summary>
+        /// Содержит ссылку на родительский элемент. <see cref="FormGroup"/>
+        /// </summary>
+        /// <value>ГруппаФормы, Форма</value>
         [ContextProperty("Родитель", "Parent")]
         public IValue Parent
         {
             get { return this._parent; }
         }
 
+        /// <summary>
+        /// Содержит признак возможности/невозможности редактирования отображаемых данных.
+        /// </summary>
         [ContextProperty("ТолькоПросмотр", "ReadOnly")]
         public bool ReadOnly
         {
@@ -487,6 +527,19 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Установить обработчик события
+        /// Возможные события:
+        /// - ПриИзменении - Обработка события изменения значения
+        /// - ПриВыборе - При нажатии Enter
+        /// - ПриДвойномКлике - Обработка двойного клика (Событие только для ListBox)
+        /// </summary>
+        /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
+        /// <param name="eventName">Имя обрабатываемого события.</param>
+        /// <param name="methodName">Имя метода обработчика события</param>
+        /// <example>
+        ///  ПолеФормы1.УстановитьДействие(ЭтотОбъект, "ПриИзменении", "ПриИзмененииПолеФормы1");
+        /// </example>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
@@ -566,6 +619,16 @@ namespace oscriptGUI
 
         }
 
+        /// <summary>
+        /// Получает имя установленного обработчика события.
+        /// </summary>
+        /// <param name="eventName">Имя события</param>
+        /// <returns>Имя метода обработчика события</returns>
+        /// <example>
+        /// Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
+        /// Форма.ПолучитьДействие("ПриОткрытии");
+        /// // вернет: "ПриОткрытииФормы"
+        /// </example>
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
@@ -585,6 +648,9 @@ namespace oscriptGUI
             //return "GetAction: Action not supported - " + eventName;
         }
 
+        /// <summary>
+        /// Высота
+        /// </summary>
         [ContextProperty("Высота", "Height")]
         public int Height
         {
@@ -602,6 +668,9 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Ширина
+        /// </summary>
         [ContextProperty("Ширина", "Width")]
         public int Width
         {
@@ -609,6 +678,9 @@ namespace oscriptGUI
             set { _item.Width = value; }
         }
 
+        /// <summary>
+        /// Автоматический размер
+        /// </summary>
         [ContextProperty("АвтоматическийРазмер", "AutoSize")]
         public bool AutoSize
         {
@@ -616,6 +688,10 @@ namespace oscriptGUI
             set { _item.AutoSize = value; }
         }
 
+        /// <summary>
+        /// Вариант закрепления. <see cref="FormControlDockStyle"/>
+        /// </summary>
+        /// <value>СтильЗакрепления</value>
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {

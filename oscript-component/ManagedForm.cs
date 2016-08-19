@@ -7,6 +7,10 @@ using System.Drawing;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Основной контейнер для отображения.
+    /// Используется для доступа к свойствам, методам и событиям управляемой формы в целом, а также к коллекции ее элементов управления. 
+    /// </summary>
     [ContextClass("Форма", "Form")]
     public class ManagedForm : AutoContext<ManagedForm>, IFormElement, IElementsContainer
     {
@@ -65,19 +69,30 @@ namespace oscriptGUI
             return "УправляемаяФорма";
         }
 
+        /// <summary>
+        /// Системное перечисление
+        /// </summary>
+        /// <value>ВидПоляФормы</value>
         [ContextProperty("ВидПоляФормы", "FormFieldType")]
         public IValue FormFieldType
         {
             get { return _formFieldType; }
         }
 
+        /// <summary>
+        /// Системное перечисление
+        /// </summary>
+        /// <value>ВидГруппыФормы</value>
         [ContextProperty("ВидГруппыФормы", "FormGroupType")]
         public IValue FormGroupType
         {
             get { return _formGroupType; }
         }
 
-
+        /// <summary>
+        /// Системное перечисление
+        /// </summary>
+        /// <value>ПоложениеЗаголовкаЭлементаФормы</value>
         [ContextProperty("ПоложениеЗаголовка", "TitleLocation")]
         public IValue TitleLocation
         {
@@ -85,6 +100,9 @@ namespace oscriptGUI
         }
 
 
+        /// <summary>
+        /// Заголовок формы
+        /// </summary>
         [ContextProperty("Заголовок", "Caption")]
         public string Caption
         {
@@ -92,12 +110,18 @@ namespace oscriptGUI
             set { _form.Text = value; }
         }
 
+        /// <summary>
+        /// Родитель формы. Всегда Неопределено
+        /// </summary>
         [ContextProperty("Родитель", "Parent")]
         public IValue Parent
         {
             get { return ValueFactory.Create(); }
         }
 
+        /// <summary>
+        /// Имя формы
+        /// </summary>
         [ContextProperty("Имя", "Name")]
         public string Name
         {
@@ -121,6 +145,9 @@ namespace oscriptGUI
             return _form;
         }
 
+        /// <summary>
+        /// Показать форму (показывает модально)
+        /// </summary>
         [ContextMethod("Показать", "Show")]
         public void Show()
         {
@@ -136,6 +163,9 @@ namespace oscriptGUI
             _form.Show();
         }
 
+        /// <summary>
+        /// Закрыть форму
+        /// </summary>
         [ContextMethod("Закрыть", "Close")]
         public void Close()
         {
@@ -143,12 +173,19 @@ namespace oscriptGUI
         }
 
 
+        /// <summary>
+        /// Содержит коллекцию подчиненных элементов группы.
+        /// </summary>
+        /// <value>Элементы</value>
         [ContextProperty("Элементы", "Items")]
         public Elements Items
         {
             get { return _elements; }
         }
 
+        /// <summary>
+        /// Автоматический размер
+        /// </summary>
         [ContextProperty("АвтоматическийРазмер", "AutoSize")]
         public bool AutoSize
         {
@@ -156,6 +193,9 @@ namespace oscriptGUI
             set { _form.AutoSize = value;  }
         }
 
+        /// <summary>
+        /// Высота
+        /// </summary>
         [ContextProperty("Высота", "Height")]
         public int Height
         {
@@ -163,6 +203,9 @@ namespace oscriptGUI
             set { _form.Height = value; }
         }
 
+        /// <summary>
+        /// Ширина
+        /// </summary>
         [ContextProperty("Ширина", "Width")]
         public int Width
         {
@@ -219,11 +262,18 @@ namespace oscriptGUI
             runAction(_thisScriptOnClose, _methodNameOnClose);
         }
 
-        //private void OnFormCreated(object sender, EventArgs e)
-        //{
-        //    runAction(_thisScriptOnCreated, _methodNameOnCreated);
-        //}
-
+        /// <summary>
+        /// Установить обработчик события.
+        /// Возможные события:
+        /// - ПриОткрытии - При первом открытии формы
+        /// - ПриЗакрытии - При закрытии формы
+        /// </summary>
+        /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
+        /// <param name="eventName">Имя обрабатываемого события</param>
+        /// <param name="methodName">Имя метода обработчика события</param>
+        /// <example>
+        ///  Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
+        /// </example>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
@@ -257,12 +307,25 @@ namespace oscriptGUI
 
         }
 
+        /// <summary>
+        /// Получает имя установленного обработчика события.
+        /// </summary>
+        /// <param name="eventName">Имя события</param>
+        /// <returns>Имя метода обработчика события</returns>
+        /// <example>
+        /// Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
+        /// Форма.ПолучитьДействие("ПриОткрытии");
+        /// // вернет: "ПриОткрытииФормы"
+        /// </example>
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
             return String.Empty;
         }
 
+        /// <summary>
+        /// Неиспользуется. Создан для реализации интерфейса
+        /// </summary>
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {
@@ -278,6 +341,10 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Устанавливает текущий активный элемент формы.
+        /// </summary>
+        /// <value>ПолеФормы, ГруппаФормы, КнопкаФормы</value>
         [ContextProperty("ТекущийЭлемент", "CurrentItem")]
         public IValue CurrentItem
         {

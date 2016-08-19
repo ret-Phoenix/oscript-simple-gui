@@ -14,7 +14,7 @@ using System.Windows.Forms;
 namespace oscriptGUI
 {
     /// <summary>
-    /// Description of SFormElements.
+    /// Содержит коллекцию подчиненных элементов.
     /// </summary>
     [ContextClass("Элементы", "Elements")]
     public class Elements : AutoContext<Elements>, ICollectionContext
@@ -90,6 +90,10 @@ namespace oscriptGUI
             return ValueFactory.Create();
         }
 
+        /// <summary>
+        /// Удаляет элемент из коллекции.
+        /// </summary>
+        /// <param name="Element"><see cref="FormButton"/>, <see cref="FormField"/>, <see cref="FormGroup"/> Удаляемый элемент.</param>
         [ContextMethod("Удалить", "Delete")]
         public void Delete(IValue Element)
         {
@@ -104,6 +108,12 @@ namespace oscriptGUI
             Element = ValueFactory.Create();
         }
 
+        /// <summary>
+        /// Перемещает элемент коллекции.
+        /// </summary>
+        /// <param name="Element">Перемещаемый элемент.</param>
+        /// <param name="ParentElement">Новый родитель элемента. Может совпадать со старым.</param>
+        /// <param name="BeforeElement">Элемент, перед которым нужно разместить перемещаемый элемент. Если не задан, то перемещается в конец коллекции.</param>
         [ContextMethod("Переместить", "Move")]
         public void Move(IValue Element, IValue ParentElement, IValue BeforeElement)
         {
@@ -153,6 +163,13 @@ namespace oscriptGUI
         }
 
 
+        /// <summary>
+        /// Вставляет элемент в коллекцию элементов.
+        /// </summary>
+        /// <param name="ElementName">Уникальное имя добавляемого элемента.</param>
+        /// <param name="ElementType">Тип добавляемого элемента.</param>
+        /// <param name="ElementParent">Родитель для добавляемого элемента. Если не указан, то вставляется на верхний уровень.</param>
+        /// <returns>Ссылка на созданый элемент <see cref="FormField"/>, <see cref="FormButton"/>, <see cref="FormGroup"/></returns>
         [ContextMethod("Добавить", "Add")]
         public IValue add(string ElementName, string ElementType, IValue ElementParent)
         {

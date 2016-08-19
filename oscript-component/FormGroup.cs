@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 using System.Drawing;
+using System;
 
 namespace oscriptGUI
 {
@@ -87,7 +88,10 @@ namespace oscriptGUI
             _parent = parent;
         }
 
-
+        /// <summary>
+        /// Содержит ссылку на родительский элемент. <see cref="FormGroup"/>
+        /// </summary>
+        /// <value>ГруппаФормы, Форма</value>
         [ContextProperty("Родитель", "Parent")]
         public IValue Parent
         {
@@ -95,6 +99,9 @@ namespace oscriptGUI
             //   set { this._parent = value; }
         }
 
+        /// <summary>
+        /// Имя группы
+        /// </summary>
         [ContextProperty("Имя", "Name")]
         public string Name
         {
@@ -102,6 +109,9 @@ namespace oscriptGUI
             set { this._name = value; }
         }
 
+        /// <summary>
+        /// Управление видимостью
+        /// </summary>
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
@@ -109,6 +119,9 @@ namespace oscriptGUI
             set { this._visible = value; }
         }
 
+        /// <summary>
+        /// Управление доступностью
+        /// </summary>
         [ContextProperty("Доступность", "Enabled")]
         public bool Enabled
         {
@@ -116,6 +129,9 @@ namespace oscriptGUI
             set { this._enabled = value; }
         }
 
+        /// <summary>
+        /// Заголовок к группе. Пустая строка означает автоматическое формирование.
+        /// </summary>
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
@@ -140,6 +156,10 @@ namespace oscriptGUI
         //    set { this._parent = value; }
         //}
 
+        /// <summary>
+        /// Определяет способ представления группы в форме.
+        /// </summary>
+        /// <value>ВидГруппыФормы</value>
         [ContextProperty("Вид", "Type")]
         public int ControlType
         {
@@ -151,6 +171,10 @@ namespace oscriptGUI
             }
         }
 
+        /// <summary>
+        /// Содержит коллекцию подчиненных элементов группы.
+        /// </summary>
+        /// <value>Элементы</value>
         [ContextProperty("Элементы", "Items")]
         public Elements Items
         {
@@ -205,39 +229,48 @@ namespace oscriptGUI
 
         private void setTitle()
         {
+            string newTitle = this._title;
+            if (newTitle == "")
+            {
+                newTitle = this.Name;
+            }
             switch (this._formGroupType)
             {
                 case (int)EnumFormGroupType.UsualGroup:
-                    ((GroupBox)this._item).Text = this._title;
+                    ((GroupBox)this._item).Text = newTitle;
                     break;
                 case (int)EnumFormGroupType.Page:
-                    ((TabPage)this._item).Text = this._title;
+                    ((TabPage)this._item).Text = newTitle;
                     break;
                 case (int)EnumFormGroupType.Pages:
                     break;
                 default:
-                    ((GroupBox)this._item).Text = this._title;
+                    ((GroupBox)this._item).Text = newTitle;
                     break;
             }
         }
 
+        /// <summary>
+        /// Обработка событий не предусмотрена
+        /// </summary>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
-            if (eventName == "Нажатие")
-            {
-                //((Button)this._item).Click += BtnClick;
-                //this._thisScript = contex;
-                //this._methodName = methodName;
-            }
+            Console.WriteLine("FormGroup - Events - don't support");
         }
 
+        /// <summary>
+        /// Обработка событий не предусмотрена
+        /// </summary>
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
             return string.Empty;
         }
 
+        /// <summary>
+        /// Высота
+        /// </summary>
         [ContextProperty("Высота", "Height")]
         public int Height
         {
@@ -245,6 +278,9 @@ namespace oscriptGUI
             set { _item.Height = value; }
         }
 
+        /// <summary>
+        /// Ширина
+        /// </summary>
         [ContextProperty("Ширина", "Width")]
         public int Width
         {
@@ -252,6 +288,9 @@ namespace oscriptGUI
             set { _item.Width = value; }
         }
 
+        /// <summary>
+        /// Автоматический размер
+        /// </summary>
         [ContextProperty("АвтоматическийРазмер", "AutoSize")]
         public bool AutoSize
         {
@@ -259,6 +298,10 @@ namespace oscriptGUI
             set { _item.AutoSize = value; }
         }
 
+        /// <summary>
+        /// Вариант закрепления. <see cref="FormControlDockStyle"/>
+        /// </summary>
+        /// <value>СтильЗакрепления</value>
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {
