@@ -58,13 +58,16 @@
     <Reference Include="ScriptEngine.HostedScript">
       <HintPath>..\packages\OneScript.StandardLibrary.1.0.13\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTableProvider.cs" />
     <Compile Include="FormControlDockStyle.cs" />
     <Compile Include="FormFieldType.cs" />
     <Compile Include="FormGroupType.cs" />
+    <Compile Include="FormTable.cs" />
     <Compile Include="IElementsContainer.cs" />
     <Compile Include="IFormElement.cs" />
     <Compile Include="ManagedInterface.cs" />
