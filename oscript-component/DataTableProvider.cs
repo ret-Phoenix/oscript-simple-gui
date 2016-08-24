@@ -10,6 +10,9 @@ using System.Data;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Провайдер для данных ТаблицаФормы. Пока что поддерживается только ТаблицаЗначений.
+    /// </summary>
     [ContextClass("Провайдер", "Provider")]
     class DataTableProvider : AutoContext<DataTableProvider>
     {
@@ -61,6 +64,9 @@ namespace oscriptGUI
             setProviderValueTable();
         }
 
+        /// <summary>
+        /// Данные для отображения.
+        /// </summary>
         [ContextProperty("Источник", "Source")]
         public ValueTable Source
         {

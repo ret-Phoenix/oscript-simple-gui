@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Элемент управляемой формы, предназначенный для отображения реквизитов формы табличных типов.
+    /// </summary>
     [ContextClass("ТаблицаФормы", "FormTable")]
     class FormTable : AutoContext<FormTable>, IFormElement
     {
@@ -293,15 +296,17 @@ namespace oscriptGUI
         /// <summary>
         /// Установить обработчик события
         /// Возможные события:
-        /// - ПриИзменении - Обработка события изменения значения
+        /// - ПриПотереФокусаЯчейки - Обработка события изменения значения
         /// - ПриВыборе - При нажатии Enter
-        /// - ПриДвойномКлике - Обработка двойного клика (Событие только для ListBox)
+        /// - ПриДвойномКлике - Обработка двойного клика
         /// </summary>
         /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
         /// <param name="eventName">Имя обрабатываемого события.</param>
         /// <param name="methodName">Имя метода обработчика события</param>
         /// <example>
-        ///  ПолеФормы1.УстановитьДействие(ЭтотОбъект, "ПриИзменении", "ПриИзмененииПолеФормы1");
+        /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриПотереФокусаЯчейки", "ПриПотереФокусаЯчейки");
+        /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриДвойномКлике", "ПриДвойномКлике");
+        /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриВыборе", "ПриВыборе");
         /// </example>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
@@ -342,9 +347,9 @@ namespace oscriptGUI
         /// <param name="eventName">Имя события</param>
         /// <returns>Имя метода обработчика события</returns>
         /// <example>
-        /// Форма.УстановитьДействие(ЭтотОбъект, "ПриОткрытии", "ПриОткрытииФормы");
-        /// Форма.ПолучитьДействие("ПриОткрытии");
-        /// // вернет: "ПриОткрытииФормы"
+        /// Форма.УстановитьДействие(ЭтотОбъект, "ПриВыборе", "ПриВыбореЯчейки");
+        /// Форма.ПолучитьДействие("ПриВыборе");
+        /// // вернет: "ПриВыбореЯчейки"
         /// </example>
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
@@ -433,6 +438,9 @@ namespace oscriptGUI
         }
 
 
+        /// <summary>
+        /// Провайдер с данными.
+        /// </summary>
         [ContextProperty("ПутьКДанным", "DataPath")]
         public DataTableProvider DataPath
         {
@@ -454,14 +462,12 @@ namespace oscriptGUI
         {
             get
             {
-
                 ArrayImpl list1 = new ArrayImpl();
 
                 var dg = ((DataGridView)_item);
                 var sr = dg.SelectedRows;
                 foreach (DataGridViewRow el in sr)
                 {
-                    //Console.WriteLine(el.Index);
                     list1.Add(ValueFactory.Create(el.Index));
                 }
 
@@ -503,8 +509,9 @@ namespace oscriptGUI
         }
 
         /// <summary>
-        /// Колонки таблицы
+        /// Колонки таблицы.
         /// </summary>
+        /// <value>Массив <see cref="FormTableColumn"/></value>
         [ContextProperty("Колонки", "Columns")]
         public ArrayImpl Columns
         {

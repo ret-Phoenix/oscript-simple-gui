@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Колонка элемента ТаблицаФормы
+    /// </summary>
     [ContextClass("КолонкаТаблицыФормы", "FormTableColumn")]
     class FormTableColumn : AutoContext<FormTableColumn>
     {
@@ -31,6 +34,9 @@ namespace oscriptGUI
             set { _grid.Columns[_pos].Width = value; }
         }
 
+        /// <summary>
+        /// Видимость
+        /// </summary>
         [ContextProperty("Видимость", "Visible")]
         public bool Visible
         {
@@ -38,6 +44,9 @@ namespace oscriptGUI
             set { _grid.Columns[_pos].Visible = value;  }
         }
 
+        /// <summary>
+        /// Заголовок
+        /// </summary>
         [ContextProperty("Заголовок", "Title")]
         public string Title
         {
@@ -45,6 +54,9 @@ namespace oscriptGUI
             set { _grid.Columns[_pos].HeaderText = value;  }
         }
 
+        /// <summary>
+        /// Номер колонки
+        /// </summary>
         [ContextProperty("Индекс", "Index")]
         public int Index
         {
