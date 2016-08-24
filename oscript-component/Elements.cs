@@ -200,6 +200,11 @@ namespace oscriptGUI
                 newItem = new FormButton(parentCntrl);
             }
 
+            if (ElementType.ToUpper() == ("ТаблицаФормы").ToUpper())
+            {
+                newItem = new FormTable(parentCntrl);
+            }
+
             ((IFormElement)newItem).setParent(ElementParent);
             ((IFormElement)newItem).Name = ElementName;
 
