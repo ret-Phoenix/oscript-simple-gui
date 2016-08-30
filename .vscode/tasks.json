@@ -80,7 +80,27 @@
           "message": 3
         }
       }
-    }
-    
+    },
+    {
+      "taskName": "OneScript-testrunner-all",
+      "args": [
+        "../tests/testrunner.os",
+        "-runall",
+        "tests"
+      ],
+      "echoCommand": true,
+      "showOutput": "always",
+      "suppressTaskName": true,
+      "isBuildCommand": true,
+      "problemMatcher": {
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^{Модуль\\s+(.*)\\s\\/\\s.*:\\s+(\\d+)\\s+\\/\\s+(.*)}$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        }
+      }
+    }    
   ]
 }
