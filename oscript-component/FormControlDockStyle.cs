@@ -1,7 +1,4 @@
 ﻿using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace oscriptGUI
 {

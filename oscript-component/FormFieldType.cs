@@ -1,7 +1,4 @@
-﻿using System;
-using ScriptEngine.Machine.Contexts;
-using ScriptEngine.Machine;
-using System.Collections.Generic;
+﻿using ScriptEngine.Machine.Contexts;
 
 namespace oscriptGUI
 {
