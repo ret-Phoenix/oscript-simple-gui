@@ -290,7 +290,7 @@ namespace oscriptGUI
         /// <summary>
         /// Установить обработчик события
         /// Возможные события:
-        /// - ПриПотереФокусаЯчейки - Обработка события изменения значения
+        /// - ПриВыбореСтроки - Обработка события изменения значения
         /// - ПриВыборе - При нажатии Enter
         /// - ПриДвойномКлике - Обработка двойного клика
         /// </summary>
@@ -298,39 +298,39 @@ namespace oscriptGUI
         /// <param name="eventName">Имя обрабатываемого события.</param>
         /// <param name="methodName">Имя метода обработчика события</param>
         /// <example>
-        /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриПотереФокусаЯчейки", "ПриПотереФокусаЯчейки");
+        /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриВыбореСтроки", "ПриВыбореСтроки");
         /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриДвойномКлике", "ПриДвойномКлике");
         /// Поле1.УстановитьДействие(ЭтотОбъект, "ПриВыборе", "ПриВыборе");
         /// </example>
         [ContextMethod("УстановитьДействие", "SetAction")]
         public void setAction(IRuntimeContextInstance contex, string eventName, string methodName)
         {
-            if (eventName == "ПриПотереФокусаЯчейки")
+            if (eventName == "ПриВыбореСтроки")
             {
 
-                //this._thisScript = contex;
-                //this._methodName = methodName;
+                this._thisScript = contex;
+                this._methodName = methodName;
 
-                //((DataGridView)_item).CurrentCellChanged -= FormFieldValueChanged;
-                //((DataGridView)_item).CurrentCellChanged += FormFieldValueChanged;
+                _item.TreeView.AfterSelect -= FormFieldValueChanged;
+                _item.TreeView.AfterSelect += FormFieldValueChanged;
 
             }
             else if (eventName == "ПриДвойномКлике")
             {
-                //((DataGridView)_item).CellDoubleClick -= FormFieldDblClick;
-                //((DataGridView)_item).CellDoubleClick += FormFieldDblClick;
+                _item.TreeView.DoubleClick -= FormFieldDblClick;
+                _item.TreeView.DoubleClick += FormFieldDblClick;
 
-                //this._thisScriptDblClick = contex;
-                //this._methodNameDblClick = methodName;
+                this._thisScriptDblClick = contex;
+                this._methodNameDblClick = methodName;
 
             }
             else if (eventName == "ПриВыборе")
             {
-                //(_item).KeyPress -= FormFieldOnChoice;
-                //(_item).KeyPress += FormFieldOnChoice;
+                _item.TreeView.KeyPress -= FormFieldOnChoice;
+                _item.TreeView.KeyPress += FormFieldOnChoice;
 
-                //this._scriptOnChoice = contex;
-                //this._methodOnChoice = methodName;
+                this._scriptOnChoice = contex;
+                this._methodOnChoice = methodName;
             }
 
         }
@@ -348,7 +348,7 @@ namespace oscriptGUI
         [ContextMethod("ПолучитьДействие", "GetAction")]
         public string GetAction(string eventName)
         {
-            if (eventName == "ПриПотереФокусаЯчейки")
+            if (eventName == "ПриВыбореСтроки")
             {
                 return "" + this._thisScript.ToString() + ":" + this._methodName;
             }
@@ -416,6 +416,7 @@ namespace oscriptGUI
             foreach (ValueTreeRow VTRow in VTreeRowsCol)
             {
                 //Console.WriteLine(VTRow.);
+                
                 string[] strData = new string[(int)_dataTable.SourceTree.Columns.Count()];
 
                 int i = -1;
@@ -533,47 +534,28 @@ namespace oscriptGUI
         /// Представляет доступ к текущим данным (данным текущей строки).
         /// </summary>
         [ContextProperty("ТекущиеДанные", "CurrentData")]
-        public ArrayImpl CurrentData
+        public MapImpl CurrentData
         {
             get
             {
-                ArrayImpl resData = new ArrayImpl();
+                MapImpl data = new MapImpl();
 
                 if (_item.TreeView.SelectedNode == null)
                 {
-                    Console.WriteLine("empty value");
-                    return resData;
+                    //Console.WriteLine("empty value");
+                    return data;
                 }
 
-                int i = -1;
+                data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(0)).Title), ValueFactory.Create(_item.TreeView.SelectedNode.Text));
+
                 string[] vals = (string[])_item.TreeView.SelectedNode.Tag;
-                foreach(string val in vals)
+
+                for (int col=1; col < Columns.Count(); col++)
                 {
-                    i++;
-                    string key1 = ((FormTreeColumn)Columns.Get(i)).Title;
-                    //strct.Insert(ValueFactory.Create(i), ValueFactory.Create(val.ToString()));
-                    //resData.Insert(i, ValueFactory.Create(val));
-
-                    resData.Add(ValueFactory.Create(val));
-
-
+                    data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(col)).Title), ValueFactory.Create(vals[col - 1]));
                 }
 
-                Console.WriteLine("do");
-
-                //Console.WriteLine("all: " + ((string[])_item.TreeView.SelectedNode.Tag).Count().ToString());
-                //foreach (FormTreeColumn col in Columns)
-                //{
-                //    var vl = ValueFactory.Create(((string[])_item.TreeView.SelectedNode.Tag)[col.Index-1]);
-                //    strct.Insert(ValueFactory.Create(col.Title), vl);
-                //}
-
-                //string[] vals = (string[])_item.TreeView.SelectedNode.Tag;
-
-                //foreach (var vl in vals)
-                //    Console.WriteLine(vl);
-
-                return resData;
+                return data;
             }
         }
 
