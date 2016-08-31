@@ -7,6 +7,7 @@ using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using ScriptEngine.HostedScript.Library.ValueTable;
 using System.Data;
+using ScriptEngine.HostedScript.Library.ValueTree;
 
 namespace oscriptGUI
 {
@@ -18,6 +19,7 @@ namespace oscriptGUI
     {
         private ValueTable _valueTable;
         private DataTable _dataTable;
+        private ValueTree _valueTree;
 
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
@@ -29,6 +31,7 @@ namespace oscriptGUI
         {
             _valueTable = new ValueTable();
             _dataTable = new DataTable();
+            _valueTree = new ValueTree();
         }
 
         public DataTable getData()
@@ -59,6 +62,30 @@ namespace oscriptGUI
             }
         }
 
+        private void setProviderValueTree()
+        {
+            //_dataTable.Clear();
+            //_dataTable.Columns.Clear();
+
+            //foreach (ValueTableColumn VTCol in _valueTable.Columns)
+            //{
+            //    _dataTable.Columns.Add(VTCol.Name);
+            //}
+
+
+            //DataRow row;
+            //foreach (ValueTableRow VTRow in _valueTable)
+            //{
+            //    row = _dataTable.NewRow();
+            //    foreach (ValueTableColumn VTCol in _valueTable.Columns)
+            //    {
+            //        row[VTCol.Name] = VTRow.Get(VTCol);
+            //    }
+            //    _dataTable.Rows.Add(row);
+            //}
+        }
+
+
         public void Refresh()
         {
             setProviderValueTable();
@@ -73,5 +100,16 @@ namespace oscriptGUI
             get { return _valueTable; }
             set { _valueTable = value; setProviderValueTable(); }
         }
+
+        /// <summary>
+        /// Данные для отображения.
+        /// </summary>
+        [ContextProperty("ИсточникДерево", "SourceTree")]
+        public ValueTree SourceTree
+        {
+            get { return _valueTree; }
+            set { _valueTree = value; setProviderValueTree(); }
+        }
+
     }
 }

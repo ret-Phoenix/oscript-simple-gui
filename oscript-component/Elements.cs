@@ -205,6 +205,12 @@ namespace oscriptGUI
                 newItem = new FormTable(parentCntrl);
             }
 
+            if (ElementType.ToUpper() == ("ДеревоФормы").ToUpper())
+            {
+                newItem = new FormTree(parentCntrl);
+            }
+
+
             ((IFormElement)newItem).setParent(ElementParent);
             ((IFormElement)newItem).Name = ElementName;
 

@@ -69,6 +69,8 @@
     <Compile Include="FormGroupType.cs" />
     <Compile Include="FormTable.cs" />
     <Compile Include="FormTableColumn.cs" />
+    <Compile Include="FormTree\FormTreeColumn.cs" />
+    <Compile Include="FormTree\FormTree.cs" />
     <Compile Include="IElementsContainer.cs" />
     <Compile Include="IFormElement.cs" />
     <Compile Include="ManagedInterface.cs" />
@@ -80,9 +82,16 @@
     <Compile Include="FormButton.cs" />
     <Compile Include="ManagedGUI.cs" />
     <Compile Include="TitleLocation.cs" />
+    <Compile Include="FormTree\TreeViewColumns\TreeViewColumns.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FormTree\TreeViewColumns\TreeViewColumns.Designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
 </Project>
