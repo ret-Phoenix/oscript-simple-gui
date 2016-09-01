@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ScriptEngine.HostedScript.Library.ValueTable;
+using ScriptEngine.HostedScript.Library.ValueTree;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
-using ScriptEngine.HostedScript.Library.ValueTable;
 using System.Data;
 
 namespace oscriptGUI
@@ -18,6 +14,7 @@ namespace oscriptGUI
     {
         private ValueTable _valueTable;
         private DataTable _dataTable;
+        private ValueTree _valueTree;
 
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
@@ -29,6 +26,7 @@ namespace oscriptGUI
         {
             _valueTable = new ValueTable();
             _dataTable = new DataTable();
+            _valueTree = new ValueTree();
         }
 
         public DataTable getData()
@@ -73,5 +71,16 @@ namespace oscriptGUI
             get { return _valueTable; }
             set { _valueTable = value; setProviderValueTable(); }
         }
+
+        /// <summary>
+        /// Данные для отображения.
+        /// </summary>
+        [ContextProperty("ИсточникДерево", "SourceTree")]
+        public ValueTree SourceTree
+        {
+            get { return _valueTree; }
+            set { _valueTree = value; }
+        }
+
     }
 }
