@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ScriptEngine.HostedScript.Library.ValueTable;
+using ScriptEngine.HostedScript.Library.ValueTree;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
-using ScriptEngine.HostedScript.Library.ValueTable;
 using System.Data;
-using ScriptEngine.HostedScript.Library.ValueTree;
 
 namespace oscriptGUI
 {
@@ -62,30 +57,6 @@ namespace oscriptGUI
             }
         }
 
-        private void setProviderValueTree()
-        {
-            //_dataTable.Clear();
-            //_dataTable.Columns.Clear();
-
-            //foreach (ValueTableColumn VTCol in _valueTable.Columns)
-            //{
-            //    _dataTable.Columns.Add(VTCol.Name);
-            //}
-
-
-            //DataRow row;
-            //foreach (ValueTableRow VTRow in _valueTable)
-            //{
-            //    row = _dataTable.NewRow();
-            //    foreach (ValueTableColumn VTCol in _valueTable.Columns)
-            //    {
-            //        row[VTCol.Name] = VTRow.Get(VTCol);
-            //    }
-            //    _dataTable.Rows.Add(row);
-            //}
-        }
-
-
         public void Refresh()
         {
             setProviderValueTable();
@@ -108,7 +79,7 @@ namespace oscriptGUI
         public ValueTree SourceTree
         {
             get { return _valueTree; }
-            set { _valueTree = value; setProviderValueTree(); }
+            set { _valueTree = value; }
         }
 
     }

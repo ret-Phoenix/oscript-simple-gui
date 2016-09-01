@@ -1,14 +1,9 @@
 ﻿using ScriptEngine.HostedScript.Library;
-using ScriptEngine.HostedScript.Library.ValueTable;
 using ScriptEngine.HostedScript.Library.ValueTree;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TreeViewColumnsProject;
 
@@ -62,10 +57,8 @@ namespace oscriptGUI
             this._methodOnChoice = "";
             this._scriptOnChoice = null;
 
-            //_bindingSource = new BindingSource();
             _dataTable = new DataTableProvider();
             _item = new TreeViewColumns();
-
 
             //# Создаем контейнер для элемента формы
             _panelMainContainer = new Panel();
@@ -133,6 +126,10 @@ namespace oscriptGUI
 
             _item.AutoSize = true;
             _item.Dock = DockStyle.Fill;
+            _item.TreeView.HideSelection = false;
+            _item.TreeView.DrawMode = TreeViewDrawMode.OwnerDrawAll;
+            _item.TreeView.FullRowSelect = false;
+
             _panelControlContainer.Controls.Add(this._item);
         }
 
@@ -415,7 +412,6 @@ namespace oscriptGUI
         {
             foreach (ValueTreeRow VTRow in VTreeRowsCol)
             {
-                //Console.WriteLine(VTRow.);
                 
                 string[] strData = new string[(int)_dataTable.SourceTree.Columns.Count()];
 
@@ -487,29 +483,6 @@ namespace oscriptGUI
             }
         }
 
-        ///// <summary>
-        ///// Содержит массив номеров выделенных строк.
-        ///// </summary>
-        ///// <value>ArrayImpl</value>
-        //[ContextProperty("ВыделенныеСтроки", "SelectedRows")]
-        //public ArrayImpl SelectedRows
-        //{
-        //    get
-        //    {
-        //        ArrayImpl list1 = new ArrayImpl();
-
-
-
-        //        //var dg = ((DataGridView)_item);
-        //        //var sr = dg.SelectedRows;
-        //        //foreach (DataGridViewRow el in sr)
-        //        //{
-        //        //    list1.Add(ValueFactory.Create(el.Index));
-        //        //}
-
-        //        return list1;
-        //    }
-        //}
 
         /// <summary>
         /// Номер текущей строки таблицы.
@@ -525,14 +498,15 @@ namespace oscriptGUI
                 return _item.TreeView.SelectedNode.Index;
             }
             set {
-                //TreeNode node = _item.TreeView.Nodes[value];
                 _item.TreeView.SelectedNode = _item.TreeView.Nodes[value];
             }
         }
 
         /// <summary>
         /// Представляет доступ к текущим данным (данным текущей строки).
+        /// Возвращает соответствие с текстовым представлением данных.
         /// </summary>
+        /// <value>Соответствие</value>
         [ContextProperty("ТекущиеДанные", "CurrentData")]
         public MapImpl CurrentData
         {
@@ -573,26 +547,12 @@ namespace oscriptGUI
         /// <summary>
         /// Колонки таблицы.
         /// </summary>
-        /// <value>Массив <see cref="FormTableColumn"/></value>
+        /// <value>Массив <see cref="FormTreeColumn"/></value>
         [ContextProperty("Колонки", "Columns")]
         public ArrayImpl Columns
         {
             get { return _columns; }
         }
-
-        ///// <summary>
-        ///// Текущее поле в таблице.
-        ///// </summary>
-        //[ContextProperty("ТекущийЭлемент", "CurrentItem")]
-        //public IValue CurrentItem
-        //{
-        //    get
-        //    {
-        //        return ValueFactory.Create();
-        //        //DataGridView dr = (DataGridView)_item;
-        //        //return (FormTableColumn)_columns.Get(dr.CurrentCell.ColumnIndex);
-        //    }
-        //}
 
     }
 }
