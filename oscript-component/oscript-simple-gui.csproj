@@ -69,6 +69,7 @@
     <Compile Include="FormGroupType.cs" />
     <Compile Include="FormTable.cs" />
     <Compile Include="FormTableColumn.cs" />
+    <Compile Include="FormTreeRow.cs" />
     <Compile Include="FormTree\FormTreeColumn.cs" />
     <Compile Include="FormTree\FormTree.cs" />
     <Compile Include="IElementsContainer.cs" />

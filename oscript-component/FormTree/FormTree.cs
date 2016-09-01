@@ -3,6 +3,7 @@ using ScriptEngine.HostedScript.Library.ValueTree;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using TreeViewColumnsProject;
@@ -10,7 +11,7 @@ using TreeViewColumnsProject;
 namespace oscriptGUI
 {
     [ContextClass("ДеревоФормы", "FormTree")]
-    class FormTree: AutoContext<FormTree>, IFormElement
+    class FormTree : AutoContext<FormTree>, IFormElement
     {
         private Panel _panelMainContainer;
         private Panel _panelTitleContainer;
@@ -38,6 +39,8 @@ namespace oscriptGUI
         private DataTableProvider _dataTable;
         private ArrayImpl _columns = new ArrayImpl();
 
+        private Dictionary<TreeNode, ValueTreeRow> _nodesMap;
+
         public FormTree(Control parentCntrl)
         {
 
@@ -59,6 +62,8 @@ namespace oscriptGUI
 
             _dataTable = new DataTableProvider();
             _item = new TreeViewColumns();
+
+            _nodesMap = new Dictionary<TreeNode, ValueTreeRow>();
 
             //# Создаем контейнер для элемента формы
             _panelMainContainer = new Panel();
@@ -412,7 +417,7 @@ namespace oscriptGUI
         {
             foreach (ValueTreeRow VTRow in VTreeRowsCol)
             {
-                
+
                 string[] strData = new string[(int)_dataTable.SourceTree.Columns.Count()];
 
                 int i = -1;
@@ -421,10 +426,10 @@ namespace oscriptGUI
                     i++;
                     strData[i] = VTRow.Get(col).ToString();
                 }
-
+                
                 TreeNode treeNode = new TreeNode(VTRow.Get(0).ToString());
-
-                treeNode.Tag = strData;
+                _nodesMap.Add(treeNode, VTRow);
+                
                 if (parentNode == null)
                 {
                     _item.TreeView.Nodes.Add(treeNode);
@@ -452,6 +457,7 @@ namespace oscriptGUI
                 _item.Columns.Add(VTCol.Name);
             }
 
+            _nodesMap.Clear();
             addRow(ValTree.Rows, null);
 
         }
@@ -490,14 +496,16 @@ namespace oscriptGUI
         [ContextProperty("ТекущаяСтрока", "CurrentRow")]
         public int CurrentRow
         {
-            get {
+            get
+            {
                 if (_item.TreeView.SelectedNode == null)
                 {
                     return 0;
                 }
                 return _item.TreeView.SelectedNode.Index;
             }
-            set {
+            set
+            {
                 _item.TreeView.SelectedNode = _item.TreeView.Nodes[value];
             }
         }
@@ -524,7 +532,7 @@ namespace oscriptGUI
 
                 string[] vals = (string[])_item.TreeView.SelectedNode.Tag;
 
-                for (int col=1; col < Columns.Count(); col++)
+                for (int col = 1; col < Columns.Count(); col++)
                 {
                     data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(col)).Title), ValueFactory.Create(vals[col - 1]));
                 }
@@ -553,6 +561,21 @@ namespace oscriptGUI
         {
             get { return _columns; }
         }
+
+        [ContextProperty("ДанныеСтроки", "RowData")]
+        public ValueTreeRow RowData
+        {
+            get {
+                if (_item.TreeView.SelectedNode == null)
+                {
+                    Console.WriteLine("cur row null");
+                    return null;
+                }
+                Console.WriteLine(_nodesMap[_item.TreeView.SelectedNode]);
+                return _nodesMap[_item.TreeView.SelectedNode] ;
+            }
+        }
+
 
     }
 }
