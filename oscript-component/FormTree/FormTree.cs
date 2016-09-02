@@ -35,7 +35,6 @@ namespace oscriptGUI
         private IRuntimeContextInstance _scriptOnChoice;
         private string _methodOnChoice;
 
-        //private BindingSource _bindingSource;
         private DataTableProvider _dataTable;
         private ArrayImpl _columns = new ArrayImpl();
 
@@ -511,45 +510,12 @@ namespace oscriptGUI
         }
 
         /// <summary>
-        /// Представляет доступ к текущим данным (данным текущей строки).
-        /// Возвращает соответствие с текстовым представлением данных.
-        /// </summary>
-        /// <value>Соответствие</value>
-        [ContextProperty("ТекущиеДанные", "CurrentData")]
-        public MapImpl CurrentData
-        {
-            get
-            {
-                MapImpl data = new MapImpl();
-
-                if (_item.TreeView.SelectedNode == null)
-                {
-                    //Console.WriteLine("empty value");
-                    return data;
-                }
-
-                data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(0)).Title), ValueFactory.Create(_item.TreeView.SelectedNode.Text));
-
-                string[] vals = (string[])_item.TreeView.SelectedNode.Tag;
-
-                for (int col = 1; col < Columns.Count(); col++)
-                {
-                    data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(col)).Title), ValueFactory.Create(vals[col - 1]));
-                }
-
-                return data;
-            }
-        }
-
-        /// <summary>
         /// Обновляет данные в таблице.
         /// </summary>
         [ContextMethod("Обновить", "Refresh")]
         public void Refresh()
         {
             setData();
-            //_dataTable.Refresh();
-            //DataPath = _dataTable;
         }
 
         /// <summary>
@@ -562,16 +528,18 @@ namespace oscriptGUI
             get { return _columns; }
         }
 
-        [ContextProperty("ДанныеСтроки", "RowData")]
-        public ValueTreeRow RowData
+        /// <summary>
+        /// Представляет доступ к текущим данным (данным текущей строки).
+        /// </summary>
+        /// <value>СтрокаДереваЗначений</value>
+        [ContextProperty("ТекущиеДанные", "CurrentData")]
+        public ValueTreeRow CurrentData
         {
             get {
                 if (_item.TreeView.SelectedNode == null)
                 {
-                    Console.WriteLine("cur row null");
                     return null;
                 }
-                Console.WriteLine(_nodesMap[_item.TreeView.SelectedNode]);
                 return _nodesMap[_item.TreeView.SelectedNode] ;
             }
         }
