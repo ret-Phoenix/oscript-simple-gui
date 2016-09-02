@@ -3,6 +3,7 @@ using ScriptEngine.HostedScript.Library.ValueTree;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using TreeViewColumnsProject;
@@ -10,7 +11,7 @@ using TreeViewColumnsProject;
 namespace oscriptGUI
 {
     [ContextClass("ДеревоФормы", "FormTree")]
-    class FormTree: AutoContext<FormTree>, IFormElement
+    class FormTree : AutoContext<FormTree>, IFormElement
     {
         private Panel _panelMainContainer;
         private Panel _panelTitleContainer;
@@ -34,9 +35,10 @@ namespace oscriptGUI
         private IRuntimeContextInstance _scriptOnChoice;
         private string _methodOnChoice;
 
-        //private BindingSource _bindingSource;
         private DataTableProvider _dataTable;
         private ArrayImpl _columns = new ArrayImpl();
+
+        private Dictionary<TreeNode, ValueTreeRow> _nodesMap;
 
         public FormTree(Control parentCntrl)
         {
@@ -59,6 +61,8 @@ namespace oscriptGUI
 
             _dataTable = new DataTableProvider();
             _item = new TreeViewColumns();
+
+            _nodesMap = new Dictionary<TreeNode, ValueTreeRow>();
 
             //# Создаем контейнер для элемента формы
             _panelMainContainer = new Panel();
@@ -412,7 +416,7 @@ namespace oscriptGUI
         {
             foreach (ValueTreeRow VTRow in VTreeRowsCol)
             {
-                
+
                 string[] strData = new string[(int)_dataTable.SourceTree.Columns.Count()];
 
                 int i = -1;
@@ -421,10 +425,10 @@ namespace oscriptGUI
                     i++;
                     strData[i] = VTRow.Get(col).ToString();
                 }
-
+                
                 TreeNode treeNode = new TreeNode(VTRow.Get(0).ToString());
-
-                treeNode.Tag = strData;
+                _nodesMap.Add(treeNode, VTRow);
+                
                 if (parentNode == null)
                 {
                     _item.TreeView.Nodes.Add(treeNode);
@@ -452,6 +456,7 @@ namespace oscriptGUI
                 _item.Columns.Add(VTCol.Name);
             }
 
+            _nodesMap.Clear();
             addRow(ValTree.Rows, null);
 
         }
@@ -490,46 +495,17 @@ namespace oscriptGUI
         [ContextProperty("ТекущаяСтрока", "CurrentRow")]
         public int CurrentRow
         {
-            get {
+            get
+            {
                 if (_item.TreeView.SelectedNode == null)
                 {
                     return 0;
                 }
                 return _item.TreeView.SelectedNode.Index;
             }
-            set {
-                _item.TreeView.SelectedNode = _item.TreeView.Nodes[value];
-            }
-        }
-
-        /// <summary>
-        /// Представляет доступ к текущим данным (данным текущей строки).
-        /// Возвращает соответствие с текстовым представлением данных.
-        /// </summary>
-        /// <value>Соответствие</value>
-        [ContextProperty("ТекущиеДанные", "CurrentData")]
-        public MapImpl CurrentData
-        {
-            get
+            set
             {
-                MapImpl data = new MapImpl();
-
-                if (_item.TreeView.SelectedNode == null)
-                {
-                    //Console.WriteLine("empty value");
-                    return data;
-                }
-
-                data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(0)).Title), ValueFactory.Create(_item.TreeView.SelectedNode.Text));
-
-                string[] vals = (string[])_item.TreeView.SelectedNode.Tag;
-
-                for (int col=1; col < Columns.Count(); col++)
-                {
-                    data.Insert(ValueFactory.Create(((FormTreeColumn)Columns.Get(col)).Title), ValueFactory.Create(vals[col - 1]));
-                }
-
-                return data;
+                _item.TreeView.SelectedNode = _item.TreeView.Nodes[value];
             }
         }
 
@@ -540,8 +516,6 @@ namespace oscriptGUI
         public void Refresh()
         {
             setData();
-            //_dataTable.Refresh();
-            //DataPath = _dataTable;
         }
 
         /// <summary>
@@ -553,6 +527,23 @@ namespace oscriptGUI
         {
             get { return _columns; }
         }
+
+        /// <summary>
+        /// Представляет доступ к текущим данным (данным текущей строки).
+        /// </summary>
+        /// <value>СтрокаДереваЗначений</value>
+        [ContextProperty("ТекущиеДанные", "CurrentData")]
+        public ValueTreeRow CurrentData
+        {
+            get {
+                if (_item.TreeView.SelectedNode == null)
+                {
+                    return null;
+                }
+                return _nodesMap[_item.TreeView.SelectedNode] ;
+            }
+        }
+
 
     }
 }

@@ -172,7 +172,7 @@
 
 ## ДеревоФормы
 
-<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/master/docs/example-form-tree.png" alt="ТаблицаФормы">
+<img src="https://raw.githubusercontent.com/ret-Phoenix/oscript-simple-gui/master/docs/example-form-tree.png" alt="ДеревоФормы">
 
 
     ПровайдерТЗ = Новый Провайдер;
