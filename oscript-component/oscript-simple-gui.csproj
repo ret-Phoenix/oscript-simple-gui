@@ -81,6 +81,7 @@
     <Compile Include="Elements.cs" />
     <Compile Include="FormButton.cs" />
     <Compile Include="ManagedGUI.cs" />
+    <Compile Include="StandardDialogs.cs" />
     <Compile Include="TitleLocation.cs" />
     <Compile Include="FormTree\TreeViewColumns\TreeViewColumns.cs">
       <SubType>UserControl</SubType>
