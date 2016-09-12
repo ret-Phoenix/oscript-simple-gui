@@ -16,9 +16,7 @@ namespace oscriptGUI
 
     [ContextClass("СтандартныеДиалоги", "StandardDialogs")]
     public class StandardDialogs : AutoContext<StandardDialogs>
-    //    [GlobalContext(Category = "Процедуры и функции интерактивной работы")]
-    //    public class StandardDialogs : GlobalContextBase<StandardDialogs>
-    {
+     {
         /// <summary>
         /// Отображает диалог с предупреждением.
         /// </summary>
@@ -31,11 +29,6 @@ namespace oscriptGUI
             MessageBoxWithTimeOut.Show(messageText, timeOut, title);
         }
 
-        /*    public static IAttachableContext CreateInstance()
-            {
-                return new StandardDialogs();
-            }*/
-
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
         {
@@ -47,9 +40,7 @@ namespace oscriptGUI
     public class MessageBoxWithTimeOut
     {
         System.Threading.Timer _timeoutTimer;
-        //ManagedForm form;
         Form _form;
-        //Control formControl;
         Button _okButton;
         Label _msgLabel;
 
@@ -57,13 +48,14 @@ namespace oscriptGUI
         {
             _form = new Form();
 
-            //form = new ManagedForm();
-            //formControl = form.getControl();
             _form.Height = 140;
             _form.Width = 200;
             _form.Text = title;
             _form.SizeChanged += FormSizeChanged;
             _form.StartPosition = FormStartPosition.CenterScreen;
+            _form.MinimumSize = new Size(200, 140);
+            _form.MaximizeBox = false;
+            _form.MinimizeBox = false;
 
             // Label
             _msgLabel = new Label();
