@@ -180,10 +180,16 @@ namespace oscriptGUI
             _form.ControlBox = false;
             _form.FormBorderStyle = FormBorderStyle.FixedDialog;
 
+            TableLayoutPanel CommonPanel = new TableLayoutPanel();
+            CommonPanel.ColumnCount = 1;
+            CommonPanel.RowCount = 2;
+            CommonPanel.AutoSize = true;
+            _form.Controls.Add(CommonPanel);
+
             // Label
             _queryLabel = new Label();
             _queryLabel.Text = queryText;
-            _queryLabel.Padding = new Padding(20, 20, 20, 20);
+            _queryLabel.Padding = new Padding(10, 10, 10, 10);
             _queryLabel.TextAlign = ContentAlignment.MiddleCenter;
             _queryLabel.AutoSize = true;
 
@@ -191,8 +197,9 @@ namespace oscriptGUI
             panel.Dock = DockStyle.Top;
             panel.AutoSize = true;
             panel.Controls.Add(_queryLabel);
-            _form.Controls.Add(panel);
+            CommonPanel.Controls.Add(panel,0,0);
             panel.BringToFront();
+            panel.Anchor = AnchorStyles.None;
 
             // Buttons
 
@@ -204,11 +211,12 @@ namespace oscriptGUI
             _buttonsPanel.ColumnStyles.Clear();
 
             _buttonsPanel.Height = 20;
+            _buttonsPanel.Padding = new Padding(20,0,20,0);
             _buttonsPanel.Dock = DockStyle.Bottom;
             _buttonsPanel.AutoSize = true;
             _buttonsPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-            _form.Controls.Add(_buttonsPanel);
+            _buttonsPanel.Anchor = AnchorStyles.None;
+            CommonPanel.Controls.Add(_buttonsPanel,0,1);
             _buttonsPanel.BringToFront();
 
             _buttonsPanel.RowCount = 1;
@@ -269,19 +277,11 @@ namespace oscriptGUI
                 }
             }
 
-
-            foreach(var c in _formButtons)
-            {
-                if (timeOut > 0 && c.Value == _timeOutButton)
-                    _buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (100 / _buttonsPanel.ColumnCount) + 20));
-                else
-                    _buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / _buttonsPanel.ColumnCount));
-            }
-
             using (Graphics g = _form.CreateGraphics())
             {
                 SizeF size = g.MeasureString(queryText, _queryLabel.Font);
-                _form.Width = Math.Max((int)Math.Ceiling(size.Width) + _queryLabel.Padding.Horizontal, _formButtons.Count * (BUTTON_MIN_WIDTH + BUTTON_PADDING*2) + BUTTON_MIN_WIDTH);
+                // С механизмом выравнивания элементов надо что-то делать, слишком много химии и волшебных чисел
+                _form.Width = Math.Max((int)Math.Ceiling(size.Width) + _queryLabel.Padding.Horizontal, _formButtons.Count * (BUTTON_MIN_WIDTH + BUTTON_PADDING*2) + (timeOut > 0 ? BUTTON_MIN_WIDTH/2 + 60: BUTTON_MIN_WIDTH / 2));
             }
 
             if (_timeOut != 0)
@@ -311,9 +311,9 @@ namespace oscriptGUI
             button.Click += buttonClick;
             button.Text = text;
             button.Name = name;
-            button.MinimumSize = new Size(BUTTON_MIN_WIDTH, 21);
+            button.MinimumSize = new Size(BUTTON_MIN_WIDTH, 20);
             button.AutoSize = true;
-            button.Anchor = AnchorStyles.Left| AnchorStyles.Right;
+            button.Anchor = AnchorStyles.None;
             button.Margin = new Padding(BUTTON_PADDING, 20, BUTTON_PADDING, 20);
 
             panel.Controls.Add(button, _formButtons.Count, 0);
@@ -322,7 +322,7 @@ namespace oscriptGUI
             return button.Width + button.Margin.Horizontal;
         }
 
-        public void buttonClick(object sender, EventArgs e)
+        private void buttonClick(object sender, EventArgs e)
         {
             answer = GlobalsManager.GetEnum<DialogReturnCodeEnum>()[((Button) sender).Name];
             _form.Close();
