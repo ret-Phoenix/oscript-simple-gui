@@ -48,21 +48,23 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="ScriptEngine">
-      <HintPath>..\packages\OneScript.1.0.13\lib\net40\ScriptEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+      <HintPath>..\packages\1.0.15\ScriptEngine.dll</HintPath>
     </Reference>
     <Reference Include="ScriptEngine.HostedScript">
-      <HintPath>..\packages\OneScript.StandardLibrary.1.0.13\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
+      <HintPath>..\packages\1.0.15\ScriptEngine.HostedScript.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DialogReturnCodeEnum.cs" />
+    <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />
     <Compile Include="FormControlDockStyle.cs" />
     <Compile Include="FormFieldType.cs" />
@@ -95,4 +97,8 @@
   <ItemGroup>
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) D:\bin\OneScript\lib\simplegui\bin
+copy $(TargetPath) D:\dev\OneScript\OneScript\src\oscript\bin\lib\simplegui\bin</PostBuildEvent>
+  </PropertyGroup>
 </Project>
