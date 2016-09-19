@@ -17,7 +17,7 @@ namespace oscriptGUI
     /// Содержит коллекцию подчиненных элементов.
     /// </summary>
     [ContextClass("Элементы", "Elements")]
-    public class Elements : AutoContext<Elements>, ICollectionContext
+    public class Elements : AutoContext<Elements>, ICollectionContext, IEnumerable<IValue> 
     {
         private Control _frm;
         private IValue _parent;
@@ -58,7 +58,7 @@ namespace oscriptGUI
         #endregion
 
         #region IEnumerable Members
-
+        
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
