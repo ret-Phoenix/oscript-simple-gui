@@ -14,9 +14,8 @@ using System.Collections.Generic;
 
 namespace oscriptGUI
 {
-
-    [ContextClass("СтандартныеДиалоги", "StandardDialogs")]
-    public class StandardDialogs : AutoContext<StandardDialogs>
+    [GlobalContext(Category = "Процедуры и функции интерактивной работы")]
+    public class StandardDialogs : GlobalContextBase<StandardDialogs>
      {
         /// <summary>
         /// Отображает диалог с предупреждением.
@@ -51,8 +50,7 @@ namespace oscriptGUI
             return QueryBoxWithTimeOut.Show(queryText, buttons, timeOut, defaultButton, title, timeOutButton);
             }
 
-        [ScriptConstructor]
-        public static IRuntimeContextInstance Constructor()
+        public static IAttachableContext CreateInstance()
         {
             return new StandardDialogs();
         }
@@ -144,6 +142,8 @@ namespace oscriptGUI
         }
     }
 
+    // Класс для отображения окна диалога с вопросом с возможностью указания таймаута
+    //
     public class QueryBoxWithTimeOut
     {
         static int BUTTON_MIN_WIDTH = 100;
