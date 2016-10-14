@@ -63,6 +63,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileDialogMode.cs" />
     <Compile Include="DialogReturnCodeEnum.cs" />
     <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Elements.cs" />
     <Compile Include="FormButton.cs" />
     <Compile Include="ManagedGUI.cs" />
+    <Compile Include="FileDialog.cs" />
     <Compile Include="StandardDialogs.cs" />
     <Compile Include="TitleLocation.cs" />
     <Compile Include="FormTree\TreeViewColumns\TreeViewColumns.cs">
@@ -98,7 +100,7 @@
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) D:\bin\OneScript\lib\simplegui\bin
-copy $(TargetPath) D:\dev\OneScript\OneScript\src\oscript\bin\lib\simplegui\bin</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) C:\Program Files (x86)\OneScript\lib\simplegui\bin
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
