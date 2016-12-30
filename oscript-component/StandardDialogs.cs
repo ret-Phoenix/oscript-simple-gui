@@ -220,7 +220,7 @@ namespace oscriptGUI
             _buttonsPanel.BringToFront();
 
             _buttonsPanel.RowCount = 1;
-            switch (buttons.UnderlyingObject)
+            switch ((InnerQuestionDialogModeEnum)buttons.UnderlyingObject)
             {
                 case InnerQuestionDialogModeEnum.YesNo:
                     AddButton(_buttonsPanel, "Yes", "Да", InnerDialogReturnCodeEnum.Yes);

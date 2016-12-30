@@ -27,7 +27,7 @@ namespace oscriptGUI
         /// <param name="mode">Режим работы.</param>
         public FileDialog(CLREnumValueWrapper<InnerFileDialogModeEnum> mode)
         {
-            _mode = mode.UnderlyingObject;
+            _mode = (InnerFileDialogModeEnum)mode.UnderlyingObject;
             Multiselect = false;
             Preview = true;
 

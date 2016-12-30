@@ -56,8 +56,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ScriptEngine">
-      <HintPath>..\packages\OneScript.1.0.15\lib\ScriptEngine.dll</HintPath>
+    <Reference Include="ScriptEngine, Version=1.0.15.260, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.1.0.15\lib\net40\ScriptEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ScriptEngine.HostedScript, Version=1.0.15.260, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OneScript.StandardLibrary.1.0.15\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
@@ -106,7 +107,7 @@
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) C:\Program Files (x86)\OneScript\lib\simplegui\bin
+    <PostBuildEvent>
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
