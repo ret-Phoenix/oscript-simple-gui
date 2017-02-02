@@ -185,13 +185,6 @@
     Поле1.Закрепление = 5;
     Поле1.ТекущаяСтрока = 1;
 
-
-# Примеры использования
-- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/examples
-- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/bin/src
-- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/tests
-- http://infostart.ru/public/540284/
-
 ## Процедуры и функции интерактивной работы      
 ### Предупреждение (DoMessageBox)   
 
@@ -217,3 +210,11 @@
 Порядок работы с объектом, аналогичен реализованному в платформе 1С: Предприятие.   
 В текущей версии не реализован метод **Показать**.   
 
+
+
+
+# Примеры использования
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/examples
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/bin/src
+- https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/tests
+- http://infostart.ru/public/540284/
