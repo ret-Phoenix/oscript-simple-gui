@@ -132,7 +132,7 @@ namespace oscriptGUI
 
         void OnTimerElapsed(object state)
         {
-            _form.Close();
+            _form.BeginInvoke(new Action(()=>_form.Close()));
             _timeoutTimer.Dispose();
         }
 
