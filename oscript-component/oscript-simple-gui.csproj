@@ -6,7 +6,7 @@
     <ProjectGuid>{EA173D06-CCD2-45D5-A263-DC866289517A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>oscriptGUI</RootNamespace>
-    <AssemblyName>oscript-simple-gui</AssemblyName>
+    <AssemblyName>oscript-gui</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>bin\Release\oscript-simple-gui.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\oscript-gui.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'oscript-bin|AnyCPU'">
     <OutputPath>..\..\..\portable\OneScript\bin\</OutputPath>
@@ -56,12 +56,12 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ScriptEngine, Version=1.0.15.260, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.1.0.15\lib\net40\ScriptEngine.dll</HintPath>
+    <Reference Include="ScriptEngine, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.1.0.16\lib\net40\ScriptEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ScriptEngine.HostedScript, Version=1.0.15.260, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.StandardLibrary.1.0.15\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
+    <Reference Include="ScriptEngine.HostedScript, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.StandardLibrary.1.0.16\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -90,7 +90,6 @@
     <Compile Include="ManagedForm.cs" />
     <Compile Include="Elements.cs" />
     <Compile Include="FormButton.cs" />
-    <Compile Include="ManagedGUI.cs" />
     <Compile Include="FileDialog.cs" />
     <Compile Include="StandardDialogs.cs" />
     <Compile Include="TitleLocation.cs" />
@@ -107,7 +106,6 @@
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-</PostBuildEvent>
+    <PostBuildEvent>copy oscript-gui.dll c:\Users\ushakov\Documents\portable\OneScript\lib\gui\bin\ /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

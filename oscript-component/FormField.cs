@@ -439,17 +439,20 @@ namespace oscriptGUI
                 if (this._formFieldType == (int)EnumFormFieldType.ListBox)
                 {
                     this._choiceList = value;
+                    ((ListBox)this._item).BeginUpdate();
                     ((ListBox)this._item).DataSource = new BindingSource(ChoiceList, null);
                     ((ListBox)this._item).DisplayMember = "Key";
                     ((ListBox)this._item).ValueMember = "Value";
-
+                    ((ListBox)this._item).EndUpdate();
                 }
                 else
                 {
                     this._choiceList = value;
+                    ((ComboBox)this._item).BeginUpdate();
                     ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
                     ((ComboBox)this._item).DisplayMember = "Key";
                     ((ComboBox)this._item).ValueMember = "Value";
+                    ((ComboBox)this._item).EndUpdate();
                 }
             }
         }
