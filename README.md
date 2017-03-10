@@ -185,10 +185,36 @@
     Поле1.Закрепление = 5;
     Поле1.ТекущаяСтрока = 1;
 
+## Процедуры и функции интерактивной работы      
+### Предупреждение (DoMessageBox)   
+
+<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/master/docs/MessageBox.png" alt="Предупреждение">   
+
+Выводит на экран окно предупреждения.   
+Порядок вызова аналогичен реализованному в платформе 1С: Предприятие:
+<pre>Предупреждение(<ТекстПредупреждения>, <Таймаут>, <Заголовок>)</pre>   
+
+### Вопрос (DoQueryBox)    
+
+<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/master/docs/QueryBox.png" alt="Вопрос">   
+
+Выводит на экран окно вопроса.   
+Порядок вызова аналогичен реализованному в платформе 1С: Предприятие:   
+<pre>Вопрос(<ТекстВопроса>, <Кнопки>, <Таймаут>, <КнопкаПоУмолчанию>, <Заголовок>, <КнопкаТаймаута>)</pre>   
+
+## Диалог выбора файла   
+
+<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/master/docs/FileDialog.png" alt="Диалог выбора файла">  
+
+Компонента реализует объект **ДиалогВыбораФайла (FileDialog)**, предназначенный для работы с диалогом специального вида для открытия файла или нескольких файлов, сохранения файла или выбора каталога.   
+Порядок работы с объектом аналогичен реализованному в платформе 1С: Предприятие.   
+В текущей версии не реализован метод **Показать**.   
+
+
+
 
 # Примеры использования
 - https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/examples
 - https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/bin/src
 - https://github.com/ret-Phoenix/oscript-simple-gui/tree/master/tests
 - http://infostart.ru/public/540284/
-
