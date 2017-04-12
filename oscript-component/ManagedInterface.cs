@@ -15,6 +15,7 @@ namespace oscriptGUI
         private FormFieldType _formFieldType;
         private FormGroupType _formGroupType;
         private TitleLocation _titleLocation;
+        private StandardDialogs _standardDialogs;
         private FormControlDockStyle _formControlDockStyle;
 
 
@@ -25,6 +26,7 @@ namespace oscriptGUI
             this._formGroupType = new FormGroupType();
             this._titleLocation = new TitleLocation();
             this._formControlDockStyle = new FormControlDockStyle();
+            this._standardDialogs = new StandardDialogs();
 
         }
 
@@ -75,6 +77,16 @@ namespace oscriptGUI
         public IValue TitleLocation
         {
             get { return _titleLocation; }
+        }
+
+        /// <summary>
+        /// Системное перечисление.
+        /// </summary>
+        /// <value>ПоложениеЗаголовка</value>
+        [ContextProperty("СтандартныеДиалоги", "StandardDialogs")]
+        public IValue StandardDialogs
+        {
+            get { return _standardDialogs; }
         }
 
         // можем переопределить строковое отображение наших объектов

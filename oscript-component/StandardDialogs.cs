@@ -14,10 +14,10 @@ using System.Collections.Generic;
 
 namespace oscriptGUI
 {
-    // [GlobalContext(Category = "Процедуры и функции интерактивной работы")]
+    //[GlobalContext(Category = "Процедуры и функции интерактивной работы")]
     [ContextClass("СтандартныеДиалоги", "StandardDialogs")]
     public class StandardDialogs : AutoContext<StandardDialogs> //GlobalContextBase<StandardDialogs>
-     {
+    {
         /// <summary>
         /// Отображает диалог с предупреждением.
         /// </summary>
