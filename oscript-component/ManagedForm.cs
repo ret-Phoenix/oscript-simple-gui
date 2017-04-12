@@ -14,7 +14,7 @@ namespace oscriptGUI
     [ContextClass("Форма", "Form")]
     public class ManagedForm : AutoContext<ManagedForm>, IFormElement, IElementsContainer
     {
-        private string _version;
+        //private string _version;
         private Form _form;
         private Elements _elements;
         private FormFieldType _formFieldType;
@@ -29,13 +29,13 @@ namespace oscriptGUI
         private IRuntimeContextInstance _thisScriptOnClose;
         private string _methodNameOnClose;
 
-        private IRuntimeContextInstance _thisScriptOnCreated;
-        private string _methodNameOnCreated;
+        //private IRuntimeContextInstance _thisScriptOnCreated;
+        //private string _methodNameOnCreated;
 
 
         public ManagedForm()
         {
-            this._version = "0.0.0.1";
+            //this._version = "0.0.0.1";
             this._form = new Form();
             this._form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this._form.MinimumSize = new Size(50, 50);
@@ -52,8 +52,8 @@ namespace oscriptGUI
             this._methodNameOnClose = "";
             this._thisScriptOnClose = null;
 
-            this._methodNameOnCreated = "";
-            this._thisScriptOnCreated = null;
+            //this._methodNameOnCreated = "";
+            //this._thisScriptOnCreated = null;
 
         }
 

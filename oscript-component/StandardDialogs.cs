@@ -14,9 +14,10 @@ using System.Collections.Generic;
 
 namespace oscriptGUI
 {
-    [GlobalContext(Category = "Процедуры и функции интерактивной работы")]
-    public class StandardDialogs : GlobalContextBase<StandardDialogs>
-     {
+    //[GlobalContext(Category = "Процедуры и функции интерактивной работы")]
+    [ContextClass("СтандартныеДиалоги", "StandardDialogs")]
+    public class StandardDialogs : AutoContext<StandardDialogs> //GlobalContextBase<StandardDialogs>
+    {
         /// <summary>
         /// Отображает диалог с предупреждением.
         /// </summary>
@@ -50,10 +51,10 @@ namespace oscriptGUI
             return QueryBoxWithTimeOut.Show(queryText, buttons, timeOut, defaultButton, title, timeOutButton);
             }
 
-        public static IAttachableContext CreateInstance()
-        {
-            return new StandardDialogs();
-        }
+        //public static IAttachableContext CreateInstance()
+        //{
+        //    return new StandardDialogs();
+        //}
 
     }
 
