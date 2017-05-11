@@ -104,6 +104,7 @@
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy oscript-gui.dll c:\Users\ushakov\Documents\portable\OneScript\lib\gui\bin\ /y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
