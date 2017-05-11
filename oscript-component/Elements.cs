@@ -1,4 +1,7 @@
-﻿/*
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
+/*
  * Создано в SharpDevelop.
  * Пользователь: ret-Phoenix
  * Дата: 23.07.2016
@@ -19,7 +22,7 @@ namespace oscriptGUI
     [ContextClass("Элементы", "Elements")]
     public class Elements : AutoContext<Elements>, ICollectionContext, IEnumerable<IValue> 
     {
-        private Control _frm;
+        private readonly Control _frm;
         private IValue _parent;
 
         //private List<FormElement> _elements;

@@ -10,7 +10,7 @@ namespace oscriptGUI
     /// Провайдер для данных ТаблицаФормы. Пока что поддерживается только ТаблицаЗначений.
     /// </summary>
     [ContextClass("Провайдер", "Provider")]
-    class DataTableProvider : AutoContext<DataTableProvider>
+    public class DataTableProvider : AutoContext<DataTableProvider>
     {
         private ValueTable _valueTable;
         private DataTable _dataTable;
