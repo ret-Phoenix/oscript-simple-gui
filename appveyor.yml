@@ -25,8 +25,8 @@ install:
 
 build:
   verbosity: minimal
-test_script:
-- ps: nunit3-console --x86 NUnitTests\bin\Debug\NUnitTests.dll
+# test_script:
+# - ps: nunit3-console --x86 NUnitTests\bin\Debug\NUnitTests.dll
 
 after_build:
 # Если в компоненте несколько DLL, нужно указать каждую.
