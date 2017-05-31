@@ -11,7 +11,7 @@ namespace oscriptGUI
     }
 
     [ContextClass("ВидГруппыФормы", "FormGroupType")]
-    class FormGroupType : AutoContext<FormGroupType>
+    public class FormGroupType : AutoContext<FormGroupType>
     {
         [ContextProperty("ОбычнаяГруппа", "UsualGroup")]
         public int UsualGroup

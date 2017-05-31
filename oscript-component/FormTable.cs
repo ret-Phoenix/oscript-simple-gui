@@ -15,7 +15,7 @@ namespace oscriptGUI
     /// Элемент управляемой формы, предназначенный для отображения реквизитов формы табличных типов.
     /// </summary>
     [ContextClass("ТаблицаФормы", "FormTable")]
-    class FormTable : AutoContext<FormTable>, IFormElement
+    public class FormTable : AutoContext<FormTable>, IFormElement
     {
         private Panel _panelMainContainer;
         private Panel _panelTitleContainer;

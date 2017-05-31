@@ -5,7 +5,7 @@ using ScriptEngine.Machine.Contexts;
 namespace oscriptGUI
 {
     [SystemEnum("КодВозвратаДиалога", "DialogReturnCode")]
-   public class DialogReturnCodeEnum : EnumerationContext
+    public class DialogReturnCodeEnum : EnumerationContext
     {
         private DialogReturnCodeEnum(TypeDescriptor typeRepresentation, TypeDescriptor valuesType)
             : base(typeRepresentation, valuesType)

@@ -12,7 +12,7 @@ namespace oscriptGUI
     /// Колонка элемента ТаблицаФормы
     /// </summary>
     [ContextClass("КолонкаТаблицыФормы", "FormTableColumn")]
-    class FormTableColumn : AutoContext<FormTableColumn>
+    public class FormTableColumn : AutoContext<FormTableColumn>
     {
         private DataGridView _grid;
         private int _pos;

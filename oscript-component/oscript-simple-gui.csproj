@@ -28,41 +28,16 @@
     <ConsolePause>false</ConsolePause>
     <DocumentationFile>bin\Release\oscript-gui.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'oscript-bin|AnyCPU'">
-    <OutputPath>..\..\..\portable\OneScript\bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'GitHub|AnyCPU' ">
-    <OutputPath>..\releases\</OutputPath>
-    <DocumentationFile>bin\Release\oscript-simple-gui.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ScriptEngine, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OneScript.1.0.16\lib\net40\ScriptEngine.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="ScriptEngine.HostedScript, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OneScript.StandardLibrary.1.0.16\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -72,6 +47,7 @@
   <ItemGroup>
     <Compile Include="FileDialogMode.cs" />
     <Compile Include="DialogReturnCodeEnum.cs" />
+    <Compile Include="FormStartPositionEnum.cs" />
     <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />
     <Compile Include="FormControlDockStyle.cs" />
@@ -100,12 +76,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy oscript-gui.dll c:\Users\ushakov\Documents\portable\OneScript\lib\gui\bin\ /y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -5,7 +5,7 @@ using ScriptEngine.Machine.Contexts;
 namespace oscriptGUI
 {
     [SystemEnum("РежимДиалогаВыбораФайла", "FileDialogMode")]
-   public class FileDialogModeEnum : EnumerationContext
+    public class FileDialogModeEnum : EnumerationContext
     {
         private FileDialogModeEnum(TypeDescriptor typeRepresentation, TypeDescriptor valuesType)
             : base(typeRepresentation, valuesType)

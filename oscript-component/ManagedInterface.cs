@@ -1,4 +1,7 @@
-﻿using ScriptEngine.Machine.Contexts;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
+using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
 
 
@@ -8,15 +11,15 @@ namespace oscriptGUI
     /// Фабрика для работы с формами
     /// </summary>
     [ContextClass("УправляемыйИнтерфейс", "ManagedInterface")]
-    class ManagedInterface : AutoContext<ManagedInterface>
+    public class ManagedInterface : AutoContext<ManagedInterface>
     {
-        private string _version;
+        private readonly string _version;
 
-        private FormFieldType _formFieldType;
-        private FormGroupType _formGroupType;
-        private TitleLocation _titleLocation;
-        private StandardDialogs _standardDialogs;
-        private FormControlDockStyle _formControlDockStyle;
+        private readonly FormFieldType _formFieldType;
+        private readonly FormGroupType _formGroupType;
+        private readonly TitleLocation _titleLocation;
+        private readonly StandardDialogs _standardDialogs;
+        private readonly FormControlDockStyle _formControlDockStyle;
 
 
         public ManagedInterface()

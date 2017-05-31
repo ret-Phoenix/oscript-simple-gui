@@ -4,8 +4,11 @@ using ScriptEngine.Machine.Contexts;
 
 namespace oscriptGUI
 {
+    /// <summary>
+    /// Режимы диалогов
+    /// </summary>
     [SystemEnum("РежимДиалогаВопрос", "QuestionDialogMode")]
-   public class QuestionDialogModeEnum : EnumerationContext
+    public class QuestionDialogModeEnum : EnumerationContext
     {
         private QuestionDialogModeEnum(TypeDescriptor typeRepresentation, TypeDescriptor valuesType)
             : base(typeRepresentation, valuesType)
@@ -13,6 +16,10 @@ namespace oscriptGUI
 
         }
 
+        /// <summary>
+        /// Инициализация
+        /// </summary>
+        /// <returns></returns>
         public static QuestionDialogModeEnum CreateInstance()
         {
             QuestionDialogModeEnum instance;
@@ -32,13 +39,34 @@ namespace oscriptGUI
         }
     }
 
+    /// <summary>
+    /// Режимы кнопок
+    /// </summary>
     public enum InnerQuestionDialogModeEnum
     {
+        /// <summary>
+        /// Кнопки: Да + Нет
+        /// </summary>
         YesNo,
+        /// <summary>
+        /// Кнопки: Да + Нет + Отмена
+        /// </summary>
         YesNoCancel,
+        /// <summary>
+        /// Кнопки: Ок
+        /// </summary>
         OK,
+        /// <summary>
+        /// Кнопки: Ок + Отмена
+        /// </summary>
         OKCancel,
+        /// <summary>
+        /// Кнопки: Повторить + Отмена
+        /// </summary>
         RetryCancel,
+        /// <summary>
+        /// Кнопки: Отменить + Повторить + Игнорировать
+        /// </summary>
         AbortRetryIgnore
     }
 }
