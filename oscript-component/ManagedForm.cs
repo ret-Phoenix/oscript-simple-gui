@@ -21,7 +21,11 @@ namespace oscriptGUI
         private FormGroupType _formGroupType;
         private TitleLocation _titleLocation;
 
+        private FormStartPositionEnum _formStartPosition;
+        private WindowStateEnum _windowStateEnum;
+
         private string _name;
+        private string _icon;
 
         private IRuntimeContextInstance _thisScriptOnShown;
         private string _methodNameOnShown;
@@ -190,7 +194,7 @@ namespace oscriptGUI
         public bool AutoSize
         {
             get { return _form.AutoSize; }
-            set { _form.AutoSize = value;  }
+            set { _form.AutoSize = value; }
         }
 
         /// <summary>
@@ -213,6 +217,46 @@ namespace oscriptGUI
             set { _form.Width = value; }
         }
 
+        #region ПоложениеОкна
+        /// <summary>
+        /// Положение слева от края экрана
+        /// </summary>
+        [ContextProperty("Лево", "Left")]
+        public int Left
+        {
+            get { return _form.Left; }
+            set { _form.Left = value; }
+        }
+
+        /// <summary>
+        /// Положение справа от края экрана
+        /// </summary>
+        [ContextProperty("Право", "Right")]
+        public int Right
+        {
+            get { return _form.Right; }
+        }
+
+        /// <summary>
+        /// Положение сверху от края экрана
+        /// </summary>
+        [ContextProperty("Верх", "Top")]
+        public int Top
+        {
+            get { return _form.Top; }
+            set { _form.Top = value; }
+        }
+
+        /// <summary>
+        /// Положение снизу от края экрана
+        /// </summary>
+        [ContextProperty("Низ", "Bottom")]
+        public int Bottom
+        {
+            get { return _form.Bottom; }
+        }
+
+        #endregion ПоложениеОкна
 
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
@@ -349,9 +393,79 @@ namespace oscriptGUI
         public IValue CurrentItem
         {
             //get { return 0; }
-            set { setCurrentItem(value);}
+            set { setCurrentItem(value); }
         }
 
+
+        /// <summary>
+        /// Стартовая позиция окна при открытии
+        /// 
+        /// ПозицияОкнаПриОткрытии:
+        /// - ЦентрЭкрана
+        /// - Ручное
+        /// </summary>
+        /// <example>
+        /// Форма.СтартоваяПозиция = ПозицияОкнаПриОткрытии.Ручное;
+        /// </example>
+        /// <value>ПозицияОкнаПриОткрытии</value>
+        [ContextProperty("СтартоваяПозиция", "StartPosition")]
+        public IValue StartPosition
+        {
+            get { return _formStartPosition; }
+            set
+            {
+                switch (value.AsString())
+                {
+                    //case "ЦентрРодителя": { _form.StartPosition = FormStartPosition.CenterParent; break; }
+                    case "ЦентрЭкрана": { _form.StartPosition = FormStartPosition.CenterScreen; break; }
+                    case "Ручное": { _form.StartPosition = FormStartPosition.Manual; break; }
+                    default: { _form.StartPosition = FormStartPosition.CenterScreen; break; }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Файл с иконкой для окна. Допускается только *.ico
+        /// </summary>
+        [ContextProperty("Иконка", "Icon")]
+        public string Icon
+        {
+            get { return _icon; }
+            set {
+                this._icon = value;
+                _form.Icon = new Icon(value);
+            }
+        }
+
+        //[ContextProperty("ПоверхОкон", "OnTop")]
+        //public bool OnTop { get { return _form.TopMost; } set { _form.TopMost = value; } }
+
+        /// <summary>
+        /// Состояние окна при открытии
+        /// 
+        /// СостояниеОкна:
+        /// - Развернутое
+        /// - Свернутое
+        /// - Обычное
+        /// </summary>
+        /// <example>
+        /// Форма.СостояниеОкна = СостояниеОкна.Обычное
+        /// </example>
+        [ContextProperty("СостояниеОкна", "WindowState")]
+        public IValue WindowState
+        {
+            get { return _windowStateEnum; }
+            set
+            {
+                switch (value.AsString())
+                {
+                    case "Развернутое": { _form.WindowState = FormWindowState.Maximized; break; }
+                    case "Свернутое": { _form.WindowState = FormWindowState.Minimized; break; }
+                    case "Обычное": { _form.WindowState = FormWindowState.Normal; break; }
+                    default: { _form.WindowState = FormWindowState.Normal; break; }
+                }
+            }
+        }
 
     }
 }

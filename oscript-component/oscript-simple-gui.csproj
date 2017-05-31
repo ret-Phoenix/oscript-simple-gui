@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="FileDialogMode.cs" />
     <Compile Include="DialogReturnCodeEnum.cs" />
+    <Compile Include="FormStartPositionEnum.cs" />
     <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />
     <Compile Include="FormControlDockStyle.cs" />

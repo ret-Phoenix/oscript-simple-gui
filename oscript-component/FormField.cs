@@ -44,6 +44,11 @@ namespace oscriptGUI
 
         private int _formFieldType;
 
+        private int _keyCodeDown;
+        private bool _AltDown = false;
+        private bool _CtrlDown = false;
+        private bool _ShiftDown = false;
+
         private IValue _value;
 
         private FormFieldType FieldType;
@@ -57,6 +62,10 @@ namespace oscriptGUI
 
         private IRuntimeContextInstance _scriptOnChoice;
         private string _methodOnChoice;
+
+        private IRuntimeContextInstance _scriptOnKeyDown;
+        private string _methodOnKeyDown;
+
 
         public FormField(Control parentCntrl)
         {
@@ -83,6 +92,10 @@ namespace oscriptGUI
 
             this._methodOnChoice = "";
             this._scriptOnChoice = null;
+
+            this._methodOnKeyDown = "";
+            this._scriptOnKeyDown = null;
+
 
             //# По умолчанию поле ввода (обычный TextBox)
             this._formFieldType = 0;
@@ -530,12 +543,24 @@ namespace oscriptGUI
             }
         }
 
+        void FormFieldOnKeyDown(object sender, KeyEventArgs e)
+        {
+            _keyCodeDown = (int)e.KeyCode;
+
+            _AltDown = e.Alt;
+            _CtrlDown= e.Control;
+            _ShiftDown = e.Shift;
+
+            runAction(this._scriptOnKeyDown, this._methodOnKeyDown);
+        }
+
         /// <summary>
         /// Установить обработчик события
         /// Возможные события:
         /// - ПриИзменении - Обработка события изменения значения
         /// - ПриВыборе - При нажатии Enter
         /// - ПриДвойномКлике - Обработка двойного клика (Событие только для ListBox)
+        /// - ПриНажатииНаКнопку - При нажатии клавиши (KeyDown)
         /// </summary>
         /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
         /// <param name="eventName">Имя обрабатываемого события.</param>
@@ -619,6 +644,14 @@ namespace oscriptGUI
                 this._scriptOnChoice = contex;
                 this._methodOnChoice = methodName;
             }
+            else if (eventName == "ПриНажатииНаКнопку")
+            {
+                (_item).KeyDown -= FormFieldOnKeyDown;
+                (_item).KeyDown += FormFieldOnKeyDown;
+
+                this._scriptOnKeyDown = contex;
+                this._methodOnKeyDown = methodName;
+            }
 
         }
 
@@ -647,8 +680,11 @@ namespace oscriptGUI
             {
                 return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
             }
+            else if (eventName == "ПриНажатииНаКнопку")
+            {
+                return "" + this._scriptOnKeyDown.ToString() + ":" + this._methodOnKeyDown;
+            }
             return "";
-            //return "GetAction: Action not supported - " + eventName;
         }
 
         /// <summary>
@@ -714,6 +750,43 @@ namespace oscriptGUI
                 
             }
         }
+
+        /// <summary>
+        /// Код нажатой клавиши
+        /// </summary>
+        [ContextProperty("КодНажатойКлавиши", "KeyCodeDown")]
+        public int KeyCodeDown
+        {
+            get { return _keyCodeDown; }
+        }
+
+        /// <summary>
+        /// Нажат альт
+        /// </summary>
+        [ContextProperty("НажатАльт", "AltDown")]
+        public bool AltDown
+        {
+            get { return _AltDown; }
+        }
+
+        /// <summary>
+        /// Нажат контрол
+        /// </summary>
+        [ContextProperty("НажатКонтрол", "CtrlDown")]
+        public bool CtrlDown
+        {
+            get { return _CtrlDown; }
+        }
+
+        /// <summary>
+        /// Нажат шифт
+        /// </summary>
+        [ContextProperty("НажатШифт", "ShiftDown")]
+        public bool ShiftDown
+        {
+            get { return _ShiftDown; }
+        }
+
 
     }
 }
