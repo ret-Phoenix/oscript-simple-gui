@@ -213,6 +213,11 @@ namespace oscriptGUI
                 newItem = new FormTree(parentCntrl);
             }
 
+            if (ElementType.ToUpper() == ("ПредставлениеСписка").ToUpper())
+            {
+                newItem = new ListViewVT.FormListView(parentCntrl);
+            }
+
 
             ((IFormElement)newItem).setParent(ElementParent);
             ((IFormElement)newItem).Name = ElementName;

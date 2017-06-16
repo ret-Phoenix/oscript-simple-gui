@@ -680,7 +680,7 @@ namespace oscriptGUI
             {
                 return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
             }
-            else if (eventName == "ПриНажатииНаКнопку")
+            else if (eventName == "ПриНажатииНаКлавишу")
             {
                 return "" + this._scriptOnKeyDown.ToString() + ":" + this._methodOnKeyDown;
             }
