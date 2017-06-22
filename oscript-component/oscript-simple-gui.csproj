@@ -50,6 +50,7 @@
     <Compile Include="FormStartPositionEnum.cs" />
     <Compile Include="ListViewVT\FormListView.cs" />
     <Compile Include="ListViewVT\FormListViewColumn.cs" />
+    <Compile Include="ListViewVT\FormListViewImagePack.cs" />
     <Compile Include="ListViewVT\FormListViewView.cs" />
     <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />

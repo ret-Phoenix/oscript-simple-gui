@@ -37,12 +37,25 @@ namespace oscriptGUI.ListViewVT
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
 
+        private int _columnWithImageIndex;
+        private FormListViewImagePack _smallImages;
+        private FormListViewImagePack _largeImages;
+
 
         private BindingSource _bindingSource;
         private DataTableProvider _dataTable;
         private ArrayImpl _columns = new ArrayImpl();
 
         private FormListViewView _viewStyle;
+
+        private IRuntimeContextInstance _scriptOnKeyDown;
+        private string _methodOnKeyDown;
+
+        private int _keyCodeDown;
+        private bool _AltDown = false;
+        private bool _CtrlDown = false;
+        private bool _ShiftDown = false;
+
 
         public FormListView(Control parentCntrl)
         {
@@ -61,6 +74,10 @@ namespace oscriptGUI.ListViewVT
 
             this._methodOnChoice = "";
             this._scriptOnChoice = null;
+
+            this._methodOnKeyDown = "";
+            this._scriptOnKeyDown = null;
+
 
             _bindingSource = new BindingSource();
             _dataTable = new DataTableProvider();
@@ -103,7 +120,15 @@ namespace oscriptGUI.ListViewVT
 
             this.createFormFieldByType();
 
+            _columnWithImageIndex = 0;
+            _smallImages = new FormListViewImagePack();
+            _largeImages = new FormListViewImagePack();
 
+            ((ListView)_item).SmallImageList = _smallImages.list();
+
+            ((ListView)_item).StateImageList = _smallImages.list();
+
+            ((ListView)_item).LargeImageList = _largeImages.list();
         }
 
         public override string ToString()
@@ -193,6 +218,18 @@ namespace oscriptGUI.ListViewVT
             }
         }
 
+        void FormFieldOnKeyDown(object sender, KeyEventArgs e)
+        {
+            _keyCodeDown = (int)e.KeyCode;
+
+            _AltDown = e.Alt;
+            _CtrlDown = e.Control;
+            _ShiftDown = e.Shift;
+
+            runAction(this._scriptOnKeyDown, this._methodOnKeyDown);
+        }
+
+
         /// <summary>
         /// Установить обработчик события
         /// Возможные события:
@@ -226,6 +263,16 @@ namespace oscriptGUI.ListViewVT
                 this._scriptOnChoice = contex;
                 this._methodOnChoice = methodName;
             }
+            else if (eventName == "ПриНажатииНаКлавишу")
+            {
+                (_item).KeyDown -= FormFieldOnKeyDown;
+                (_item).KeyDown += FormFieldOnKeyDown;
+
+                this._scriptOnKeyDown = contex;
+                this._methodOnKeyDown = methodName;
+
+            }
+
         }
 
         /// <summary>
@@ -248,6 +295,10 @@ namespace oscriptGUI.ListViewVT
             else if (eventName == "ПриВыборе")
             {
                 return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
+            }
+            else if (eventName == "ПриНажатииНаКлавишу")
+            {
+                return "" + this._scriptOnKeyDown.ToString() + ":" + this._methodOnKeyDown;
             }
             return "";
         }
@@ -415,13 +466,13 @@ namespace oscriptGUI.ListViewVT
             foreach (DataRow row in data.Rows)
             {
                 ListViewItem item = new ListViewItem(row[0].ToString());
+                item.ImageIndex = Convert.ToInt32(row[_columnWithImageIndex]);
                 for (int i = 1; i < data.Columns.Count; i++)
                 {
                     item.SubItems.Add(row[i].ToString());
                 }
                 ((ListView)_item).Items.Add(item);
             }
-
             ((ListView)_item).EndUpdate();
         }
 
@@ -534,6 +585,9 @@ namespace oscriptGUI.ListViewVT
             set { ((ListView)_item).View = (View)value; }
         }
 
+        /// <summary>
+        /// Отображать чекбокс
+        /// </summary>
         [ContextProperty("Пометки", "CheckBoxes")]
         public bool CheckBoxes
         {
@@ -541,6 +595,9 @@ namespace oscriptGUI.ListViewVT
             set { ((ListView)_item).CheckBoxes = value; }
         }
 
+        /// <summary>
+        /// Номера строк помеченных элементов
+        /// </summary>
         [ContextProperty("НомераПомеченныхЭлементов", "CheckedIndices")]
         public ArrayImpl CheckedIndices
         {
@@ -560,6 +617,9 @@ namespace oscriptGUI.ListViewVT
 
         //TODO: CheckedItems
 
+        /// <summary>
+        /// Выделенная строка
+        /// </summary>
         [ContextProperty("ВыделеннаяСтрока")]
         public ValueTableRow FocusedItem
         {
@@ -571,6 +631,9 @@ namespace oscriptGUI.ListViewVT
             }
         }
 
+        /// <summary>
+        /// Отображать сетку (в режиме таблицы)
+        /// </summary>
         [ContextProperty("ОтображатьСетку")]
         public bool GridLines
         {
@@ -580,6 +643,9 @@ namespace oscriptGUI.ListViewVT
 
         //TODO: Groups
 
+        /// <summary>
+        /// Не отображать выделенный при потере фокуса
+        /// </summary>
         [ContextProperty("СкрыватьВыделенный")]
         public bool HideSelection
         {
@@ -592,9 +658,10 @@ namespace oscriptGUI.ListViewVT
         //TODO: HoverSelection
         //TODO: LabelEdit
         //TODO: LabelWrap
-        //TODO: LargeImageList
-        //TODO: FullRowSelect 
 
+        /// <summary>
+        /// Выделять всю строку
+        /// </summary>
         [ContextProperty("ВыделятьВсюСтроку")]
         public bool FullRowSelect
         {
@@ -603,6 +670,9 @@ namespace oscriptGUI.ListViewVT
         }
 
 
+        /// <summary>
+        /// Доступно множественное выделение
+        /// </summary>
         [ContextProperty("МножественноеВыделение")]
         public bool MultiSelect
         {
@@ -612,11 +682,18 @@ namespace oscriptGUI.ListViewVT
 
         //TODO: ShowGroups
         //TODO: ShowItemToolTips
-        //TODO: SmallImageList
         //TODO: StateImageList
         //TODO: TileSize
         //TODO: TopItem
 
+        /// <summary>
+        /// Виды представлений:
+        /// - Таблица
+        /// - БольшиеЗначки
+        /// - МаленькиеЗначки
+        /// - Список
+        /// - Плитка
+        /// </summary>
         [ContextProperty("ВидыПредставлений")]
         public FormListViewView ViewStyles
         {
@@ -624,6 +701,92 @@ namespace oscriptGUI.ListViewVT
             {
                 return _viewStyle;
             }
+        }
+
+        /// <summary>
+        /// Меленькие изображения
+        /// </summary>
+        [ContextProperty("МаленькиеИзображения")]
+        public FormListViewImagePack SmallImages
+        {
+            get
+            {
+                return _smallImages;
+            }
+            set
+            {
+                ((ListView)_item).SmallImageList = value.list();
+            }
+        }
+
+        /// <summary>
+        /// Большие изображения
+        /// </summary>
+        [ContextProperty("БольшиеИзображения")]
+        public FormListViewImagePack LargeImages
+        {
+            get
+            {
+                return _largeImages;
+            }
+            set
+            {
+                ((ListView)_item).LargeImageList = value.list();
+            }
+        }
+
+
+        /// <summary>
+        /// Номер колонки с индексом изображения. Если ничего не задано - 0
+        /// </summary>
+        [ContextProperty("КолонкаСИндексомИзображения")]
+        public int ColumnWithImageIndex
+        {
+            get
+            {
+                return _columnWithImageIndex;
+            }
+            set
+            {
+                _columnWithImageIndex = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Код нажатой клавиши
+        /// </summary>
+        [ContextProperty("КодНажатойКлавиши", "KeyCodeDown")]
+        public int KeyCodeDown
+        {
+            get { return _keyCodeDown; }
+        }
+
+        /// <summary>
+        /// Нажат альт
+        /// </summary>
+        [ContextProperty("НажатАльт", "AltDown")]
+        public bool AltDown
+        {
+            get { return _AltDown; }
+        }
+
+        /// <summary>
+        /// Нажат контрол
+        /// </summary>
+        [ContextProperty("НажатКонтрол", "CtrlDown")]
+        public bool CtrlDown
+        {
+            get { return _CtrlDown; }
+        }
+
+        /// <summary>
+        /// Нажат шифт
+        /// </summary>
+        [ContextProperty("НажатШифт", "ShiftDown")]
+        public bool ShiftDown
+        {
+            get { return _ShiftDown; }
         }
 
         #endregion

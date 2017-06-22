@@ -560,7 +560,7 @@ namespace oscriptGUI
         /// - ПриИзменении - Обработка события изменения значения
         /// - ПриВыборе - При нажатии Enter
         /// - ПриДвойномКлике - Обработка двойного клика (Событие только для ListBox)
-        /// - ПриНажатииНаКнопку - При нажатии клавиши (KeyDown)
+        /// - ПриНажатииНаКлавишу - При нажатии клавиши (KeyDown)
         /// </summary>
         /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
         /// <param name="eventName">Имя обрабатываемого события.</param>
@@ -644,15 +644,14 @@ namespace oscriptGUI
                 this._scriptOnChoice = contex;
                 this._methodOnChoice = methodName;
             }
-            else if (eventName == "ПриНажатииНаКнопку")
+            else if (eventName == "ПриНажатииНаКлавишу")
             {
                 (_item).KeyDown -= FormFieldOnKeyDown;
                 (_item).KeyDown += FormFieldOnKeyDown;
-
+                
                 this._scriptOnKeyDown = contex;
                 this._methodOnKeyDown = methodName;
             }
-
         }
 
         /// <summary>
