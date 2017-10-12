@@ -55,6 +55,11 @@
     <Compile Include="ListViewVT\FormListViewColumn.cs" />
     <Compile Include="ListViewVT\FormListViewImagePack.cs" />
     <Compile Include="ListViewVT\FormListViewView.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="QuestionDialogModeEnum.cs" />
     <Compile Include="DataTableProvider.cs" />
     <Compile Include="FormControlDockStyle.cs" />
@@ -75,6 +80,7 @@
     <Compile Include="FormButton.cs" />
     <Compile Include="FileDialog.cs" />
     <Compile Include="StandardDialogs.cs" />
+    <Compile Include="SystemTray.cs" />
     <Compile Include="TitleLocation.cs" />
     <Compile Include="FormTree\TreeViewColumns\TreeViewColumns.cs">
       <SubType>UserControl</SubType>
@@ -88,6 +94,13 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormTree\TreeViewColumns\TreeViewColumns.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\gtkabout.ico" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
