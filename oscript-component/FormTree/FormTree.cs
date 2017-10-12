@@ -13,18 +13,18 @@ namespace oscriptGUI
     [ContextClass("ДеревоФормы", "FormTree")]
     class FormTree : AutoContext<FormTree>, IFormElement
     {
-        private Panel _panelMainContainer;
-        private Panel _panelTitleContainer;
-        private Panel _panelControlContainer;
-        private Label _label;
-        private TreeViewColumns _item;
+        private readonly Panel _panelMainContainer;
+        private readonly Panel _panelTitleContainer;
+        private readonly Panel _panelControlContainer;
+        private readonly Label _label;
+        private readonly TreeViewColumns _item;
 
         private string _name;
         private bool _visible;
         private bool _enabled;
         private string _title;
         private IElementsContainer _parent;
-        private Control _parentControl;
+        private readonly Control _parentControl;
         private int _titleLocation;
         private IRuntimeContextInstance _thisScript;
         private string _methodName;
@@ -36,9 +36,9 @@ namespace oscriptGUI
         private string _methodOnChoice;
 
         private DataTableProvider _dataTable;
-        private ArrayImpl _columns = new ArrayImpl();
+        private readonly ArrayImpl _columns = new ArrayImpl();
 
-        private Dictionary<TreeNode, ValueTreeRow> _nodesMap;
+        private readonly Dictionary<TreeNode, ValueTreeRow> _nodesMap;
 
         public FormTree(Control parentCntrl)
         {
@@ -96,7 +96,7 @@ namespace oscriptGUI
             this._parentControl.Controls.Add(_panelMainContainer);
             _panelMainContainer.BringToFront();
 
-            this.createFormFieldByType();
+            this.CreateFormFieldByType();
 
         }
 
@@ -124,7 +124,7 @@ namespace oscriptGUI
             _parent = (IElementsContainer)parent;
         }
 
-        private void createFormFieldByType()
+        private void CreateFormFieldByType()
         {
             _item.MinimumSize = new Size(100, 100);
 
@@ -137,7 +137,7 @@ namespace oscriptGUI
             _panelControlContainer.Controls.Add(this._item);
         }
 
-        private void setTitleLocation()
+        private void SetTitleLocation()
         {
             switch (this._titleLocation)
             {
@@ -205,7 +205,8 @@ namespace oscriptGUI
         }
 
         /// <summary>
-        /// Заголовок к полю. Пустая строка означает автоматическое определение. Для отключения вывода заголовка следует установить свойство ПоложениеЗаголовка в значение Нет.
+        /// Заголовок к полю. Пустая строка означает автоматическое определение. 
+        /// Для отключения вывода заголовка следует установить свойство ПоложениеЗаголовка в значение Нет.
         /// </summary>
         [ContextProperty("Заголовок", "Title")]
         public string Title
@@ -235,7 +236,7 @@ namespace oscriptGUI
             set
             {
                 this._titleLocation = value;
-                this.setTitleLocation();
+                this.SetTitleLocation();
             }
         }
 
@@ -425,7 +426,7 @@ namespace oscriptGUI
                     i++;
                     strData[i] = VTRow.Get(col).ToString();
                 }
-                
+
                 TreeNode treeNode = new TreeNode(VTRow.Get(0).ToString());
                 _nodesMap.Add(treeNode, VTRow);
                 

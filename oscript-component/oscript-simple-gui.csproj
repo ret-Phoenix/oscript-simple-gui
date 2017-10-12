@@ -33,11 +33,14 @@
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ScriptEngine, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.1.0.16\lib\net40\ScriptEngine.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptEngine.HostedScript, Version=1.0.16.38, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneScript.StandardLibrary.1.0.16\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
+    <Reference Include="ScriptEngine, Version=1.0.17.95, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.1.0.17\lib\net40\ScriptEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="ScriptEngine.HostedScript, Version=1.0.17.95, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneScript.StandardLibrary.1.0.17\lib\net40\ScriptEngine.HostedScript.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
