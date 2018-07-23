@@ -427,6 +427,7 @@ namespace oscriptGUI
                 }
                 
                 TreeNode treeNode = new TreeNode(VTRow.Get(0).ToString());
+                treeNode.Tag = strData;
                 _nodesMap.Add(treeNode, VTRow);
                 
                 if (parentNode == null)
