@@ -116,7 +116,10 @@ namespace oscriptGUI
         public bool Visible
         {
             get { return this._visible; }
-            set { this._visible = value; }
+            set {
+                _item.Visible = value;
+                this._visible = value;
+            }
         }
 
         /// <summary>
