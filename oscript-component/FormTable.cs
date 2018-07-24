@@ -410,7 +410,7 @@ namespace oscriptGUI
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {
-            get { return _item.Dock.GetHashCode(); }
+            get { return _panelMainContainer.Dock.GetHashCode(); }
             set
             {
                 _panelMainContainer.Dock = (DockStyle)value;

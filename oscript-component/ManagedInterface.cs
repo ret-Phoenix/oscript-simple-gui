@@ -24,7 +24,7 @@ namespace oscriptGUI
 
         public ManagedInterface()
         {
-            this._version = "0.0.0.1";
+            this._version = "1.1.2.2";
             this._formFieldType = new FormFieldType();
             this._formGroupType = new FormGroupType();
             this._titleLocation = new TitleLocation();

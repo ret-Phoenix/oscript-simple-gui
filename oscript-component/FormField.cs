@@ -733,20 +733,10 @@ namespace oscriptGUI
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {
-            get { return _item.Dock.GetHashCode(); }
+            get { return _panelMainContainer.Dock.GetHashCode(); }
             set
             {
-                switch (this._formFieldType)
-                {
-                    case (int)EnumFormFieldType.ListBox:
-                        _panelMainContainer.Dock = (DockStyle)value;
-                        break;
-                    default:
-                        _item.Dock = (DockStyle)value;
-                        break;
-                }
-
-                
+                _panelMainContainer.Dock = (DockStyle)value;
             }
         }
 
