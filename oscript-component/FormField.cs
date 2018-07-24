@@ -454,8 +454,8 @@ namespace oscriptGUI
                     this._choiceList = value;
                     ((ListBox)this._item).BeginUpdate();
                     ((ListBox)this._item).DataSource = new BindingSource(ChoiceList, null);
-                    ((ListBox)this._item).DisplayMember = "Key";
-                    ((ListBox)this._item).ValueMember = "Value";
+                    ((ListBox)this._item).DisplayMember = "Value";
+                    ((ListBox)this._item).ValueMember = "Key";
                     ((ListBox)this._item).EndUpdate();
                 }
                 else
@@ -463,8 +463,8 @@ namespace oscriptGUI
                     this._choiceList = value;
                     ((ComboBox)this._item).BeginUpdate();
                     ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
-                    ((ComboBox)this._item).DisplayMember = "Key";
-                    ((ComboBox)this._item).ValueMember = "Value";
+                    ((ComboBox)this._item).DisplayMember = "Value";
+                    ((ComboBox)this._item).ValueMember = "Key";
                     ((ComboBox)this._item).EndUpdate();
                 }
             }
@@ -560,7 +560,7 @@ namespace oscriptGUI
         /// - ПриИзменении - Обработка события изменения значения
         /// - ПриВыборе - При нажатии Enter
         /// - ПриДвойномКлике - Обработка двойного клика (Событие только для ListBox)
-        /// - ПриНажатииНаКнопку - При нажатии клавиши (KeyDown)
+        /// - ПриНажатииНаКлавишу - При нажатии клавиши (KeyDown)
         /// </summary>
         /// <param name="contex">Ссылка на скрипт в котором находится обработчик события</param>
         /// <param name="eventName">Имя обрабатываемого события.</param>
@@ -644,15 +644,14 @@ namespace oscriptGUI
                 this._scriptOnChoice = contex;
                 this._methodOnChoice = methodName;
             }
-            else if (eventName == "ПриНажатииНаКнопку")
+            else if (eventName == "ПриНажатииНаКлавишу")
             {
                 (_item).KeyDown -= FormFieldOnKeyDown;
                 (_item).KeyDown += FormFieldOnKeyDown;
-
+                
                 this._scriptOnKeyDown = contex;
                 this._methodOnKeyDown = methodName;
             }
-
         }
 
         /// <summary>
@@ -680,7 +679,7 @@ namespace oscriptGUI
             {
                 return "" + this._scriptOnChoice.ToString() + ":" + this._methodOnChoice;
             }
-            else if (eventName == "ПриНажатииНаКнопку")
+            else if (eventName == "ПриНажатииНаКлавишу")
             {
                 return "" + this._scriptOnKeyDown.ToString() + ":" + this._methodOnKeyDown;
             }

@@ -36,6 +36,7 @@ namespace oscriptGUI
         //private IRuntimeContextInstance _thisScriptOnCreated;
         //private string _methodNameOnCreated;
 
+        //private IValue _formResult;
 
         public ManagedForm()
         {
@@ -55,6 +56,8 @@ namespace oscriptGUI
 
             this._methodNameOnClose = "";
             this._thisScriptOnClose = null;
+            
+            //_formResult = ValueFactory.Create();
 
             //this._methodNameOnCreated = "";
             //this._thisScriptOnCreated = null;
@@ -72,6 +75,19 @@ namespace oscriptGUI
         {
             return "УправляемаяФорма";
         }
+
+        /// <summary>
+        /// Переменная для хранения произвольного значения в форме.
+        /// </summary>
+  //      [ContextProperty("РезультатФормы", "FormResult")]
+		//public IValue FormResult {
+		//	get {
+		//		return _formResult;
+		//	}
+		//	set {
+		//		_formResult = value;
+		//	}
+		//}
 
         /// <summary>
         /// Системное перечисление
