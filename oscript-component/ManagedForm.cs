@@ -453,8 +453,8 @@ namespace oscriptGUI
             }
         }
 
-        //[ContextProperty("ПоверхОкон", "OnTop")]
-        //public bool OnTop { get { return _form.TopMost; } set { _form.TopMost = value; } }
+        [ContextProperty("ПоверхОкон", "OnTop")]
+        public bool OnTop { get { return _form.TopMost; } set { _form.TopMost = value; } }
 
         /// <summary>
         /// Состояние окна при открытии
