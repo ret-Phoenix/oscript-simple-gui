@@ -218,7 +218,7 @@
 
 ### ВвестиСтроку (InputString)    
 
-<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/master/docs/InputString.png" alt="ВвестиСтроку">   
+<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/InputValuesDialogs/docs/InputString.png" alt="ВвестиСтроку">   
 
 Открывает диалог ввода строкового значения.     
 Порядок вызова аналогичен реализованному в платформе 1С:Предприятие, но вызов осуществляется через объект СтандартныеДиалоги\StandardDialogs:  
@@ -237,7 +237,7 @@
 
 ### ВвестиЧисло (InputNumber)    
 
-<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/master/docs/InputNumber.png" alt="ВвестиЧисло">   
+<img src="https://github.com/alexkmbk/oscript-simple-gui/blob/InputValuesDialogs/docs/InputNumber.png" alt="ВвестиЧисло">   
 
 Открывает диалог ввода числового значения.     
 Порядок вызова аналогичен реализованному в платформе 1С:Предприятие, но вызов осуществляется через объект СтандартныеДиалоги\StandardDialogs:  
