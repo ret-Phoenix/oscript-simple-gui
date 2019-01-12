@@ -444,7 +444,7 @@ namespace oscriptGUI
             _form.AutoSize = false;
             _form.Height = 200;
             if (Tooltip == null || Tooltip.Length == 0)
-                _form.Text = "Please enter a number";
+                _form.Text = "Введите число";//"Please enter a number";
             else
                 _form.Text = Tooltip;
             _form.StartPosition = FormStartPosition.CenterScreen;
@@ -455,7 +455,7 @@ namespace oscriptGUI
             // Label
             _Label = new Label();
             _Label.Text = _form.Text;
-            _Label.Padding = new Padding(20, 20, 20, 20);
+            _Label.Padding = new Padding(10, 10, 10, 10);
             _Label.TextAlign = ContentAlignment.MiddleCenter;
             _Label.AutoSize = true;
             _Label.Font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
@@ -487,21 +487,21 @@ namespace oscriptGUI
             _okButton = new Button();
             _okButton.Click += OKClick;
             _okButton.Text = "OK";
-            _okButton.MinimumSize = new Size(100, 21);
+            _okButton.MinimumSize = new Size(100, 10);
             _okButton.AutoSize = true;
             _okButton.Anchor = AnchorStyles.None;
             _okButton.Left = (_form.Width - _okButton.Width * 2) / 2;
-            _okButton.Margin = new Padding(10, 20, 10, 20);
+            _okButton.Margin = new Padding(10, 10, 10, 10);
 
             // Cancel Button
             _cancelButton = new Button();
             _cancelButton.Click += CancelClick;
-            _cancelButton.Text = "Cancel";
-            _cancelButton.MinimumSize = new Size(100, 21);
+            _cancelButton.Text = "Отмена";
+            _cancelButton.MinimumSize = new Size(100, 10);
             _cancelButton.AutoSize = true;
             _cancelButton.Anchor = AnchorStyles.None;
             _cancelButton.Left = _okButton.Left + _cancelButton.Width + 5;
-            _cancelButton.Margin = new Padding(10, 20, 10, 20);
+            _cancelButton.Margin = new Padding(10, 10, 10, 10);
 
             // Text field
 
@@ -509,9 +509,11 @@ namespace oscriptGUI
             _ValueField.Text = Number;
             _ValueField.Width = formfWidth - 20;
             _ValueField.KeyPress += ValueField_KeyPress;
+            _ValueField.TextChanged += ValueField_TextChanged;
+            _ValueField.Margin = new Padding(5, 5, 5, 5);
 
             panel = new Panel();
-            panel.Height = 20;
+            panel.Height = 10;
             panel.Width = formfWidth;
             panel.Dock = DockStyle.Bottom;
             panel.AutoSize = true;
@@ -521,7 +523,7 @@ namespace oscriptGUI
 
 
             panel = new Panel();
-            panel.Height = 20;
+            panel.Height = 10;
             panel.Width = formfWidth;
             panel.Dock = DockStyle.Bottom;
             panel.AutoSize = true;
@@ -544,7 +546,15 @@ namespace oscriptGUI
         public void OKClick(object sender, EventArgs e)
         {
             isOK = true;
-            ResultNumber = Convert.ToDecimal(_ValueField.Text);
+            try
+            {
+                ResultNumber = Convert.ToDecimal(_ValueField.Text);
+            }
+            catch (InvalidCastException exc)
+            {
+                ResultNumber = 0;
+            }
+
             _form.Close();
         }
         public void CancelClick(object sender, EventArgs e)
@@ -556,6 +566,20 @@ namespace oscriptGUI
         private void ValueField_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !IsOKForDecimalTextBox(e.KeyChar, (TextBox)sender);
+        }
+
+        private void ValueField_TextChanged(object sender, EventArgs e)
+        {
+            string append = "";
+            char backchar = Convert.ToChar(Keys.Back);
+            foreach (char c in _ValueField.Text)
+            {
+                if ((Char.IsNumber(c)) || (c == backchar) || (c == NumberDecimalSeparator) || (c == '-'))
+                {
+                    append += c;
+                }
+            }
+            _ValueField.Text = append;
         }
 
         private bool IsOKForDecimalTextBox(char theCharacter, TextBox theTextBox)
@@ -571,7 +595,6 @@ namespace oscriptGUI
                 !char.IsControl(theCharacter)
                 && !char.IsDigit(theCharacter)
                 && (theCharacter != NumberDecimalSeparator)
-                && (theCharacter != ',')
                 && (theCharacter != '-')
                 && (theCharacter != '+')
             )
@@ -687,18 +710,18 @@ namespace oscriptGUI
             isOK = false;
             ResultString = String;
 
-            int formfWidth = 300;
-            int formfHeight = 200;
+            int formfWidth = 250;
+            int formfHeight = 190;
 
             if (Multiline)
-                formfHeight = 300;
+                formfHeight = 250;
 
             _form = new Form();
 
             _form.AutoSize = false;
             _form.Height = formfHeight;
             if (Tooltip == null || Tooltip.Length == 0)
-                _form.Text = "Please enter a string";
+                _form.Text = "Введите строку";//"Please enter a string";
             else
                 _form.Text = Tooltip;
             _form.StartPosition = FormStartPosition.CenterScreen;
@@ -708,7 +731,7 @@ namespace oscriptGUI
             // Label
             _Label = new Label();
             _Label.Text = _form.Text;
-            _Label.Padding = new Padding(20, 20, 20, 20);
+            _Label.Padding = new Padding(10, 10, 10, 10);
             _Label.TextAlign = ContentAlignment.MiddleCenter;
             _Label.AutoSize = true;
             _Label.Font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
@@ -744,17 +767,17 @@ namespace oscriptGUI
             _okButton.AutoSize = true;
             _okButton.Anchor = AnchorStyles.None;
             _okButton.Left = (_form.Width - _okButton.Width*2) / 2;
-            _okButton.Margin = new Padding(10, 20, 10, 20);
+            _okButton.Margin = new Padding(10, 10, 10, 10);
 
             // Cancel Button
             _cancelButton = new Button();
             _cancelButton.Click += CancelClick;
-            _cancelButton.Text = "Cancel";
+            _cancelButton.Text = "Отмена";
             _cancelButton.MinimumSize = new Size(100, 21);
             _cancelButton.AutoSize = true;
             _cancelButton.Anchor = AnchorStyles.None;
             _cancelButton.Left = _okButton.Left + _cancelButton.Width + 5;
-            _cancelButton.Margin = new Padding(10, 20, 10, 20);
+            _cancelButton.Margin = new Padding(10, 10, 10, 10);
 
             // Text field
 
