@@ -3,8 +3,6 @@ using ScriptEngine.HostedScript.Library.ValueTable;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -412,6 +410,14 @@ namespace oscriptGUI
         {
             _bindingSource.DataSource = _dataTable.getData();
             ((DataGridView)_item).DataSource = _bindingSource;
+
+            int columnPosition = 0;
+            string caption = "";
+            foreach (ValueTableColumn VTCol in _dataTable.Source.Columns)
+            {
+                caption = VTCol.Title == string.Empty ? VTCol.Name : VTCol.Title;
+                ((DataGridView)_item).Columns[columnPosition++].HeaderText = caption;
+            }
         }
 
         private void getColumns()
