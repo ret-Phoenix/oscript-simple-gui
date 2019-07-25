@@ -41,9 +41,9 @@ namespace oscriptGUI
 
             foreach (ValueTableColumn VTCol in _valueTable.Columns)
             {
-                _dataTable.Columns.Add(VTCol.Name);
+                var columnAdded = _dataTable.Columns.Add(VTCol.Name);
+                columnAdded.Caption = VTCol.Title == string.Empty ? VTCol.Name : VTCol.Title;
             }
-
 
             DataRow row;
             foreach (ValueTableRow VTRow in _valueTable)

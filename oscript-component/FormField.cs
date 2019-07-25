@@ -14,17 +14,12 @@ using ScriptEngine.Machine;
 
 namespace oscriptGUI
 {
-
-
     /// <summary>
     /// Предназначен для отображения и редактирования реквизитов формы.
     /// </summary>
     [ContextClass("ПолеФормы", "FormField")]
     public class FormField : AutoContext<FormField>, IFormElement
     {
-
-        // private IValue _frm;
-
         private Panel _panelMainContainer;
         private Panel _panelTitleContainer;
         private Panel _panelControlContainer;
@@ -35,7 +30,6 @@ namespace oscriptGUI
         private bool _visible;
         private bool _enabled;
         private string _title;
-        //private string _toolTip;
         private IElementsContainer _parent;
         private Control _parentControl;
         private bool _readOnly;
@@ -122,19 +116,14 @@ namespace oscriptGUI
             _label.AutoSize = true;
             _label.Dock = DockStyle.Fill;
 
-
             //# Установка параметров панели для поля с данными
             _panelControlContainer.Dock = DockStyle.Fill;
             _panelControlContainer.MinimumSize = new Size(100, 21);
             _panelControlContainer.AutoSize = true;
             _panelControlContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            //_panelControlContainer.Controls.Add(this._item);
 
             this._parentControl.Controls.Add(_panelMainContainer);
             _panelMainContainer.BringToFront();
-
-            //this.createFormFieldByType();
-
         }
 
         public override string ToString()
@@ -160,11 +149,6 @@ namespace oscriptGUI
         {
             _parent = (IElementsContainer)parent;
         }
-        //[ScriptConstructor]
-        //public static IRuntimeContextInstance Constructor()
-        //{
-        //    return new SimpleFormElementFormField();
-        //}
 
         private void createFormFieldByType()
         {
@@ -186,9 +170,6 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.LabelField:
                     newItem = new Label();
                     break;
-                //case (int)EnumFormFieldType.PictureField:
-                //    newItem = new PictureBox();
-                //    break;
                 case (int)EnumFormFieldType.ProgressBarField:
                     newItem = new ProgressBar();
                     break;
@@ -203,7 +184,7 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ListBox:
                     newItem = new ListBox();
                     ((ListBox)newItem).ScrollAlwaysVisible = true;
-                    ((ListBox)newItem).MinimumSize =  new Size(100, 100);
+                    ((ListBox)newItem).MinimumSize = new Size(100, 100);
                     break;
                 default:
                     newItem = new TextBox();
@@ -215,7 +196,6 @@ namespace oscriptGUI
             this._item = newItem;
             _panelControlContainer.Controls.Add(this._item);
         }
-
 
         private void setControlValue()
         {
@@ -236,9 +216,6 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.LabelField:
                     ((Label)this._item).Text = this._value.AsString();
                     break;
-                //case (int)EnumFormFieldType.PictureField:
-                //    ((PictureBox)this._item).p = this._value.AsString();
-                //    break;
                 case (int)EnumFormFieldType.ProgressBarField:
                     ((ProgressBar)this._item).Value = (int)this._value.AsNumber();
                     break;
@@ -246,10 +223,24 @@ namespace oscriptGUI
                     ((TextBox)this._item).Text = this._value.ToString();
                     break;
                 case (int)EnumFormFieldType.ComboBox:
-                    ((ComboBox)this._item).SelectedValue = this._value;
+                    foreach (ScriptEngine.HostedScript.Library.KeyAndValueImpl itm in ((ComboBox)this._item).Items)
+                    {
+                        if (itm.Key.Equals(this._value))
+                        {
+                            ((ComboBox)this._item).SelectedItem = itm;
+                            break;
+                        }
+                    }
                     break;
                 case (int)EnumFormFieldType.ListBox:
-                    ((ListBox)this._item).SelectedValue = this._value;
+                    foreach (ScriptEngine.HostedScript.Library.KeyAndValueImpl itm in ((ListBox)this._item).Items)
+                    {
+                        if (itm.Key.Equals(this._value))
+                        {
+                            ((ListBox)this._item).SelectedItem = itm;
+                            break;
+                        }
+                    }
                     break;
                 default:
                     this._item.Text = this._value.ToString();
@@ -259,7 +250,6 @@ namespace oscriptGUI
 
         private IValue getControlValue()
         {
-
             switch (this._formFieldType)
             {
                 case (int)EnumFormFieldType.ComboBox:
@@ -272,17 +262,13 @@ namespace oscriptGUI
                     return ValueFactory.Create(((DateTimePicker)this._item).Value);
                 case (int)EnumFormFieldType.CheckBoxField:
                     return ValueFactory.Create(((CheckBox)this._item).Checked);
-                //case (int)EnumFormFieldType.ComboBox:
-                //    return ValueFactory.Create(((ComboBox)this._item).SelectedValue);
                 default:
                     return ValueFactory.Create(this._item.Text);
             }
-            //return ValueFactory.Create();
         }
 
         private void setPropertyReadOnly()
         {
-
             switch (this._formFieldType)
             {
                 case 0:
@@ -318,11 +304,6 @@ namespace oscriptGUI
             }
         }
 
-        //public void Dispose()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         /// <summary>
         /// Значение элемента формы.
         /// </summary>
@@ -338,7 +319,6 @@ namespace oscriptGUI
             {
                 this._value = value;
                 setControlValue();
-
             }
         }
 
@@ -413,11 +393,6 @@ namespace oscriptGUI
                 if (this._label.Text.Trim() == String.Empty)
                 {
                     this._label.Text = this.Name;
-                    //this._panelTitleContainer.Visible = false;
-                }
-                else
-                {
-                    //this._panelTitleContainer.Visible = true;
                 }
             }
         }
@@ -449,6 +424,9 @@ namespace oscriptGUI
             get { return this._choiceList; }
             set
             {
+                BindingSource bindingSource = new BindingSource();
+                bindingSource.DataSource = ChoiceList;
+
                 if (this._formFieldType == (int)EnumFormFieldType.ListBox)
                 {
                     this._choiceList = value;
@@ -469,16 +447,6 @@ namespace oscriptGUI
                 }
             }
         }
-
-
-        //[ContextProperty("Подсказка", "ToolTip")]
-        //public string ToolTip
-        //{
-        //    get { return this._toolTip; }
-        //    set {
-        //        this._toolTip = value;
-        //    }
-        //}
 
         /// <summary>
         /// Содержит ссылку на родительский элемент. <see cref="FormGroup"/>
@@ -503,7 +471,6 @@ namespace oscriptGUI
                 this.setPropertyReadOnly();
             }
         }
-
 
         //# Блок по работе с событиями
 
@@ -530,13 +497,11 @@ namespace oscriptGUI
 
         private void FormFieldDblClick(object sender, EventArgs e)
         {
-            runAction(this._thisScriptDblClick, this._methodNameDblClick); 
+            runAction(this._thisScriptDblClick, this._methodNameDblClick);
         }
-
 
         private void FormFieldOnChoice(object sender, KeyPressEventArgs e)
         {
-
             if (e.KeyChar == (char)Keys.Enter)
             {
                 runAction(this._scriptOnChoice, this._methodOnChoice);
@@ -548,7 +513,7 @@ namespace oscriptGUI
             _keyCodeDown = (int)e.KeyCode;
 
             _AltDown = e.Alt;
-            _CtrlDown= e.Control;
+            _CtrlDown = e.Control;
             _ShiftDown = e.Shift;
 
             runAction(this._scriptOnKeyDown, this._methodOnKeyDown);
@@ -573,7 +538,6 @@ namespace oscriptGUI
         {
             if (eventName == "ПриИзменении")
             {
-
                 switch (this._formFieldType)
                 {
                     case (int)EnumFormFieldType.ComboBox:
@@ -588,8 +552,6 @@ namespace oscriptGUI
                             ((ListBox)_item).SelectedValueChanged += FormFieldValueChanged;
                             break;
                         }
-
-                    //return ValueFactory.Create(((ComboBox)this._item).SelectedValue.ToString());
                     case (int)EnumFormFieldType.ProgressBarField:
                         {
                             Console.WriteLine("ProgressBarField - Disabled setAction");
@@ -607,14 +569,12 @@ namespace oscriptGUI
                             ((CheckBox)_item).CheckedChanged += FormFieldValueChanged;
                             break;
                         }
-
                     default:
                         {
                             _item.TextChanged -= FormFieldValueChanged;
                             _item.TextChanged += FormFieldValueChanged;
                             break;
                         }
-
                 }
 
                 this._thisScript = contex;
@@ -630,7 +590,6 @@ namespace oscriptGUI
                             ((ListBox)_item).DoubleClick += FormFieldDblClick;
                             break;
                         }
-
                 }
                 this._thisScriptDblClick = contex;
                 this._methodNameDblClick = methodName;
@@ -648,7 +607,7 @@ namespace oscriptGUI
             {
                 (_item).KeyDown -= FormFieldOnKeyDown;
                 (_item).KeyDown += FormFieldOnKeyDown;
-                
+
                 this._scriptOnKeyDown = contex;
                 this._methodOnKeyDown = methodName;
             }
@@ -693,7 +652,8 @@ namespace oscriptGUI
         public int Height
         {
             get { return _item.Height; }
-            set {
+            set
+            {
                 switch (this._formFieldType)
                 {
                     case (int)EnumFormFieldType.ListBox:
@@ -775,7 +735,5 @@ namespace oscriptGUI
         {
             get { return _ShiftDown; }
         }
-
-
     }
 }

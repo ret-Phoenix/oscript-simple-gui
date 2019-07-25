@@ -3,8 +3,6 @@ using ScriptEngine.HostedScript.Library.ValueTable;
 using ScriptEngine.Machine;
 using ScriptEngine.Machine.Contexts;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -89,7 +87,6 @@ namespace oscriptGUI
             _label.AutoSize = true;
             _label.Dock = DockStyle.Fill;
 
-
             //# Установка параметров панели для поля с данными
             _panelControlContainer.Dock = DockStyle.Fill;
             _panelControlContainer.MinimumSize = new Size(100, 21);
@@ -100,7 +97,6 @@ namespace oscriptGUI
             _panelMainContainer.BringToFront();
 
             this.createFormFieldByType();
-
         }
 
         public override string ToString()
@@ -129,16 +125,13 @@ namespace oscriptGUI
 
         private void createFormFieldByType()
         {
-            //DataGridView newItem = new DataGridView();
-
             ((DataGridView)this._item).MinimumSize = new Size(100, 100);
             ((DataGridView)this._item).ReadOnly = true;
             ((DataGridView)this._item).AllowUserToAddRows = false;
             ((DataGridView)this._item).AllowUserToDeleteRows = false;
-
             ((DataGridView)this._item).AutoSize = true;
             ((DataGridView)this._item).Dock = DockStyle.Fill;
-            //this._item = newItem;
+
             _panelControlContainer.Controls.Add(this._item);
         }
 
@@ -286,7 +279,6 @@ namespace oscriptGUI
 
         private void FormFieldOnChoice(object sender, KeyPressEventArgs e)
         {
-
             if (e.KeyChar == (char)Keys.Enter)
             {
                 runAction(this._scriptOnChoice, this._methodOnChoice);
@@ -313,13 +305,11 @@ namespace oscriptGUI
         {
             if (eventName == "ПриПотереФокусаЯчейки")
             {
-
                 this._thisScript = contex;
                 this._methodName = methodName;
 
                 ((DataGridView)_item).CurrentCellChanged -= FormFieldValueChanged;
                 ((DataGridView)_item).CurrentCellChanged += FormFieldValueChanged;
-
             }
             else if (eventName == "ПриДвойномКлике")
             {
@@ -328,7 +318,6 @@ namespace oscriptGUI
 
                 this._thisScriptDblClick = contex;
                 this._methodNameDblClick = methodName;
-
             }
             else if (eventName == "ПриВыборе")
             {
@@ -414,8 +403,6 @@ namespace oscriptGUI
             set
             {
                 _panelMainContainer.Dock = (DockStyle)value;
-
-
             }
         }
 
@@ -424,6 +411,13 @@ namespace oscriptGUI
             _bindingSource.DataSource = _dataTable.getData();
             ((DataGridView)_item).DataSource = _bindingSource;
 
+            int columnPosition = 0;
+            string caption = "";
+            foreach (ValueTableColumn VTCol in _dataTable.Source.Columns)
+            {
+                caption = VTCol.Title == string.Empty ? VTCol.Name : VTCol.Title;
+                ((DataGridView)_item).Columns[columnPosition++].HeaderText = caption;
+            }
         }
 
         private void getColumns()
@@ -434,7 +428,6 @@ namespace oscriptGUI
             {
                 _columns.Add(new FormTableColumn(((DataGridView)_item), _columns.Count()));
             }
-
         }
 
 
@@ -505,7 +498,6 @@ namespace oscriptGUI
         public void Refresh()
         {
             _dataTable.Refresh();
-            //DataPath = _dataTable;
         }
 
         /// <summary>
@@ -529,7 +521,5 @@ namespace oscriptGUI
                 return (FormTableColumn)_columns.Get(dr.CurrentCell.ColumnIndex);
             }
         }
-
-
     }
 }

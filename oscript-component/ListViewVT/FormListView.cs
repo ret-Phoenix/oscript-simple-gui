@@ -433,12 +433,10 @@ namespace oscriptGUI.ListViewVT
         [ContextProperty("Закрепление", "Dock")]
         public int Dock
         {
-            get { return _item.Dock.GetHashCode(); }
+            get { return _panelMainContainer.Dock.GetHashCode(); }
             set
             {
                 _panelMainContainer.Dock = (DockStyle)value;
-
-
             }
         }
 
@@ -466,7 +464,13 @@ namespace oscriptGUI.ListViewVT
             foreach (DataRow row in data.Rows)
             {
                 ListViewItem item = new ListViewItem(row[0].ToString());
-                item.ImageIndex = Convert.ToInt32(row[_columnWithImageIndex]);
+                int imageColIndex = Convert.ToInt32(_columnWithImageIndex);
+                Console.WriteLine("col img: " + imageColIndex.ToString());
+                if (imageColIndex != -1)
+                {
+                    Console.WriteLine("set img col");
+                    item.ImageIndex = Convert.ToInt32(row[imageColIndex]);
+                }
                 for (int i = 1; i < data.Columns.Count; i++)
                 {
                     item.SubItems.Add(row[i].ToString());
