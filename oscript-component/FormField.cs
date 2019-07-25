@@ -203,7 +203,7 @@ namespace oscriptGUI
                 case (int)EnumFormFieldType.ListBox:
                     newItem = new ListBox();
                     ((ListBox)newItem).ScrollAlwaysVisible = true;
-                    ((ListBox)newItem).MinimumSize =  new Size(100, 100);
+                    ((ListBox)newItem).MinimumSize = new Size(100, 100);
                     break;
                 default:
                     newItem = new TextBox();
@@ -246,10 +246,24 @@ namespace oscriptGUI
                     ((TextBox)this._item).Text = this._value.ToString();
                     break;
                 case (int)EnumFormFieldType.ComboBox:
-                    ((ComboBox)this._item).SelectedValue = this._value;
+                    foreach (ScriptEngine.HostedScript.Library.KeyAndValueImpl itm in ((ComboBox)this._item).Items)
+                    {
+                        if (itm.Key.Equals(this._value))
+                        {
+                            ((ComboBox)this._item).SelectedItem = itm;
+                            break;
+                        }
+                    }
                     break;
                 case (int)EnumFormFieldType.ListBox:
-                    ((ListBox)this._item).SelectedValue = this._value;
+                    foreach (ScriptEngine.HostedScript.Library.KeyAndValueImpl itm in ((ListBox)this._item).Items)
+                    {
+                        if (itm.Key.Equals(this._value))
+                        {
+                            ((ListBox)this._item).SelectedItem = itm;
+                            break;
+                        }
+                    }
                     break;
                 default:
                     this._item.Text = this._value.ToString();
@@ -449,6 +463,9 @@ namespace oscriptGUI
             get { return this._choiceList; }
             set
             {
+                BindingSource bindingSource = new BindingSource();
+                bindingSource.DataSource = ChoiceList;
+
                 if (this._formFieldType == (int)EnumFormFieldType.ListBox)
                 {
                     this._choiceList = value;
@@ -463,9 +480,13 @@ namespace oscriptGUI
                     this._choiceList = value;
                     ((ComboBox)this._item).BeginUpdate();
                     ((ComboBox)this._item).DataSource = new BindingSource(ChoiceList, null);
+                    //((ComboBox)this._item).DataSource = bindingSource;
                     ((ComboBox)this._item).DisplayMember = "Value";
                     ((ComboBox)this._item).ValueMember = "Key";
                     ((ComboBox)this._item).EndUpdate();
+
+                    //ComboBox cbm1 = ((ComboBox)this._item);
+                    //cbm1.DataSource
                 }
             }
         }
@@ -530,7 +551,7 @@ namespace oscriptGUI
 
         private void FormFieldDblClick(object sender, EventArgs e)
         {
-            runAction(this._thisScriptDblClick, this._methodNameDblClick); 
+            runAction(this._thisScriptDblClick, this._methodNameDblClick);
         }
 
 
@@ -548,7 +569,7 @@ namespace oscriptGUI
             _keyCodeDown = (int)e.KeyCode;
 
             _AltDown = e.Alt;
-            _CtrlDown= e.Control;
+            _CtrlDown = e.Control;
             _ShiftDown = e.Shift;
 
             runAction(this._scriptOnKeyDown, this._methodOnKeyDown);
@@ -648,7 +669,7 @@ namespace oscriptGUI
             {
                 (_item).KeyDown -= FormFieldOnKeyDown;
                 (_item).KeyDown += FormFieldOnKeyDown;
-                
+
                 this._scriptOnKeyDown = contex;
                 this._methodOnKeyDown = methodName;
             }
@@ -693,7 +714,8 @@ namespace oscriptGUI
         public int Height
         {
             get { return _item.Height; }
-            set {
+            set
+            {
                 switch (this._formFieldType)
                 {
                     case (int)EnumFormFieldType.ListBox:
@@ -775,7 +797,5 @@ namespace oscriptGUI
         {
             get { return _ShiftDown; }
         }
-
-
     }
 }
