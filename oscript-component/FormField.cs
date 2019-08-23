@@ -108,7 +108,7 @@ namespace oscriptGUI
             _panelMainContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             _panelTitleContainer.Dock = DockStyle.Left;
-            _panelTitleContainer.MinimumSize = new Size(50, 21);
+            _panelTitleContainer.MinimumSize = new Size(10, 21);
             _panelTitleContainer.AutoSize = true;
             _panelTitleContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             _label = new Label();
@@ -118,7 +118,7 @@ namespace oscriptGUI
 
             //# Установка параметров панели для поля с данными
             _panelControlContainer.Dock = DockStyle.Fill;
-            _panelControlContainer.MinimumSize = new Size(100, 21);
+            _panelControlContainer.MinimumSize = new Size(10, 21);
             _panelControlContainer.AutoSize = true;
             _panelControlContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
@@ -673,7 +673,13 @@ namespace oscriptGUI
         public int Width
         {
             get { return _item.Width; }
-            set { _item.Width = value; }
+            set {
+                int oldHeight = _panelMainContainer.Height;
+                _panelMainContainer.AutoSize = false;
+                _panelMainContainer.Width = value;
+                _panelMainContainer.Height = oldHeight;
+                _panelMainContainer.MinimumSize = new Size(value, oldHeight);
+            }
         }
 
         /// <summary>
@@ -683,7 +689,9 @@ namespace oscriptGUI
         public bool AutoSize
         {
             get { return _item.AutoSize; }
-            set { _item.AutoSize = value; }
+            set {
+                _panelMainContainer.AutoSize = value;
+            }
         }
 
         /// <summary>
