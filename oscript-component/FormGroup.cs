@@ -217,7 +217,6 @@ namespace oscriptGUI
             }
             else
             {
-                newItem.AutoSize = true;
                 newItem.Dock = DockStyle.Top;
                 newItem.MinimumSize = new Size(100, 21);
                 newItem.AutoSize = true;
@@ -225,7 +224,6 @@ namespace oscriptGUI
                 this._parentControl.Controls.Add(this._item);
             }
 
-            
             this._item.BringToFront();
 
         }
@@ -278,7 +276,10 @@ namespace oscriptGUI
         public int Height
         {
             get { return _item.Height; }
-            set { _item.Height = value; }
+            set {
+                _item.AutoSize = false;
+                _item.Height = value;
+            }
         }
 
         /// <summary>

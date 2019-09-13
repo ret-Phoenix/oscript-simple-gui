@@ -103,7 +103,6 @@
     <Content Include="Resources\gtkabout.ico" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy e:\work\develop\c#\oscript-simple-gui\oscript-component\obj\Release\oscript-gui.dll  e:\work\portable\OneScript\lib\gui\bin\</PostBuildEvent>
   </PropertyGroup>
 </Project>

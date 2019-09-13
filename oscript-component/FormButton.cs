@@ -216,7 +216,13 @@ namespace oscriptGUI
         public int Width
         {
             get { return _item.Width; }
-            set { _item.Width = value; }
+            set {
+                int oldHeight = _item.Height;
+                _item.AutoSize = false;
+                _item.Width = value;
+                _item.Height = oldHeight;
+                _item.MinimumSize = new Size(value, oldHeight);
+            }
         }
 
         /// <summary>
