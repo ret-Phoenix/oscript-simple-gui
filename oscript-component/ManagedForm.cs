@@ -171,6 +171,10 @@ namespace oscriptGUI
         [ContextMethod("Показать", "Show")]
         public void Show()
         {
+            _form.WindowState = FormWindowState.Minimized;
+            _form.Shown += delegate (Object sender, EventArgs e) {
+                ((Form)sender).WindowState = FormWindowState.Normal;
+            };
             _form.ShowDialog(null);
         }
 
@@ -181,6 +185,7 @@ namespace oscriptGUI
         public void ShowNotModal()
         {
             _form.Show();
+            _form.BringToFront();
         }
 
         /// <summary>
@@ -280,21 +285,6 @@ namespace oscriptGUI
             return new ManagedForm();
         }
 
-        //private void runAction()
-        //{
-        //    if (_thisScript == null)
-        //    {
-        //        return;
-        //    }
-
-        //    if (_methodName.Trim() == String.Empty)
-        //    {
-        //        return;
-        //    }
-
-        //    ScriptEngine.HostedScript.Library.ReflectorContext reflector = new ScriptEngine.HostedScript.Library.ReflectorContext();
-        //    reflector.CallMethod(this._thisScript, this._methodName, null);
-        //}
 
         private void runAction(IRuntimeContextInstance script, string method)
         {

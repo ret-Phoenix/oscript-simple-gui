@@ -458,17 +458,15 @@ namespace oscriptGUI.ListViewVT
             var cols = data.Columns;
             foreach (DataColumn col in cols)
             {
-                ((ListView)_item).Columns.Add(col.Caption);
+                ((ListView)_item).Columns.Add(col.Caption, col.MaxLength);
             }
 
             foreach (DataRow row in data.Rows)
             {
                 ListViewItem item = new ListViewItem(row[0].ToString());
                 int imageColIndex = Convert.ToInt32(_columnWithImageIndex);
-                Console.WriteLine("col img: " + imageColIndex.ToString());
                 if (imageColIndex != -1)
                 {
-                    Console.WriteLine("set img col");
                     item.ImageIndex = Convert.ToInt32(row[imageColIndex]);
                 }
                 for (int i = 1; i < data.Columns.Count; i++)
@@ -566,6 +564,17 @@ namespace oscriptGUI.ListViewVT
         public void Refresh()
         {
             _dataTable.Refresh();
+        }
+
+        /// <summary>
+        /// Отображать список без изображений
+        /// </summary>
+        [ContextMethod("БезИзображений", "WithoutImages")]
+        public void WithoutImages()
+        {
+            ((ListView)_item).SmallImageList = null;
+            ((ListView)_item).LargeImageList = null;
+            ((ListView)_item).StateImageList = null;
         }
 
         /// <summary>
